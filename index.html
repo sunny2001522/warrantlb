@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>林恩如 - 飆股女王 美股致富勝經</title>
+
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-LS8DYR2N8X"></script>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500;700;900&display=swap');
+      
+      :root {
+        --gold-light: #f3e5ab;
+        --gold-primary: #d4af37;
+        --gold-dark: #aa8a2e;
+        --deep-red: #8b0000;
+        --bg-dark: #0a0806;
+      }
+
+      body {
+        font-family: 'Noto Serif TC', serif;
+        background-color: var(--bg-dark);
+        color: #f3f4f6;
+        overflow-x: hidden;
+      }
+
+      .no-scrollbar::-webkit-scrollbar {
+        display: none;
+      }
+      .no-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+
+      .serif-font {
+        font-family: 'Noto Serif TC', serif;
+      }
+
+      .text-gold-gradient {
+        background: linear-gradient(to bottom, #fef9c3, #d4af37, #854d0e);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        filter: drop-shadow(0 0 8px rgba(212, 175, 55, 0.3));
+      }
+
+      .text-silver-gradient {
+        background: linear-gradient(to bottom, #ffffff 0%, #d1d5db 30%, #9ca3af 60%, #4b5563 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      /* 平滑滑入動畫 - 極小位移確保不跳動 */
+      @keyframes slide-in-smooth {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      @keyframes scale-in {
+        from { opacity: 0; transform: scale(0.98); }
+        to { opacity: 1; transform: scale(1); }
+      }
+
+      .animate-reveal { 
+        animation: slide-in-smooth 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards; 
+        will-change: transform, opacity;
+      }
+      .animate-img-reveal { 
+        animation: scale-in 1s cubic-bezier(0.22, 1, 0.36, 1) 0.2s forwards; 
+        opacity: 0; 
+        will-change: transform, opacity;
+      }
+
+      .red-shimmer-btn {
+        background-color: #8b0000;
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s ease;
+      }
+      .red-shimmer-btn:hover {
+        background-color: #b91c1c;
+        transform: translateY(-2px);
+      }
+      .red-shimmer-btn::after {
+        content: "";
+        position: absolute;
+        top: -50%;
+        left: -100%;
+        width: 50%;
+        height: 200%;
+        background: rgba(255, 255, 255, 0.3);
+        transform: rotate(30deg);
+        transition: 0.6s;
+      }
+      .red-shimmer-btn:hover::after { left: 150%; }
+
+      .app-feature-card-bg {
+        background: linear-gradient(to bottom, #4a2c10 0%, rgba(10, 8, 6, 0.95) 100%);
+        position: relative;
+        border: 1px solid rgba(212, 175, 55, 0.2);
+        overflow: hidden;
+      }
+      
+      .course-card-bg {
+        background: linear-gradient(to bottom, #2d1b0d 0%, rgba(0,0,0,0.8) 100%);
+        border: 1px solid rgba(212, 175, 55, 0.1);
+      }
+
+      .deep-glow-bg {
+        background: radial-gradient(circle at center, #2c1a0a 0%, #0a0806 70%);
+      }
+
+      /* 紅色漸層背景區塊 */
+      .lecturer-red-gradient {
+        background: linear-gradient(to bottom, #0a0806 0%, #450a0a 50%, #0a0806 100%);
+      }
+
+
+    </style>
+  </head>
+  <body>
+    <!-- Meta Pixel Code (noscript fallback) -->
+    <noscript><img height="1" width="1" style="display:none"
+      src="https://www.facebook.com/tr?id=1287370458299408&ev=PageView&noscript=1"
+    /></noscript>
+    <!-- End Meta Pixel Code -->
+    <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
+  </body>
+</html>
