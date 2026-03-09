@@ -1,17 +1,35 @@
+import heroImg from "./assets/warrant_hero.png";
+import methodImg from "./assets/warrant_method.png";
+import chaptersImg from "./assets/warrant_chapters.png";
+import skillsImg from "./assets/warrant_skills.png";
+import appIntroImg from "./assets/warrant_app_intro.png";
+import shop1 from "./assets/商店頁-1.png";
+import shop2 from "./assets/商店頁-2.png";
+import shop3 from "./assets/商店頁-3.png";
+import shop4 from "./assets/商店頁-4.png";
+import shop5 from "./assets/商店頁-5.png";
+import shop6 from "./assets/商店頁-6.png";
+import gallery1 from "./assets/LINE_NOTE_260309_1.jpg";
+import gallery2 from "./assets/LINE_NOTE_260309_2.jpg";
+import gallery3 from "./assets/LINE_NOTE_260309_3.jpg";
+import gallery4 from "./assets/LINE_NOTE_260309_4.jpg";
+import gallery5 from "./assets/LINE_NOTE_260309_5.jpg";
+import gallery6 from "./assets/LINE_NOTE_260309_6.jpg";
+import gallery7 from "./assets/LINE_NOTE_260309_7.jpg";
+import gallery8 from "./assets/LINE_NOTE_260309_8.jpg";
+
 export const CTA_LINK = "https://www.cmoney.tw/cashflow/Index.aspx?platform=1";
 
 export const CASHFLOW_DOMAIN = "https://www.cmoney.tw/";
 
-export const HERO_IMAGE =
-  "assets/warrant_hero.png";
+export const HERO_IMAGE = heroImg;
 
 export const LOGO_URL =
   "https://www.cmoney.tw/course-media/_nuxt/img/logo.ef6c96d.svg";
 
 export const COURSE_DURATION_INFO = "VVIP 進階版 4 章 | 永久觀看 影音課程";
 
-export const APP_VIP_LONG_IMAGE =
-  "assets/warrant_app_intro.png";
+export const APP_VIP_LONG_IMAGE = appIntroImg;
 
 // 講師相關
 export const LECTURER_BIO =
@@ -19,14 +37,14 @@ export const LECTURER_BIO =
 
 // 實戰講座跑馬燈照片
 export const LECTURER_GALLERY = [
-  "assets/LINE_NOTE_260309_1.jpg",
-  "assets/LINE_NOTE_260309_2.jpg",
-  "assets/LINE_NOTE_260309_3.jpg",
-  "assets/LINE_NOTE_260309_4.jpg",
-  "assets/LINE_NOTE_260309_5.jpg",
-  "assets/LINE_NOTE_260309_6.jpg",
-  "assets/LINE_NOTE_260309_7.jpg",
-  "assets/LINE_NOTE_260309_8.jpg",
+  gallery1,
+  gallery2,
+  gallery3,
+  gallery4,
+  gallery5,
+  gallery6,
+  gallery7,
+  gallery8,
 ];
 
 // 課程報名卡片資訊
@@ -149,37 +167,37 @@ export const APP_VIP_FEATURES: AppVIPFeature[] = [
     id: 1,
     title: "處置日報",
     subtitle: "預測準確度高達99%，不必懂計算，只要看答案",
-    imgUrl: "assets/商店頁-1.png",
+    imgUrl: shop1,
   },
   {
     id: 2,
     title: "處置統計",
     subtitle: "獨家統計5分/20分處置股，清楚揭示「先跌後踩」的股價黃金週期",
-    imgUrl: "assets/商店頁-2.png",
+    imgUrl: shop2,
   },
   {
     id: 3,
     title: "注意停看聽",
     subtitle: "用燈號辨識危險性",
-    imgUrl: "assets/商店頁-3.png",
+    imgUrl: shop3,
   },
   {
     id: 4,
     title: "今日出關",
     subtitle: "出關日必有大行情，當沖客必掌握的關鍵日",
-    imgUrl: "assets/商店頁-4.png",
+    imgUrl: shop4,
   },
   {
     id: 5,
     title: "注意監控",
     subtitle: "觸發細節詳解，不只抓魚、還教釣魚",
-    imgUrl: "assets/商店頁-5.png",
+    imgUrl: shop5,
   },
   {
     id: 6,
     title: "處置坐牢中",
     subtitle: "坐牢中的飆股，往往才是潛力股",
-    imgUrl: "assets/商店頁-6.png",
+    imgUrl: shop6,
   },
 ];
 
@@ -187,21 +205,21 @@ export const PROBLEMS = [
   {
     title: "買入強勢股",
     desc: "隔天卻被公告處置",
-    img: "assets/warrant_hero.png",
+    img: heroImg,
   },
   {
     title: "資金被鎖死",
     desc: "無能為力只能乾等",
-    img: "assets/warrant_method.png",
+    img: methodImg,
   },
   {
     title: "不懂處置規則",
     desc: "錯過大好行情",
-    img: "assets/warrant_chapters.png",
+    img: chaptersImg,
   },
   {
     title: "主力動向難判斷",
     desc: "不知道該跟還是該跑",
-    img: "assets/warrant_skills.png",
+    img: skillsImg,
   },
 ];

@@ -896,7 +896,7 @@ const App: React.FC = () => {
       {/* Fixed bottom-right CTA */}
       <button
         onClick={() => scrollToSection(registrationRef)}
-        className="fixed bottom-6 right-6 z-50 blue-shimmer-btn px-4 py-3 md:px-6 md:py-4 text-sm md:text-base font-black text-white rounded-full shadow-[0_4px_24px_rgba(26,58,106,0.5)] active:scale-95 transition-transform cursor-pointer"
+        className="fixed bottom-6 right-6 z-50 bg-[#1d4ed8] hover:bg-[#1e40af] px-4 py-3 md:px-6 md:py-4 text-sm md:text-base font-black text-white rounded-full shadow-[0_4px_24px_rgba(37,99,235,0.6)] active:scale-95 transition-all cursor-pointer"
       >
         免費報名
       </button>
