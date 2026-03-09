@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
-import avatarImage from "../assets/Gemini_Generated_Image_3zi9un3zi9un3zi9.png";
+const avatarImage = "";
 
 // ============ Types ============
 interface Message {

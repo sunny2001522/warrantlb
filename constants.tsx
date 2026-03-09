@@ -3,38 +3,30 @@ export const CTA_LINK = "https://www.cmoney.tw/cashflow/Index.aspx?platform=1";
 export const CASHFLOW_DOMAIN = "https://www.cmoney.tw/";
 
 export const HERO_IMAGE =
-  "https://www.cmoney.tw/app/cmstatic/media/course-introduction/3080d085-b998-4c94-80d4-ab308725cac0638960356613287970.jpg";
+  "assets/warrant_hero.png";
 
 export const LOGO_URL =
   "https://www.cmoney.tw/course-media/_nuxt/img/logo.ef6c96d.svg";
 
-export const COURSE_DURATION_INFO = "30 單元 × 400 分鐘 | 永久觀看 影音課程";
+export const COURSE_DURATION_INFO = "VVIP 進階版 4 章 | 永久觀看 影音課程";
 
 export const APP_VIP_LONG_IMAGE =
-  "https://www.cmoney.tw/app/cmstatic/media/course-introduction/6bE2E2pQ9AnrXz3wU2VnC2.jpg";
+  "assets/warrant_app_intro.png";
 
 // 講師相關
 export const LECTURER_BIO =
-  "專職交易人，28年全球投資經驗，單月最高創下7億元交易量，個股獲利最高1015%。推廣「超簡單投資法14年，致力於用最簡單的策略，幫助大家創造不簡單的報酬，受惠學員逾 15,000 名。";
-
-export const LECTURER_BOOKS = [
-  {
-    title: "極簡投資",
-    img: "assets/book br.png",
-  },
-  {
-    title: "超簡單投資法",
-    img: "assets/book gr.png",
-  },
-];
+  "物理老師化身千萬散戶傳奇。只花七個月，用10萬滾出1,000萬。投資比賽常勝軍，並贏來頂級名車。社群頻道超過20萬粉絲追蹤。【理財達人秀】常駐嘉賓，擁有千萬觀看次數。";
 
 // 實戰講座跑馬燈照片
 export const LECTURER_GALLERY = [
-  "https://meee.com.tw/RYRxenp.png",
-  "https://meee.com.tw/hKTNrR9.png",
-  "assets/LECTURER1.jpg",
-  "https://meee.com.tw/iB9mFTK.png",
-  "https://meee.com.tw/ICBbLMb.png",
+  "assets/LINE_NOTE_260309_1.jpg",
+  "assets/LINE_NOTE_260309_2.jpg",
+  "assets/LINE_NOTE_260309_3.jpg",
+  "assets/LINE_NOTE_260309_4.jpg",
+  "assets/LINE_NOTE_260309_5.jpg",
+  "assets/LINE_NOTE_260309_6.jpg",
+  "assets/LINE_NOTE_260309_7.jpg",
+  "assets/LINE_NOTE_260309_8.jpg",
 ];
 
 // 課程報名卡片資訊
@@ -54,74 +46,39 @@ export interface RegistrationInfo {
 export const REGISTRATION_EVENTS: RegistrationInfo[] = [
   {
     id: 1,
-    title: "林恩如【美股致富聖經】｜線上體驗課 ",
-    dateStr: "2026年03月10日 (二)",
+    title: "權證小哥【處置股策略】｜線上體驗課",
+    dateStr: "日期待定 (TBD)",
     timeStr: "19:00 - 21:00",
-    targetDate: "2026-03-10T19:00:00",
-    originalPrice: 8888,
+    targetDate: "2026-12-31T19:00:00",
+    originalPrice: 0,
     discountPrice: 0,
-    url: "https://www.cmoney.tw/classes/classdetail/3012",
-    productType: 777004,
-    functionId: 3012,
+    url: "https://www.cmoney.tw/classes/classdetail/0000",
+    productType: 0,
+    functionId: 0,
   },
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
 ];
-
-
-
-
-
 
 export const COURSE_INCLUDES = [
   {
     id: 1,
     icon: "fas fa-desktop",
-    title: "400分鐘 線上課程",
-    subtitle: "系統性教學",
-    desc: ["掌握7x4x3x1公式", "從零建構美股交易系統"],
+    title: "處置策略",
+    subtitle: "完整線上課程",
+    desc: ["基礎用法到進階策略一次搞懂"],
   },
   {
     id: 2,
-    icon: "fas fa-flag-usa",
-    title: "美股聚寶盆APP年一年VIP權限",
-    subtitle: "強大的工具支援",
-    desc: ["星級模型、獨創指標選股", "鎖定強勢股，錢進美股。"],
+    icon: "fas fa-mobile-alt",
+    title: "處置神器APP一年VVIP權限",
+    subtitle: "進階版",
+    desc: ["知識很重要", "但沒工具就無法實行"],
   },
   {
     id: 3,
-    icon: "fas fa-users",
-    title: "學員專屬社團",
-    subtitle: "社群共學成長",
-    desc: ["隨時提問、助教解惑", "學員交流操作心得"],
+    icon: "fas fa-comments",
+    title: "學員專屬Line群",
+    subtitle: "",
+    desc: ["隨時提問、交流操作心得"],
   },
 ];
 
@@ -133,20 +90,18 @@ export interface Feature {
 }
 
 export const COURSE_FEATURES: Feature[] = [
-  { id: 1, title: "為什麼要投資美股", duration: "35 mins", points: [] },
-  { id: 2, title: "美股新手迷思破解", duration: "50 mins", points: [] },
-  { id: 3, title: "美股市場必修規則", duration: "35 mins", points: [] },
-  { id: 4, title: "開戶與下單方式", duration: "45 mins", points: [] },
-  { id: 5, title: "超簡單美股四大法寶", duration: "120 mins", points: [] },
-  {
-    id: 6,
-    title: "APP 實戰篇：從選股到操作一次懂",
-    duration: "60 mins",
-    points: [],
-  },
-  { id: 7, title: "美股交易心法", duration: "15 mins", points: [] },
-  { id: 8, title: "資產配置與風險控管", duration: "20 mins", points: [] },
-  { id: 9, title: "投資是一輩子的旅程(結語)", duration: "15 mins", points: [] },
+  { id: 1, title: "基本處置策略 — 掌握交易生存之道", duration: "", points: [] },
+  { id: 2, title: "進階處置策略 — 洞悉主力控盤心理", duration: "", points: [] },
+  { id: 3, title: "雙刀戰法實戰 — 獨家高勝率套利策略", duration: "", points: [] },
+  { id: 4, title: "軟體畫面解析 — 細節功能應用攻略", duration: "", points: [] },
+];
+
+export const SKILLS: Feature[] = [
+  { id: 1, title: "預判能力", duration: "掌握「一進聽」策略，在被關之前開始布局或撤退", points: [] },
+  { id: 2, title: "避險思維", duration: "學會 C 幾取幾模型，算出主力必閃躲的「關鍵日子」", points: [] },
+  { id: 3, title: "套利技巧", duration: "利用相關係數篩選高度連動股，啟動「雙刀戰法」策略", points: [] },
+  { id: 4, title: "工具應用", duration: "學會操作「處置神器 APP」，用科學大數據取代複雜人工計算", points: [] },
+  { id: 5, title: "主力邏輯", duration: "洞悉處置股入關後的「浪子回頭」操作時機", points: [] },
 ];
 
 export interface FAQItem {
@@ -158,27 +113,27 @@ export interface FAQItem {
 export const FAQ_DATA: FAQItem[] = [
   {
     id: 1,
-    question: "我是美股小白、完全沒有經驗，這堂課會太難嗎？",
+    question: "我完全不懂處置股，這堂課會太難嗎？",
     answer:
-      "一點都不難！這堂體驗課正是為了想跨出第一步的你設計的。我們會撇開複雜的數據與專用語，從最基礎的投資觀念帶你一步步踏入美股市場，讓你發現美股其實可以很簡單。",
+      "一點都不難！課程從最基礎的處置規則開始教起，循序漸進帶你理解處置股的運作邏輯，再進入進階策略與實戰應用，即使零經驗也能輕鬆上手。",
   },
   {
     id: 2,
-    question: "老師會教怎麼實際用 App 選股嗎？",
+    question: "處置神器APP要怎麼使用？課程會教嗎？",
     answer:
-      "老師會透過直播親自操作「美股聚寶盆」App 示範選股邏輯。你會看到老師如何利用獨創的「星級模型快速鎖定強勢股，完整呈現工具化繁為簡的力量。",
+      "會！課程第四章「軟體畫面解析」會完整示範處置神器APP的每個功能與操作細節，讓你從安裝到實戰應用一次搞懂。",
   },
   {
     id: 3,
-    question: "課程可以反覆學習嗎？萬一當天沒時間看直播怎麼辦？",
+    question: "課程可以反覆觀看嗎？",
     answer:
-      "沒問題！線上課程提供終生反覆觀看的權利。你可以依照自己的節奏隨時回放、複習心法，直到學到會、學到好為止。",
+      "沒問題！線上課程提供永久觀看權限，你可以依照自己的節奏隨時回放、複習策略，直到完全掌握為止。",
   },
   {
     id: 4,
-    question: "如果遇到問題，可以跟老師互動嗎？",
+    question: "買了課程後，遇到問題可以問誰？",
     answer:
-      "投資路上你不孤單！加入課程後將有學員專屬社團，老師會在這裡陪伴大家、解答疑惑，讓你在建立獲利模式的路上更有信心。",
+      "加入課程後會進入學員專屬Line群，可以隨時提問、交流操作心得，權證小哥團隊也會在群裡協助解答。",
   },
 ];
 
@@ -192,49 +147,61 @@ export interface AppVIPFeature {
 export const APP_VIP_FEATURES: AppVIPFeature[] = [
   {
     id: 1,
-    title: "快速瀏覽每週精選股",
-    subtitle: "追蹤強勢股掌握主流趨勢",
-    imgUrl: "https://meee.com.tw/nSnHm1j.png",
+    title: "處置日報",
+    subtitle: "預測準確度高達99%，不必懂計算，只要看答案",
+    imgUrl: "assets/商店頁-1.png",
   },
   {
     id: 2,
-    title: "星級評價選潛力股",
-    subtitle: "星級模型快速辨識強勢潛力個股",
-    imgUrl: "https://meee.com.tw/0JMGSJs.png",
+    title: "處置統計",
+    subtitle: "獨家統計5分/20分處置股，清楚揭示「先跌後踩」的股價黃金週期",
+    imgUrl: "assets/商店頁-2.png",
   },
   {
     id: 3,
-    title: "大錢線 x 紫金值",
-    subtitle: "精準掌握低檔佈局的黃金時機",
-    imgUrl: "https://meee.com.tw/CYB5PvD.png",
+    title: "注意停看聽",
+    subtitle: "用燈號辨識危險性",
+    imgUrl: "assets/商店頁-3.png",
   },
   {
     id: 4,
-    title: "提供新手教學園地",
-    subtitle: "影音實戰教學強化投資實力",
-    imgUrl: "https://meee.com.tw/k6KYXK7.png",
+    title: "今日出關",
+    subtitle: "出關日必有大行情，當沖客必掌握的關鍵日",
+    imgUrl: "assets/商店頁-4.png",
+  },
+  {
+    id: 5,
+    title: "注意監控",
+    subtitle: "觸發細節詳解，不只抓魚、還教釣魚",
+    imgUrl: "assets/商店頁-5.png",
+  },
+  {
+    id: 6,
+    title: "處置坐牢中",
+    subtitle: "坐牢中的飆股，往往才是潛力股",
+    imgUrl: "assets/商店頁-6.png",
   },
 ];
 
 export const PROBLEMS = [
   {
-    title: "頂尖企業千百家",
-    desc: "總選不出好標的",
-    img: "https://meee.com.tw/kOlLg2v.png",
+    title: "買入強勢股",
+    desc: "隔天卻被公告處置",
+    img: "assets/warrant_hero.png",
   },
   {
-    title: "開戶好像很麻煩",
-    desc: "沒時間心力研究",
-    img: "https://meee.com.tw/E1lJBZr.png",
+    title: "資金被鎖死",
+    desc: "無能為力只能乾等",
+    img: "assets/warrant_method.png",
   },
   {
-    title: "聽說投資門檻高",
-    desc: "不知道從哪開始",
-    img: "https://meee.com.tw/b0wXny1.png",
+    title: "不懂處置規則",
+    desc: "錯過大好行情",
+    img: "assets/warrant_chapters.png",
   },
   {
-    title: "消息一來就心慌",
-    desc: "市場局勢霧煞煞",
-    img: "https://meee.com.tw/9O1zy0k.png",
+    title: "主力動向難判斷",
+    desc: "不知道該跟還是該跑",
+    img: "assets/warrant_skills.png",
   },
 ];

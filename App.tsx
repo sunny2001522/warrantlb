@@ -2,23 +2,18 @@ import React, { useEffect, useRef, useState } from "react";
 import { CTAButton } from "./components/Button";
 import { StackingCard } from "./components/StackingCard";
 import { FAQCard } from "./components/FAQCard";
-import { Reveal } from "./components/Reveal";
+
 import { MarqueeCarousel } from "./components/MarqueeCarousel";
-import { ChatWidget } from "./components/chat/ChatWidget";
-import chatAvatarImage from "./assets/Gemini_Generated_Image_3zi9un3zi9un3zi9.png";
-import heroSm from "./assets/super easy 1080_1080 px_opt.jpg";
-import heroMd from "./assets/md.jpg";
+import heroBg from "./assets/bg.jpg";
+import heroMan from "./assets/man stand.png";
+import lecturerImg from "./assets/man look.png";
 import cmLogo from "./assets/CM logo.png";
-import bookBr from "./assets/book_br_opt.png";
-import bookGr from "./assets/book_gr_opt.png";
-import triangleImg from "./assets/triangle.png";
-import lecturer1Img from "./assets/LECTURER1_opt.jpg";
 import {
   COURSE_FEATURES,
+  SKILLS,
   PROBLEMS,
   COURSE_DURATION_INFO,
   APP_VIP_FEATURES,
-  LECTURER_BIO,
   FAQ_DATA,
   COURSE_INCLUDES,
   LECTURER_GALLERY,
@@ -182,26 +177,22 @@ const App: React.FC = () => {
     );
   };
 
-  // Replace local asset path with imported image
-  const galleryWithImports = LECTURER_GALLERY.map((img) =>
-    img === "assets/LECTURER1.jpg" ? lecturer1Img : img,
-  );
   const marqueeImages = [
-    ...galleryWithImports,
-    ...galleryWithImports,
-    ...galleryWithImports,
+    ...LECTURER_GALLERY,
+    ...LECTURER_GALLERY,
+    ...LECTURER_GALLERY,
   ];
 
   return (
-    <div className="min-h-screen bg-[#0a0806] text-white selection:bg-[#d4af37] selection:text-black">
+    <div className="min-h-screen bg-[#080c14] text-white selection:bg-[#d4af37] selection:text-black">
       {/* Navigation */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-[#0a0806]/90 backdrop-blur-md border-b border-[#d4af37]/20 px-4 md:px-6 py-2 md:py-4 flex justify-between items-center">
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-[#080c14]/90 backdrop-blur-md border-b border-[#d4af37]/20 px-4 md:px-6 py-2 md:py-4 flex justify-between items-center">
         <div className="flex items-center gap-2 md:gap-3">
           <img src={cmLogo} alt="CMoney Logo" className="h-6 md:h-10" />
 
           <div className="flex flex-col">
             <span className="text-xs md:text-base font-black tracking-widest text-white leading-tight">
-              飆股女王林恩如
+              權證小哥
             </span>
             <span className="text-[8px] md:text-xs text-[#d4af37] font-bold tracking-[0.2em]">
               CMoney
@@ -241,55 +232,139 @@ const App: React.FC = () => {
       </nav>
 
       {/* Hero Section */}
-      <section className="relative w-full pt-12 md:pt-[72px] pb-6 md:pb-0 bg-[#0a0806]">
-        {/* Mobile hero: full width, natural height */}
-        <div className="w-full md:hidden relative">
-          <img
-            src={heroSm}
-            alt="飆股女王林恩如 美股致富勝經"
-            className="w-full h-auto"
-          />
-          {/* Gradient overlay at bottom */}
-          <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-[#0a0806] to-transparent pointer-events-none"></div>
-          {/* CTA at gradient boundary */}
-          <div className="absolute inset-x-0 -bottom-10 z-20 flex flex-col items-center gap-2 pb-4">
+      <section className="relative w-full pt-12 md:pt-[72px] bg-[#080c14] overflow-hidden" style={{ height: "75vh" }}>
+        {/* Background image */}
+        <img
+          src={heroBg}
+          alt=""
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-black/20"></div>
+        {/* Bottom gradient fade to dark */}
+        <div className="absolute inset-x-0 bottom-0 h-[55%] bg-gradient-to-t from-[#080c14] via-[#080c14]/90 to-transparent pointer-events-none"></div>
+
+        {/* Mobile: 上下排列 */}
+        <div className="relative z-10 h-full flex flex-col md:hidden pt-14">
+          {/* 上方問句 */}
+          <div className="text-center px-5 mb-1">
+            <p className="text-white text-sm font-bold serif-font leading-relaxed drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]">
+              你是否曾買入強勢股，隔天卻被公告處置？
+            </p>
+            <p className="text-white/80 text-xs font-bold serif-font leading-relaxed mt-1 drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]">
+              看著資金被鎖死、股價跳空卻無能為力？
+            </p>
+          </div>
+
+          {/* 人物 — 放大裁切更多，只露上半身 */}
+          <div className="flex-1 relative overflow-hidden flex justify-center">
+            <img
+              src={heroMan}
+              alt="權證小哥"
+              className="h-[130%] w-auto object-cover object-top drop-shadow-[0_10px_40px_rgba(0,0,0,0.7)]"
+            />
+          </div>
+
+          {/* 底部文字 + CTA，疊在人物上 */}
+          <div className="relative z-20 text-center px-4 pb-4 -mt-28">
+            <p className="text-[#d4af37] text-xs font-bold serif-font italic mb-1 drop-shadow-lg">
+              其實處置股不是洪水猛獸
+            </p>
+            <h1 className="text-2xl font-black serif-font leading-tight drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)]">
+              <span className="text-white">它是股市中最透明的</span>
+            </h1>
+            <h1 className="text-4xl font-black serif-font text-gold-gradient leading-tight mb-3">
+              送分題
+            </h1>
             <CTAButton
               onClick={() => scrollToSection(registrationRef)}
-              className="!px-8 !py-3 !text-base shadow-[0_0_50px_rgba(185,28,28,0.6)] whitespace-nowrap"
+              className="!px-8 !py-3 !text-base shadow-[0_0_50px_rgba(26,58,106,0.6)]"
               trackingLocation="hero_mobile"
             >
-              立即報名，免費體驗課
+              【限量報名】直播體驗課
             </CTAButton>
-            <span className="text-gray-400 text-xs font-bold tracking-widest drop-shadow-lg">
+            <p className="text-gray-400 text-xs font-bold tracking-widest mt-2 drop-shadow-lg">
               名額有限，額滿關閉。
-            </span>
+            </p>
           </div>
         </div>
 
-        {/* Desktop hero */}
-        <div className="w-full hidden md:block relative">
-          <img
-            src={heroMd}
-            alt="飆股女王林恩如 美股致富勝經"
-            className="w-full h-auto"
-          />
-          <div className="absolute inset-x-0 bottom-0 h-64 bg-gradient-to-t from-[#0a0806] to-transparent pointer-events-none"></div>
-          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 z-20 flex flex-col items-center gap-4">
+        {/* Desktop: 左右 flex，靠中間 */}
+        <div className="relative z-10 h-full hidden md:flex items-end justify-center max-w-6xl mx-auto px-8">
+          {/* 左側文字 — 靠右對齊向中間 */}
+          <div className="flex-1 pb-12 pr-4 flex flex-col items-end text-right">
+            <p className="text-white text-2xl font-bold serif-font leading-relaxed drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)] mb-2">
+              你是否曾買入強勢股，隔天卻被公告處置？
+            </p>
+            <p className="text-white/80 text-xl font-bold serif-font leading-relaxed drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)] mb-8">
+              看著資金被鎖死、股價跳空卻無能為力？
+            </p>
+            <p className="text-[#d4af37] text-lg font-bold serif-font italic mb-2 drop-shadow-lg">
+              其實處置股不是洪水猛獸
+            </p>
+            <h1 className="text-6xl font-black serif-font leading-tight drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)] mb-1">
+              <span className="text-white">它是股市中最透明的</span>
+            </h1>
+            <h1 className="text-8xl font-black serif-font text-gold-gradient leading-tight mb-8">
+              送分題
+            </h1>
             <CTAButton
               onClick={() => scrollToSection(registrationRef)}
-              className="!px-20 !py-8 !text-4xl shadow-[0_0_50px_rgba(185,28,28,0.6)] whitespace-nowrap"
+              className="!px-16 !py-6 !text-3xl shadow-[0_0_50px_rgba(26,58,106,0.6)]"
               trackingLocation="hero_desktop"
             >
-              立即報名，免費體驗課
+              【限量報名】直播體驗課
             </CTAButton>
-            <span className="text-gray-400 text-lg font-bold tracking-widest drop-shadow-lg">
+            <p className="text-gray-400 text-sm font-bold tracking-widest mt-4 drop-shadow-lg">
               名額有限，額滿關閉。
-            </span>
+            </p>
+          </div>
+
+          {/* 右側人物 — 裁切更多，放大，靠中間 */}
+          <div className="w-[40%] flex-shrink-0 h-full relative overflow-hidden flex justify-center">
+            <img
+              src={heroMan}
+              alt="權證小哥"
+              className="h-[115%] w-auto object-cover object-top drop-shadow-[0_10px_40px_rgba(0,0,0,0.7)]"
+            />
           </div>
         </div>
       </section>
 
-      <div className="h-4 md:h-32 bg-[#0a0806]"></div>
+      {/* Slide 3 - 處置神器APP介紹 */}
+      <section className="py-8 md:py-20 px-4 md:px-6 bg-[#080c14] relative overflow-hidden">
+        <div className="max-w-4xl mx-auto text-center">
+          <div className="scroll-reveal">
+            <p className="text-gray-300 text-sm md:text-2xl font-bold serif-font leading-relaxed mb-2 md:mb-4">
+              權證小哥將多年實戰經驗，結合新上市的
+            </p>
+            <h2 className="text-2xl md:text-6xl font-black text-gold-gradient serif-font mb-4 md:mb-8">
+              處置神器 APP
+            </h2>
+          </div>
+          <div className="scroll-reveal">
+            <div className="space-y-2 md:space-y-4">
+              <p className="text-gray-300 text-sm md:text-2xl font-bold serif-font leading-relaxed">
+                帶你從認識處置的基礎規則到高階機率學
+              </p>
+              <p className="text-gray-300 text-sm md:text-2xl font-bold serif-font leading-relaxed">
+                應用<span className="text-[#d4af37]">預判主力動向</span>
+              </p>
+              <p className="text-white text-base md:text-3xl font-black serif-font leading-relaxed mt-4 md:mt-8">
+                不玩猜測，而是用數據說話！
+              </p>
+            </div>
+          </div>
+          <div className="scroll-reveal mt-6 md:mt-12">
+            <CTAButton
+              onClick={() => scrollToSection(registrationRef)}
+              className="!px-8 md:!px-12 !py-3 md:!py-5 !text-sm md:!text-xl"
+              trackingLocation="app_intro"
+            >
+              報名體驗課
+            </CTAButton>
+          </div>
+        </div>
+      </section>
 
       {/* 1. Problem Section - 痛點分析 */}
       <section
@@ -298,51 +373,33 @@ const App: React.FC = () => {
       >
         <div className="max-w-7xl mx-auto w-full relative z-10">
           <div className="flex flex-col items-center mb-6 md:mb-8 text-center">
-            <Reveal delay={0}>
+            <div className="scroll-reveal">
               <div className="bg-black/40 border border-[#d4af37]/30 rounded-full px-6 md:px-10 py-2 md:py-3 mb-4 md:mb-8 shadow-lg">
                 <h3 className="text-base md:text-3xl font-bold serif-font italic">
-                  我也想開始投資<span className="text-red-600">美股</span>
-                  ，但總是卡關...
+                  你是否曾買入強勢股，隔天卻被公告<span className="text-blue-500">處置</span>？
                 </h3>
               </div>
-            </Reveal>
+            </div>
 
-            <Reveal
-              delay={200}
-              className="flex flex-col gap-2 md:gap-4 mb-6 md:mb-12"
-            >
+            <div className="scroll-reveal flex flex-col gap-2 md:gap-4 mb-6 md:mb-12">
               <h4 className="text-[#d4af37] text-lg md:text-5xl font-black tracking-widest md:tracking-[0.4em] serif-font text-gold-gradient">
-                超簡單趨勢波段 | 錢進美股
+                處置股策略
               </h4>
               <p className="text-white/70 text-sm md:text-3xl font-bold serif-font tracking-widest">
-                從新手到上手 | 零經驗的致富聖經
+                處置股不是洪水猛獸，它是股市中最透明的送分題
               </p>
-            </Reveal>
+            </div>
           </div>
 
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8 xl:gap-12 relative mb-8 md:mb-8">
             {PROBLEMS.map((problem, idx) => (
-              <Reveal
+              <div
                 key={idx}
-                delay={idx * 150 + 400}
-                className="flex flex-col items-center text-center group cursor-pointer"
+                className="scroll-reveal flex flex-col items-center text-center group cursor-pointer"
                 onClick={() => scrollToSection(registrationRef)}
               >
-                <div className="relative mb-3 md:mb-8">
-                  <div className="w-28 h-28 md:w-52 md:h-52 rounded-full p-1 md:p-1.5 bg-gradient-to-br from-[#d4af37] via-transparent to-[#d4af37] shadow-[0_0_40px_rgba(0,0,0,0.6)]">
-                    <div className="w-full h-full rounded-full overflow-hidden border-2 border-[#d4af37]/60 group-hover:border-white/80 transition-colors">
-                      <img
-                        src={problem.img}
-                        alt={problem.title}
-                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                      />
-                    </div>
-                  </div>
-                  <div className="absolute top-1 right-1 md:top-4 md:right-4 w-6 h-6 md:w-10 md:h-10 bg-red-600 rounded-full border-2 border-white flex items-center justify-center shadow-lg animate-pulse">
-                    <span className="text-white text-sm md:text-2xl font-black">
-                      !
-                    </span>
-                  </div>
+                <div className="w-8 h-8 md:w-12 md:h-12 rounded-full bg-gradient-to-br from-[#2563eb] to-[#1a3a6a] flex items-center justify-center mb-2 md:mb-4 shadow-[0_4px_12px_rgba(37,99,235,0.3)] group-hover:scale-110 transition-transform duration-500">
+                  <span className="text-white text-sm md:text-xl font-black">!</span>
                 </div>
                 <h4 className="text-[#d4af37] text-sm md:text-2xl font-black mb-1 md:mb-3 serif-font group-hover:text-white transition-colors tracking-wider md:tracking-widest">
                   {problem.title}
@@ -350,19 +407,19 @@ const App: React.FC = () => {
                 <p className="text-white text-xs md:text-lg font-bold serif-font opacity-80">
                   {problem.desc}
                 </p>
-              </Reveal>
+              </div>
             ))}
           </div>
 
-          <Reveal delay={1000} className="flex justify-center">
+          <div className="scroll-reveal flex justify-center">
             <CTAButton
               onClick={() => scrollToSection(registrationRef)}
-              className="!px-10 md:!px-24 !py-4 md:!py-8 !text-base md:!text-3xl shadow-[0_0_40px_rgba(185,28,28,0.4)]"
+              className="!px-10 md:!px-24 !py-4 md:!py-8 !text-base md:!text-3xl shadow-[0_0_40px_rgba(26,58,106,0.4)]"
               trackingLocation="problem_section"
             >
               報名體驗課
             </CTAButton>
-          </Reveal>
+          </div>
         </div>
       </section>
 
@@ -373,177 +430,48 @@ const App: React.FC = () => {
       >
         <div className="max-w-7xl mx-auto w-full relative z-10 flex flex-col items-center h-full">
           <div className="text-center mb-4 md:mb-12 flex flex-col items-center">
-            <Reveal delay={0}>
+            <div className="scroll-reveal">
               <div className="mb-4 md:mb-6">
-                <span className="text-[#d4af37] text-xs md:text-2xl font-bold tracking-[0.2em] md:tracking-[0.3em] serif-font italic opacity-90 block mb-2 md:mb-3 uppercase">
-                  報名美股體驗課，你將學會
-                </span>
+               
                 <h2 className="text-2xl md:text-7xl font-black text-gold-gradient serif-font leading-tight mb-2 md:mb-4">
-                  超簡單趨勢波段 | 錢進美股
+                  這堂課 將教你
                 </h2>
-                <span className="text-white text-sm md:text-3xl font-bold tracking-[0.2em] md:tracking-[0.3em] serif-font opacity-90 block uppercase">
-                  讓你懂選、懂抱、一直賺
-                </span>
+               
               </div>
-            </Reveal>
+            </div>
           </div>
 
-          <Reveal delay={300} className="w-full flex justify-center">
-            <div
-              className="relative group max-w-4xl mx-auto flex justify-center cursor-pointer"
-              onClick={() => scrollToSection(registrationRef)}
-            >
-              <img
-                src={triangleImg}
-                alt="核心教學法寶"
-                className="max-h-[45vh] md:max-h-[55vh] w-auto object-contain transition-transform duration-700 group-hover:scale-[1.02] drop-shadow-[0_20px_60px_rgba(0,0,0,0.6)]"
+          <div className="w-full max-w-4xl mx-auto">
+            {SKILLS.map((skill, idx) => (
+              <StackingCard
+                key={skill.id}
+                feature={skill}
+                index={idx}
+                total={SKILLS.length}
+                variant="skill"
               />
-            </div>
-          </Reveal>
+            ))}
+          </div>
 
-          <Reveal delay={600} className="mt-6 md:mt-12">
+          <div className="scroll-reveal mt-6 md:mt-12">
             <CTAButton
               onClick={() => scrollToSection(registrationRef)}
               className="!px-8 md:!px-12 !py-3 md:!py-5 !text-sm md:!text-xl"
               trackingLocation="method_section"
             >
-              獲取核心心法
+              獲取處置股策略
             </CTAButton>
-          </Reveal>
-        </div>
-      </section>
-
-      {/* 3. Course Includes Section */}
-      <section className="py-8 md:py-32 px-4 md:px-6 bg-black relative border-t border-white/5 overflow-hidden">
-        <div className="absolute top-0 right-0 w-96 h-96 bg-[#d4af37]/5 blur-[120px] rounded-full -translate-y-1/2 translate-x-1/2"></div>
-        <div className="absolute bottom-0 left-0 w-96 h-96 bg-[#d4af37]/5 blur-[120px] rounded-full translate-y-1/2 -translate-x-1/2"></div>
-
-        <div className="max-w-7xl mx-auto relative z-10">
-          <div className="text-center mb-8 md:mb-24">
-            <h2 className="text-2xl md:text-6xl font-black serif-font italic text-gold-gradient mb-3 md:mb-6">
-              完整課程包含什麼?
-            </h2>
-            <p className="text-gray-500 text-sm md:text-xl font-bold tracking-[0.2em]">
-              ALL-IN-ONE 投資致富包
-            </p>
-            <div className="w-16 md:w-24 h-1 bg-[#d4af37] mx-auto rounded-full mt-4 md:mt-6"></div>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-10 items-stretch">
-            {COURSE_INCLUDES.map((item, idx) => (
-              <Reveal
-                key={item.id}
-                delay={idx * 200}
-                className="h-full hover:transform hover:scale-[1.02] transition-transform duration-500"
-              >
-                <div
-                  onClick={() => handleIncludeCardClick(item.id)}
-                  className="relative flex flex-col items-center text-center p-5 md:p-12 h-full rounded-[1.5rem] md:rounded-[2.5rem] bg-[#111] border border-[#d4af37]/20 transition-all duration-500 hover:-translate-y-4 hover:border-[#d4af37]/60 group cursor-pointer shadow-2xl"
-                  style={{
-                    background:
-                      "linear-gradient(145deg, #161616 0%, #0a0a0a 100%)",
-                  }}
-                >
-                  <div className="absolute inset-0 rounded-[1.5rem] md:rounded-[2.5rem] overflow-hidden pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity">
-                    <div className="absolute top-0 -left-full w-1/2 h-full bg-gradient-to-r from-transparent via-white/5 to-transparent skew-x-[-25deg] group-hover:left-[150%] transition-all duration-1000 ease-in-out"></div>
-                  </div>
-
-                  <div className="w-14 h-14 md:w-24 md:h-24 rounded-full bg-gradient-to-br from-[#d4af37] to-[#854d0e] flex items-center justify-center mb-4 md:mb-10 shadow-[0_15px_30px_rgba(212,175,55,0.3)] group-hover:scale-110 transition-transform duration-500 relative">
-                    <div className="absolute inset-1 rounded-full border border-white/20"></div>
-                    <i
-                      className={`${item.icon} text-xl md:text-4xl text-white drop-shadow-lg`}
-                    ></i>
-                  </div>
-
-                  <h4 className="text-lg md:text-3xl font-black text-white mb-1 md:mb-2 serif-font italic">
-                    {item.title}
-                  </h4>
-                  <span className="text-[#d4af37] text-xs md:text-sm font-bold mb-3 md:mb-6 block tracking-widest uppercase">
-                    {item.subtitle}
-                  </span>
-
-                  <div className="h-[1px] w-full bg-gradient-to-r from-transparent via-[#d4af37]/30 to-transparent mb-4 md:mb-8"></div>
-
-                  <ul className="space-y-2 md:space-y-4 mb-4 md:mb-10 flex-1">
-                    {item.desc.map((d, i) => (
-                      <li
-                        key={i}
-                        className="flex items-start justify-center gap-2 md:gap-3"
-                      >
-                        <i className="fas fa-star text-[#d4af37] text-[8px] md:text-[10px] mt-1 md:mt-1.5 flex-shrink-0"></i>
-                        <p className="text-gray-400 font-bold text-xs md:text-base leading-relaxed">
-                          {d}
-                        </p>
-                      </li>
-                    ))}
-                  </ul>
-
-                  <div className="mt-auto pt-2 md:pt-4 flex items-center gap-3 text-[#d4af37] transition-all duration-300 group-hover:gap-5">
-                    <span className="text-[10px] md:text-xs font-black tracking-widest uppercase">
-                      查看詳情
-                    </span>
-                    <i className="fas fa-arrow-right text-[8px] md:text-[10px] animate-pulse"></i>
-                  </div>
-                </div>
-              </Reveal>
-            ))}
           </div>
         </div>
       </section>
 
-      {/* 5. Lecturer Section & Marquee */}
-      <section
-        ref={lecturerRef}
-        className="py-8 md:py-32 pr-4 pl-0 md:px-6 lecturer-red-gradient relative border-t border-white/5 overflow-hidden"
-      >
-        <div className="max-w-6xl md:mx-auto flex flex-row items-end gap-0 md:gap-20">
-          <Reveal className="w-5/12 md:w-1/2 flex-shrink-0">
-            <div className="relative group">
-              <div className="absolute inset-0 bg-[#d4af37]/10 rounded-full blur-3xl animate-pulse group-hover:bg-[#d4af37]/20 transition-all"></div>
-              <img
-                src="https://meee.com.tw/h1CHCBG.png"
-                alt="林恩如"
-                className="relative w-full md:w-2/3 h-auto z-10 filter drop-shadow-[0_20px_50px_rgba(212,175,55,0.3)] md:mx-auto"
-              />
-            </div>
-          </Reveal>
-          <div className="w-7/12 md:w-1/2 pb-4 md:pb-0">
-            <Reveal delay={200}>
-              <h2 className="text-xl md:text-6xl font-black mb-2 md:mb-8 serif-font italic text-gold-gradient leading-tight">
-                <span className="!text-white">飆股女王</span>林恩如
-              </h2>
-              <p className="text-gray-300 text-[10px] md:text-xl font-bold leading-relaxed mb-3 md:mb-10 serif-font">
-                {LECTURER_BIO}
-              </p>
-
-              <div className="flex gap-3 md:gap-6 mb-0 md:mb-10 justify-center">
-                <img
-                  src={bookBr}
-                  alt="極簡投資"
-                  className="w-1/3 h-auto rounded-md md:rounded-lg drop-shadow-lg hover:scale-105 transition-transform"
-                />
-                <img
-                  src={bookGr}
-                  alt="超簡單投資法"
-                  className="w-1/3 h-auto rounded-md md:rounded-lg drop-shadow-lg hover:scale-105 transition-transform"
-                />
-              </div>
-            </Reveal>
-          </div>
-        </div>
-
-        <div className="w-full mt-0">
-          <MarqueeCarousel images={marqueeImages} />
-        </div>
-      </section>
-
-      {/* 6. Course Chapters */}
+      {/* 3. Course Chapters */}
       <section
         ref={chaptersRef}
-        className="py-8 md:py-32 px-3 md:px-4 bg-black overflow-visible relative "
+        className="py-8 md:py-32 px-3 md:px-4 bg-black overflow-visible relative border-t border-white/5"
       >
         <div className="max-w-4xl mx-auto flex flex-col items-center">
-          <div className="text-center mb-10 md:mb-20">
+          <div className="text-center mb-10 md:mb-20 scroll-reveal">
             <h3 className="text-2xl md:text-6xl font-black mb-4 md:mb-8 italic serif-font text-gold-gradient">
               課程內容大綱
             </h3>
@@ -566,18 +494,169 @@ const App: React.FC = () => {
         </div>
       </section>
 
+      {/* 4. Course Includes Section */}
+      <section className="py-8 md:py-32 px-4 md:px-6 bg-black relative border-t border-white/5 overflow-hidden">
+        <div className="absolute top-0 right-0 w-96 h-96 bg-[#d4af37]/5 blur-[120px] rounded-full -translate-y-1/2 translate-x-1/2"></div>
+        <div className="absolute bottom-0 left-0 w-96 h-96 bg-[#d4af37]/5 blur-[120px] rounded-full translate-y-1/2 -translate-x-1/2"></div>
+
+        <div className="max-w-7xl mx-auto relative z-10">
+          <div className="text-center mb-8 md:mb-24 scroll-reveal">
+            <h2 className="text-2xl md:text-6xl font-black serif-font italic text-gold-gradient mb-3 md:mb-6">
+              完整課程包含什麼?
+            </h2>
+            <div className="w-16 md:w-24 h-1 bg-[#d4af37] mx-auto rounded-full mt-4 md:mt-6"></div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-10 items-stretch">
+            {COURSE_INCLUDES.map((item, idx) => (
+              <div
+                key={item.id}
+                className="scroll-reveal h-full hover:transform hover:scale-[1.02] transition-transform duration-500"
+              >
+                <div
+                  onClick={() => handleIncludeCardClick(item.id)}
+                  className="relative flex flex-col items-center text-center p-5 md:p-12 h-full rounded-[1.5rem] md:rounded-[2.5rem] border border-blue-500/20 transition-all duration-500 hover:-translate-y-4 hover:border-[#d4af37]/60 group cursor-pointer shadow-2xl"
+                  style={{
+                    background:
+                      "linear-gradient(145deg, #0a1528 0%, #060a14 100%)",
+                  }}
+                >
+                  <div className="absolute inset-0 rounded-[1.5rem] md:rounded-[2.5rem] overflow-hidden pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity">
+                    <div className="absolute top-0 -left-full w-1/2 h-full bg-gradient-to-r from-transparent via-white/5 to-transparent skew-x-[-25deg] group-hover:left-[150%] transition-all duration-1000 ease-in-out"></div>
+                  </div>
+
+                  <div className="w-14 h-14 md:w-24 md:h-24 rounded-full bg-gradient-to-br from-[#2563eb] to-[#1a3a6a] flex items-center justify-center mb-4 md:mb-10 shadow-[0_15px_30px_rgba(37,99,235,0.3)] group-hover:scale-110 transition-transform duration-500 relative">
+                    <div className="absolute inset-1 rounded-full border border-white/20"></div>
+                    <i
+                      className={`${item.icon} text-xl md:text-4xl text-[#d4af37] drop-shadow-lg`}
+                    ></i>
+                  </div>
+
+                  <h4 className="text-lg md:text-3xl font-black text-[#d4af37] mb-1 md:mb-2 serif-font italic">
+                    {item.title}
+                  </h4>
+                  {item.subtitle && (
+                    <span className="text-blue-400 text-xs md:text-sm font-bold mb-3 md:mb-6 block tracking-widest">
+                      {item.subtitle}
+                    </span>
+                  )}
+
+                  <div className="h-[1px] w-full bg-gradient-to-r from-transparent via-blue-500/30 to-transparent mb-4 md:mb-8"></div>
+
+                  <ul className="space-y-2 md:space-y-4 mb-4 md:mb-10 flex-1">
+                    {item.desc.map((d, i) => (
+                      <li
+                        key={i}
+                        className="flex items-start justify-center gap-2 md:gap-3"
+                      >
+                        <p className="text-gray-300 font-bold text-xs md:text-base leading-relaxed">
+                          {d}
+                        </p>
+                      </li>
+                    ))}
+                  </ul>
+
+                  <div className="mt-auto pt-2 md:pt-4 flex items-center gap-3 text-blue-400 transition-all duration-300 group-hover:gap-5">
+                    <span className="text-[10px] md:text-xs font-black tracking-widest uppercase">
+                      查看詳情
+                    </span>
+                    <i className="fas fa-arrow-right text-[8px] md:text-[10px] animate-pulse"></i>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 5. Lecturer Section & Marquee */}
+      <section
+        ref={lecturerRef}
+        className="py-8 md:py-32 px-4 md:px-6 lecturer-blue-gradient relative border-t border-white/5 overflow-hidden"
+      >
+        <div className="max-w-6xl mx-auto flex flex-col items-center md:flex-row md:items-center gap-6 md:gap-16">
+          {/* 左側(桌面) / 上方(手機)：科技感圓形人物照 */}
+          <div className="scroll-reveal flex-shrink-0 flex justify-center">
+            <div className="relative w-52 h-52 md:w-80 md:h-80 flex items-center justify-center">
+              {/* 外層旋轉環 */}
+              <div className="absolute inset-0 rounded-full tech-ring-outer">
+                <svg viewBox="0 0 200 200" className="w-full h-full">
+                  <circle cx="100" cy="100" r="96" fill="none" stroke="#2563eb" strokeWidth="0.5" strokeDasharray="8 12" opacity="0.6" />
+                  <circle cx="100" cy="100" r="92" fill="none" stroke="#1a4a7a" strokeWidth="0.3" strokeDasharray="4 8" opacity="0.4" />
+                </svg>
+              </div>
+              {/* 內層反向旋轉環 */}
+              <div className="absolute inset-2 md:inset-3 rounded-full tech-ring-inner">
+                <svg viewBox="0 0 200 200" className="w-full h-full">
+                  <circle cx="100" cy="100" r="96" fill="none" stroke="#2563eb" strokeWidth="0.8" strokeDasharray="16 8 4 8" opacity="0.5" />
+                </svg>
+              </div>
+              {/* 脈衝光暈 */}
+              <div className="absolute inset-4 md:inset-6 rounded-full border border-blue-500/30 tech-ring-pulse"></div>
+              <div className="absolute inset-1 md:inset-2 rounded-full border border-blue-400/10 tech-ring-glow"></div>
+              {/* 藍色光暈背景 */}
+              <div className="absolute inset-6 md:inset-10 rounded-full bg-blue-500/10 blur-xl"></div>
+              {/* 人物照片 */}
+              <div className="absolute inset-6 md:inset-10 rounded-full overflow-hidden border-2 border-blue-400/40 shadow-[0_0_40px_rgba(37,99,235,0.3)]">
+                <img
+                  src={lecturerImg}
+                  alt="權證小哥"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              {/* 四角光點裝飾 */}
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1.5 h-1.5 md:w-2 md:h-2 bg-blue-400 rounded-full shadow-[0_0_8px_rgba(37,99,235,0.8)]"></div>
+              <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1.5 h-1.5 md:w-2 md:h-2 bg-blue-400 rounded-full shadow-[0_0_8px_rgba(37,99,235,0.8)]"></div>
+              <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1.5 h-1.5 md:w-2 md:h-2 bg-blue-400 rounded-full shadow-[0_0_8px_rgba(37,99,235,0.8)]"></div>
+              <div className="absolute right-0 top-1/2 -translate-y-1/2 w-1.5 h-1.5 md:w-2 md:h-2 bg-blue-400 rounded-full shadow-[0_0_8px_rgba(37,99,235,0.8)]"></div>
+            </div>
+          </div>
+
+          {/* 右側(桌面) / 下方(手機)：標題 + 經歷 */}
+          <div className="md:flex-1 text-center md:text-left">
+            <div className="scroll-reveal">
+              <h2 className="text-2xl md:text-6xl font-black mb-4 md:mb-8 serif-font italic text-gold-gradient leading-tight">
+                權證小哥
+              </h2>
+            </div>
+            <div className="space-y-3 md:space-y-4">
+              {[
+                { text: "物理老師化身", bold: "千萬散戶傳奇", after: "。" },
+                { text: "只花七個月，用", bold: "10萬滾出1,000萬", after: "。" },
+                { text: "投資比賽常勝軍，並贏來", bold: "頂級名車", after: "。" },
+                { text: "社群頻道超過", bold: "20萬粉絲", after: "追蹤。" },
+                { text: "【理財達人秀】常駐嘉賓，\n擁有", bold: "千萬觀看", after: "次數。" },
+              ].map((line, idx) => (
+                <div key={idx} className="scroll-reveal">
+                  <p className="text-gray-300 text-sm md:text-xl font-bold leading-relaxed serif-font flex items-start gap-2 md:gap-3 justify-center md:justify-start">
+                    <span className="text-[#2563eb] text-sm md:text-base mt-0.5 flex-shrink-0">&#x25C9;</span>
+                    <span className="whitespace-pre-line text-left">
+                      {line.text}<span className="text-blue-400 font-black">{line.bold}</span>{line.after}
+                    </span>
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <div className="w-full mt-8 md:mt-16">
+          <MarqueeCarousel images={marqueeImages} />
+        </div>
+      </section>
+
       {/* 4. APP VIP Section */}
       <section
         ref={appVipRef}
-        className="py-8 md:py-20 px-4 md:px-6 bg-gradient-to-b from-[#0a0806] to-[#1a1510] flex flex-col justify-center overflow-hidden "
+        className="py-8 md:py-20 px-4 md:px-6 bg-gradient-to-b from-[#080c14] to-[#0f1a2e] flex flex-col justify-center overflow-hidden "
       >
         <div className="max-w-7xl mx-auto w-full relative">
-          <div className="text-center mb-8 md:mb-24">
+          <div className="text-center mb-8 md:mb-24 scroll-reveal">
             <h3 className="text-[#d4af37] text-sm md:text-xl font-black tracking-widest mb-2 md:mb-4 uppercase">
               VIP EXCLUSIVE
             </h3>
             <h2 className="text-2xl md:text-7xl font-black mb-4 md:mb-8 italic">
-              美股聚寶盆
+              處置神器
               <span className="text-gold-gradient px-2 md:px-4">App</span>
             </h2>
 
@@ -590,14 +669,13 @@ const App: React.FC = () => {
             </CTAButton>
           </div>
 
-          <div className="flex md:grid md:grid-cols-4 gap-4 md:gap-6 xl:gap-8 overflow-x-auto md:overflow-visible no-scrollbar snap-x snap-mandatory px-2 md:px-0 mb-8 md:mb-32">
+          <div className="flex md:grid md:grid-cols-3 gap-4 md:gap-6 xl:gap-8 overflow-x-auto md:overflow-visible no-scrollbar snap-x snap-mandatory px-2 md:px-0 mb-8 md:mb-32">
             {APP_VIP_FEATURES.map((item, idx) => (
-              <Reveal
+              <div
                 key={item.id}
-                delay={idx * 200}
-                className="flex-shrink-0 w-[70vw] md:w-auto snap-center flex flex-col group h-full"
+                className={`scroll-reveal scroll-stagger-${idx + 1} flex-shrink-0 w-[55vw] md:w-auto snap-center flex flex-col group`}
               >
-                <div className="app-feature-card-bg rounded-[1.5rem] md:rounded-[2.5rem] pt-6 md:pt-10 h-full flex flex-col border border-white/5 shadow-2xl relative overflow-hidden min-h-[350px] md:min-h-[500px]">
+                <div className="app-feature-card-bg rounded-[1.5rem] md:rounded-[2.5rem] pt-6 md:pt-10 flex flex-col border border-white/5 shadow-2xl relative overflow-hidden h-[420px] md:h-[480px]">
                   <div className="text-center px-4 md:px-6 mb-4 md:mb-10 relative z-10">
                     <h4 className="text-[#d4af37] text-base md:text-2xl font-black mb-1 md:mb-3 italic serif-font drop-shadow-lg">
                       {item.title}
@@ -606,15 +684,17 @@ const App: React.FC = () => {
                       {item.subtitle}
                     </p>
                   </div>
-                  <div className="relative w-2/3 mx-auto aspect-[9/16] overflow-hidden bg-transparent mt-auto mb-2 md:mb-4">
+                  <div className="relative w-2/3 mx-auto flex-1 overflow-hidden bg-transparent">
                     <img
                       src={item.imgUrl}
                       alt={item.title}
-                      className="w-full h-full object-contain animate-img-reveal"
+                      className="w-full h-full object-contain object-top"
                     />
                   </div>
+                  {/* 卡片底部漸層遮罩 */}
+                  <div className="absolute inset-x-0 bottom-0 h-1/4 bg-gradient-to-t from-[#0a1528] via-[#0a1528]/90 to-transparent pointer-events-none rounded-b-[1.5rem] md:rounded-b-[2.5rem]"></div>
                 </div>
-              </Reveal>
+              </div>
             ))}
           </div>
         </div>
@@ -623,21 +703,20 @@ const App: React.FC = () => {
       {/* 7. Registration Events */}
       <section
         ref={registrationRef}
-        className="py-8 md:py-16 px-4 md:px-6 bg-gradient-to-b from-black to-[#1a110a] border-t border-[#d4af37]/20"
+        className="py-8 md:py-16 px-4 md:px-6 bg-gradient-to-b from-black to-[#0a1528] border-t border-[#d4af37]/20"
       >
         <div className="max-w-7xl mx-auto w-full">
-          <div className="text-center mb-6 md:mb-12">
+          <div className="text-center mb-6 md:mb-12 scroll-reveal">
             <h2 className="text-2xl md:text-6xl font-black text-white serif-font mb-3 md:mb-4 italic text-gold-gradient">
-              預約您的致富場次
+              預約您的學習場次
             </h2>
             <div className="w-16 md:w-24 h-1 bg-[#d4af37] mx-auto rounded-full"></div>
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-8 xl:gap-12 max-w-6xl mx-auto">
             {REGISTRATION_EVENTS.map((event, idx) => (
-              <Reveal
+              <div
                 key={event.id}
-                delay={idx * 250}
-                className="bg-[#0f0d0b] border border-[#d4af37]/30 rounded-[1.5rem] md:rounded-[2.5rem] overflow-hidden flex flex-col shadow-2xl transition-all hover:border-[#d4af37] hover:-translate-y-1 group h-full"
+                className="scroll-reveal bg-[#0b0f1a] border border-[#d4af37]/30 rounded-[1.5rem] md:rounded-[2.5rem] overflow-hidden flex flex-col shadow-2xl transition-all hover:border-[#d4af37] hover:-translate-y-1 group h-full"
               >
                 <div className="p-4 md:p-10 flex-1 flex flex-col">
                   <h3 className="text-base md:text-3xl font-black text-white serif-font mb-3 md:mb-6 leading-tight min-h-0 md:min-h-[4rem] group-hover:text-[#d4af37] transition-colors">
@@ -687,12 +766,12 @@ const App: React.FC = () => {
                   </div>
                   <button
                     onClick={() => handleRegistrationClick(event)}
-                    className="w-full red-shimmer-btn py-4 md:py-6 rounded-[1rem] md:rounded-[1.2rem] text-center text-base md:text-xl font-black text-white shadow-xl hover:scale-[1.01] active:scale-95 transition-all cursor-pointer"
+                    className="w-full blue-shimmer-btn py-4 md:py-6 rounded-[1rem] md:rounded-[1.2rem] text-center text-base md:text-xl font-black text-white shadow-xl hover:scale-[1.01] active:scale-95 transition-all cursor-pointer"
                   >
                     立即免費預約
                   </button>
                 </div>
-              </Reveal>
+              </div>
             ))}
           </div>
         </div>
@@ -704,7 +783,7 @@ const App: React.FC = () => {
         className="py-8 md:py-32 px-3 md:px-4 bg-black overflow-visible relative border-t border-white/5"
       >
         <div className="max-w-4xl mx-auto flex flex-col items-center">
-          <div className="text-center mb-10 md:mb-20">
+          <div className="text-center mb-10 md:mb-20 scroll-reveal">
             <h3 className="text-2xl md:text-6xl font-black mb-4 md:mb-8 px-3 italic serif-font text-gold-gradient">
               FAQ 常見問題
             </h3>
@@ -730,7 +809,7 @@ const App: React.FC = () => {
                 <div className="h-6 w-[1px] bg-white/20 mx-1"></div>
                 <div className="flex flex-col">
                   <span className="text-sm font-black tracking-widest text-white leading-tight">
-                    飆股女王林恩如
+                    權證小哥
                   </span>
                   <span className="text-[10px] text-[#d4af37] font-bold tracking-[0.2em]">
                     CMoney
@@ -738,7 +817,7 @@ const App: React.FC = () => {
                 </div>
               </div>
               <p className="text-gray-500 text-xs font-bold leading-relaxed serif-font">
-                專注於「超簡單投資法」，簡化市場規則，幫助投資者建立獲利模型。
+                專注於處置股策略，幫助投資者掌握處置股的獲利模式與避險思維。
               </p>
             </div>
 
@@ -775,21 +854,21 @@ const App: React.FC = () => {
               </h4>
               <div className="flex gap-3">
                 <a
-                  href="https://www.facebook.com/imoney889/?locale=zh_TW"
+                  href="https://www.facebook.com/warrantlb/?locale=zh_TW"
                   target="_blank"
                   className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:bg-[#d4af37] hover:text-white transition-all duration-300"
                 >
                   <i className="fab fa-facebook-f text-base"></i>
                 </a>
                 <a
-                  href="https://www.youtube.com/playlist?list=PL8JLWRfy17gLggQ8YZnZr6XIAHpddudp3"
+                  href="https://www.youtube.com/@cng07151"
                   target="_blank"
                   className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:bg-red-600 hover:text-white transition-all duration-300"
                 >
                   <i className="fab fa-youtube text-base"></i>
                 </a>
                 <a
-                  href="https://www.cmoney.tw/app/expert/imoney889"
+                  href="https://www.cmoney.tw/app/expert/warrantlb"
                   target="_blank"
                   className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:bg-[#d4af37] hover:text-white transition-all duration-300 group"
                 >
@@ -814,17 +893,10 @@ const App: React.FC = () => {
         </div>
       </footer>
 
-      {/* Chat Widget - 恩如 AI 助理 */}
-      <ChatWidget
-        authorSlug="enru"
-        avatarUrl={chatAvatarImage}
-        authorName="林恩如"
-      />
-
       {/* Fixed bottom-right CTA */}
       <button
         onClick={() => scrollToSection(registrationRef)}
-        className="fixed bottom-6 right-6 z-50 red-shimmer-btn px-4 py-3 md:px-6 md:py-4 text-sm md:text-base font-black text-white rounded-full shadow-[0_4px_24px_rgba(185,28,28,0.5)] active:scale-95 transition-transform cursor-pointer"
+        className="fixed bottom-6 right-6 z-50 blue-shimmer-btn px-4 py-3 md:px-6 md:py-4 text-sm md:text-base font-black text-white rounded-full shadow-[0_4px_24px_rgba(26,58,106,0.5)] active:scale-95 transition-transform cursor-pointer"
       >
         免費報名
       </button>

@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>林恩如 - 飆股女王 美股致富勝經</title>
+    <title>權證小哥 - 處置股策略</title>
 
     <!-- Google Analytics 4 -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-LS8DYR2N8X"></script>
@@ -12,13 +12,16 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <style>
       @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500;700;900&display=swap');
-      
+
       :root {
         --gold-light: #f3e5ab;
         --gold-primary: #d4af37;
         --gold-dark: #aa8a2e;
-        --deep-red: #8b0000;
-        --bg-dark: #0a0806;
+        --deep-blue: #1a3a6a;
+        --bg-dark: #080c14;
+        --tech-blue: #1a4a7a;
+        --blue-glow: #2563eb;
+        --brown-accent: #8B6914;
       }
 
       body {
@@ -63,27 +66,27 @@
         to { opacity: 1; transform: scale(1); }
       }
 
-      .animate-reveal { 
-        animation: slide-in-smooth 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards; 
+      .animate-reveal {
+        animation: slide-in-smooth 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
         will-change: transform, opacity;
       }
-      .animate-img-reveal { 
-        animation: scale-in 1s cubic-bezier(0.22, 1, 0.36, 1) 0.2s forwards; 
-        opacity: 0; 
+      .animate-img-reveal {
+        animation: scale-in 1s cubic-bezier(0.22, 1, 0.36, 1) 0.2s forwards;
+        opacity: 0;
         will-change: transform, opacity;
       }
 
-      .red-shimmer-btn {
-        background-color: #8b0000;
+      .blue-shimmer-btn {
+        background-color: #1a3a6a;
         position: relative;
         overflow: hidden;
         transition: all 0.3s ease;
       }
-      .red-shimmer-btn:hover {
-        background-color: #b91c1c;
+      .blue-shimmer-btn:hover {
+        background-color: #2563eb;
         transform: translateY(-2px);
       }
-      .red-shimmer-btn::after {
+      .blue-shimmer-btn::after {
         content: "";
         position: absolute;
         top: -50%;
@@ -94,29 +97,74 @@
         transform: rotate(30deg);
         transition: 0.6s;
       }
-      .red-shimmer-btn:hover::after { left: 150%; }
+      .blue-shimmer-btn:hover::after { left: 150%; }
 
       .app-feature-card-bg {
-        background: linear-gradient(to bottom, #4a2c10 0%, rgba(10, 8, 6, 0.95) 100%);
+        background: linear-gradient(to bottom, #0f1a2e 0%, rgba(8, 12, 20, 0.95) 100%);
         position: relative;
         border: 1px solid rgba(212, 175, 55, 0.2);
         overflow: hidden;
       }
-      
+
       .course-card-bg {
-        background: linear-gradient(to bottom, #2d1b0d 0%, rgba(0,0,0,0.8) 100%);
+        background: linear-gradient(to bottom, #0f1a2e 0%, rgba(0,0,0,0.8) 100%);
         border: 1px solid rgba(212, 175, 55, 0.1);
       }
 
       .deep-glow-bg {
-        background: radial-gradient(circle at center, #2c1a0a 0%, #0a0806 70%);
+        background: radial-gradient(circle at center, #0f1a2e 0%, #080c14 70%);
       }
 
-      /* 紅色漸層背景區塊 */
-      .lecturer-red-gradient {
-        background: linear-gradient(to bottom, #0a0806 0%, #450a0a 50%, #0a0806 100%);
+      /* 藍色漸層背景區塊 */
+      .lecturer-blue-gradient {
+        background: linear-gradient(to bottom, #080c14 0%, #0a1e3d 50%, #080c14 100%);
       }
 
+      /* 科技感旋轉圓環 */
+      @keyframes spin-slow {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+      }
+      @keyframes spin-slow-reverse {
+        from { transform: rotate(360deg); }
+        to { transform: rotate(0deg); }
+      }
+      @keyframes pulse-ring {
+        0%, 100% { opacity: 0.3; transform: scale(1); }
+        50% { opacity: 0.7; transform: scale(1.04); }
+      }
+      .tech-ring-outer {
+        animation: spin-slow 20s linear infinite;
+      }
+      .tech-ring-inner {
+        animation: spin-slow-reverse 15s linear infinite;
+      }
+      .tech-ring-pulse {
+        animation: pulse-ring 3s ease-in-out infinite;
+      }
+      .tech-ring-glow {
+        animation: pulse-ring 4s ease-in-out infinite 1s;
+      }
+
+      /* 純 CSS 滾動滑入 */
+      @keyframes scroll-slide-in {
+        from { opacity: 0; transform: translateY(30px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+
+      .scroll-reveal {
+        animation: scroll-slide-in linear both;
+        animation-timeline: view();
+        animation-range: entry 0% entry 35%;
+      }
+
+      /* 交錯出現：同一 viewport 的卡片依序動畫 */
+      .scroll-stagger-1 { animation-range: entry 0% entry 30%; }
+      .scroll-stagger-2 { animation-range: entry 8% entry 38%; }
+      .scroll-stagger-3 { animation-range: entry 16% entry 46%; }
+      .scroll-stagger-4 { animation-range: entry 24% entry 54%; }
+      .scroll-stagger-5 { animation-range: entry 32% entry 62%; }
+      .scroll-stagger-6 { animation-range: entry 40% entry 70%; }
 
     </style>
   </head>

@@ -11,7 +11,7 @@ export const FAQCard: React.FC<FAQCardProps> = ({ item, index }) => {
 
   return (
     <div
-      className="w-full sticky"
+      className="w-full sticky scroll-reveal"
       style={{ top: `${stickyTop}px`, zIndex: index }}
     >
       <div className="course-card-bg rounded-[1.2rem] md:rounded-[2rem] p-4 md:p-10 mb-3 md:mb-4 shadow-[0_-20px_50px_rgba(0,0,0,0.9)] border border-white/5 backdrop-blur-xl group transition-transform duration-500 hover:scale-[1.01]">
