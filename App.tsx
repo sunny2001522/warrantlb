@@ -219,27 +219,27 @@ const App: React.FC = () => {
         </div>
 
         {/* Desktop: 左右 flex，靠中間 */}
-        <div className="relative z-10 h-full hidden md:flex items-end justify-center max-w-6xl mx-auto px-8">
+        <div className="relative z-10 h-full hidden md:flex items-center justify-center max-w-6xl mx-auto px-8">
           {/* 左側文字 — 靠右對齊向中間 */}
-          <div className="flex-1 pb-12 pr-4 flex flex-col items-end text-right">
-            <p className="text-white text-2xl font-bold serif-font leading-relaxed drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)] mb-2">
+          <div className="flex-1 pr-4 flex flex-col items-end text-right min-w-0">
+            <p className="text-white text-lg lg:text-2xl font-bold serif-font leading-relaxed drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)] mb-2">
               你是否曾買入強勢股，隔天卻被公告處置？
             </p>
-            <p className="text-white/80 text-xl font-bold serif-font leading-relaxed drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)] mb-8">
+            <p className="text-white/80 text-base lg:text-xl font-bold serif-font leading-relaxed drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)] mb-4 lg:mb-8">
               看著資金被鎖死、股價跳空卻無能為力？
             </p>
-            <p className="text-[#d4af37] text-lg font-bold serif-font italic mb-2 drop-shadow-lg">
+            <p className="text-[#d4af37] text-base lg:text-lg font-bold serif-font italic mb-2 drop-shadow-lg">
               其實處置股不是洪水猛獸
             </p>
-            <h1 className="text-6xl font-black serif-font leading-tight drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)] mb-1">
+            <h1 className="text-4xl lg:text-6xl font-black serif-font leading-tight drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)] mb-1">
               <span className="text-white">它是股市中最透明的</span>
             </h1>
-            <h1 className="text-8xl font-black serif-font text-gold-gradient leading-tight mb-8">
+            <h1 className="text-5xl lg:text-8xl font-black serif-font text-gold-gradient leading-tight mb-4 lg:mb-8">
               送分題
             </h1>
             <CTAButton
               onClick={() => scrollToSection(registrationRef)}
-              className="!px-16 !py-6 !text-3xl shadow-[0_0_50px_rgba(26,58,106,0.6)]"
+              className="!px-10 lg:!px-16 !py-4 lg:!py-6 !text-xl lg:!text-3xl shadow-[0_0_50px_rgba(26,58,106,0.6)]"
               trackingLocation="hero_desktop"
             >
               【限量報名】直播體驗課
@@ -328,9 +328,11 @@ const App: React.FC = () => {
                 className="scroll-reveal flex flex-col items-center text-center group cursor-pointer"
                 onClick={() => scrollToSection(registrationRef)}
               >
-                <div className="w-8 h-8 md:w-12 md:h-12 rounded-full bg-gradient-to-br from-[#2563eb] to-[#1a3a6a] flex items-center justify-center mb-2 md:mb-4 shadow-[0_4px_12px_rgba(37,99,235,0.3)] group-hover:scale-110 transition-transform duration-500">
-                  <span className="text-white text-sm md:text-xl font-black">!</span>
-                </div>
+                <img
+                  src={problem.numberImg}
+                  alt={`${idx + 1}`}
+                  className="h-14 md:h-24 w-auto object-contain mb-2 md:mb-4 group-hover:scale-110 transition-transform duration-500 rounded-lg"
+                />
                 <h4 className="text-[#d4af37] text-sm md:text-2xl font-black mb-1 md:mb-3 serif-font group-hover:text-white transition-colors tracking-wider md:tracking-widest">
                   {problem.title}
                 </h4>
@@ -504,7 +506,7 @@ const App: React.FC = () => {
         ref={lecturerRef}
         className="py-8 md:py-32 px-4 md:px-6 lecturer-blue-gradient relative border-t border-white/5 overflow-hidden"
       >
-        <div className="max-w-6xl mx-auto flex flex-col items-center md:flex-row md:items-center gap-6 md:gap-16">
+        <div className="max-w-6xl mx-auto flex flex-col items-center md:flex-row md:items-center md:justify-center gap-6 md:gap-16">
           {/* 左側(桌面) / 上方(手機)：科技感圓形人物照 */}
           <div className="scroll-reveal flex-shrink-0 flex justify-center">
             <div className="relative w-52 h-52 md:w-80 md:h-80 flex items-center justify-center">
@@ -543,7 +545,7 @@ const App: React.FC = () => {
           </div>
 
           {/* 右側(桌面) / 下方(手機)：標題 + 經歷 */}
-          <div className="md:flex-1 text-center md:text-left">
+          <div className="md:flex-1 text-center">
             <div className="scroll-reveal">
               <h2 className="text-2xl md:text-6xl font-black mb-4 md:mb-8 serif-font italic text-gold-gradient leading-tight">
                 權證小哥
@@ -558,7 +560,7 @@ const App: React.FC = () => {
                 { text: "【理財達人秀】常駐嘉賓，\n擁有", bold: "千萬觀看", after: "次數。" },
               ].map((line, idx) => (
                 <div key={idx} className="scroll-reveal">
-                  <p className="text-gray-300 text-sm md:text-xl font-bold leading-relaxed serif-font flex items-start gap-2 md:gap-3 justify-center md:justify-start">
+                  <p className="text-gray-300 text-sm md:text-xl font-bold leading-relaxed serif-font flex items-start gap-2 md:gap-3 justify-center">
                     <span className="text-[#2563eb] text-sm md:text-base mt-0.5 flex-shrink-0">&#x25C9;</span>
                     <span className="whitespace-pre-line text-left">
                       {line.text}<span className="text-blue-400 font-black">{line.bold}</span>{line.after}
@@ -605,7 +607,7 @@ const App: React.FC = () => {
                 key={item.id}
                 className={`scroll-reveal scroll-stagger-${idx + 1} flex-shrink-0 w-[55vw] md:w-auto snap-center flex flex-col group`}
               >
-                <div className="app-feature-card-bg rounded-[1.5rem] md:rounded-[2.5rem] pt-6 md:pt-10 flex flex-col border border-white/5 shadow-2xl relative overflow-hidden h-[420px] md:h-[480px]">
+                <div className="app-feature-card-bg rounded-[1.5rem] md:rounded-[2.5rem] pt-6 md:pt-10 flex flex-col border border-white/5 shadow-2xl relative overflow-hidden h-[480px] md:h-[600px]">
                   <div className="text-center px-4 md:px-6 mb-4 md:mb-10 relative z-10">
                     <h4 className="text-[#d4af37] text-base md:text-2xl font-black mb-1 md:mb-3 italic serif-font drop-shadow-lg">
                       {item.title}
@@ -614,11 +616,11 @@ const App: React.FC = () => {
                       {item.subtitle}
                     </p>
                   </div>
-                  <div className="relative w-2/3 mx-auto flex-1 overflow-hidden bg-transparent">
+                  <div className="relative px-1 flex-1 overflow-hidden bg-transparent">
                     <img
                       src={item.imgUrl}
                       alt={item.title}
-                      className="w-full h-full object-contain object-top"
+                      className="w-full h-full object-cover object-top"
                     />
                   </div>
                   {/* 卡片底部漸層遮罩 */}
@@ -642,7 +644,7 @@ const App: React.FC = () => {
             </h2>
             <div className="w-16 md:w-24 h-1 bg-[#d4af37] mx-auto rounded-full"></div>
           </div>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-8 xl:gap-12 max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6 xl:gap-8 max-w-7xl mx-auto">
             {REGISTRATION_EVENTS.map((event, idx) => (
               <div
                 key={event.id}

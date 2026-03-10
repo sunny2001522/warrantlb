@@ -9,6 +9,10 @@ import shop3 from "./assets/商店頁-3.png";
 import shop4 from "./assets/商店頁-4.png";
 import shop5 from "./assets/商店頁-5.png";
 import shop6 from "./assets/商店頁-6.png";
+import gold1 from "./assets/金色_01.png";
+import gold2 from "./assets/金色_02.png";
+import gold3 from "./assets/金色_03.png";
+import gold4 from "./assets/金色_04.png";
 import gallery1 from "./assets/LINE_NOTE_260309_1.jpg";
 import gallery2 from "./assets/LINE_NOTE_260309_2.jpg";
 import gallery3 from "./assets/LINE_NOTE_260309_3.jpg";
@@ -230,20 +234,24 @@ export const PROBLEMS = [
     title: "買入強勢股",
     desc: "隔天卻被公告處置",
     img: heroImg,
+    numberImg: gold1,
   },
   {
     title: "資金被鎖死",
     desc: "無能為力只能乾等",
     img: methodImg,
+    numberImg: gold2,
   },
   {
     title: "不懂處置規則",
     desc: "錯過大好行情",
     img: chaptersImg,
+    numberImg: gold3,
   },
   {
     title: "主力動向難判斷",
     desc: "不知道該跟還是該跑",
     img: skillsImg,
+    numberImg: gold4,
   },
 ];
