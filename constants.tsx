@@ -9,10 +9,10 @@ import shop3 from "./assets/商店頁-3.png";
 import shop4 from "./assets/商店頁-4.png";
 import shop5 from "./assets/商店頁-5.png";
 import shop6 from "./assets/商店頁-6.png";
-import gold1 from "./assets/金色_01.png";
-import gold2 from "./assets/金色_02.png";
-import gold3 from "./assets/金色_03.png";
-import gold4 from "./assets/金色_04.png";
+import gold1 from "./assets/藍金_01.png";
+import gold2 from "./assets/藍金_02.png";
+import gold3 from "./assets/藍金_03.png";
+import gold4 from "./assets/藍金_04.png";
 import gallery1 from "./assets/LINE_NOTE_260309_1.jpg";
 import gallery2 from "./assets/LINE_NOTE_260309_2.jpg";
 import gallery3 from "./assets/LINE_NOTE_260309_3.jpg";
@@ -124,7 +124,7 @@ export const COURSE_INCLUDES = [
     icon: "fas fa-comments",
     title: "學員專屬Line群",
     subtitle: "",
-    desc: ["隨時提問、交流操作心得"],
+    desc: ["交易是孤獨的", "這裡提供使用相同策略的同學一起交流"],
   },
 ];
 

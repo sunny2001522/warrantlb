@@ -29,23 +29,23 @@ export const StackingCard: React.FC<StackingCardProps> = ({ feature, index, tota
           <div className="flex-1 relative">
             {variant === 'chapter' && feature.duration && (
               <div className="absolute -top-1 md:-top-2 right-0 flex items-center gap-1 md:gap-1.5 opacity-70">
-                <span className="text-white text-[10px] md:text-sm font-bold serif-font">
+                <span className="text-white text-[20px] md:text-sm font-bold serif-font">
                   {feature.duration}
                 </span>
                 <i className="fas fa-star text-[#d4af37] text-[6px] md:text-[8px]"></i>
               </div>
             )}
 
-            <span className="text-gray-500 text-[8px] md:text-xs uppercase tracking-[0.3em] md:tracking-[0.4em] font-black block mb-0.5 md:mb-1 opacity-50">
+            <span className="text-gray-500 text-[20px] md:text-xs uppercase tracking-[0.3em] md:tracking-[0.4em] font-black block mb-0.5 md:mb-1 opacity-50">
               {variant === 'skill' ? 'Skill' : 'Chapter'}
             </span>
 
-            <h3 className="text-sm md:text-4xl font-black text-[#d4af37] serif-font tracking-tight leading-tight">
+            <h3 className="text-[20px] md:text-4xl font-black text-[#d4af37] serif-font tracking-tight leading-tight">
               {feature.title}
             </h3>
 
             {variant === 'skill' && feature.duration && (
-              <p className="text-gray-300 text-xs md:text-lg font-bold serif-font mt-1 md:mt-2 leading-relaxed">
+              <p className="text-gray-300 text-[20px] md:text-lg font-bold serif-font mt-1 md:mt-2 leading-relaxed">
                 {feature.duration}
               </p>
             )}

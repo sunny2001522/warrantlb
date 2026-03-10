@@ -184,10 +184,10 @@ const App: React.FC = () => {
         <div className="relative z-10 h-full flex flex-col md:hidden pt-14">
           {/* 上方問句 */}
           <div className="text-center px-5 mb-1">
-            <p className="text-white text-sm font-bold serif-font leading-relaxed drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]">
+            <p className="text-white text-[20px] font-bold serif-font leading-relaxed drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]">
               你是否曾買入強勢股，隔天卻被公告處置？
             </p>
-            <p className="text-white/80 text-xs font-bold serif-font leading-relaxed mt-1 drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]">
+            <p className="text-white/80 text-[20px] font-bold serif-font leading-relaxed mt-1 drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]">
               看著資金被鎖死、股價跳空卻無能為力？
             </p>
           </div>
@@ -203,7 +203,7 @@ const App: React.FC = () => {
 
           {/* 底部文字 + CTA，疊在人物上 */}
           <div className="relative z-20 text-center px-4 pb-4 -mt-28">
-            <p className="text-[#d4af37] text-xs font-bold serif-font italic mb-1 drop-shadow-lg">
+            <p className="text-[#d4af37] text-[20px] font-bold serif-font italic mb-1 drop-shadow-lg">
               其實處置股不是洪水猛獸
             </p>
             <h1 className="text-2xl font-black serif-font leading-tight drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)]">
@@ -214,12 +214,12 @@ const App: React.FC = () => {
             </h1>
             <CTAButton
               onClick={() => scrollToSection(registrationRef)}
-              className="!px-8 !py-3 !text-base shadow-[0_0_50px_rgba(26,58,106,0.6)]"
+              className="!px-8 !py-3 !text-[20px] shadow-[0_0_50px_rgba(26,58,106,0.6)]"
               trackingLocation="hero_mobile"
             >
               【限量報名】直播體驗課
             </CTAButton>
-            <p className="text-gray-400 text-xs font-bold tracking-widest mt-2 drop-shadow-lg">
+            <p className="text-gray-400 text-[20px] font-bold tracking-widest mt-2 drop-shadow-lg">
               名額有限，額滿關閉。
             </p>
           </div>
@@ -268,10 +268,10 @@ const App: React.FC = () => {
       </section>
 
       {/* Slide 3 - 處置神器APP介紹 */}
-      <section className="py-8 md:py-20 px-4 md:px-6 bg-[#080c14] relative overflow-hidden">
+      <section className="py-12 md:py-24 px-4 md:px-6 bg-[#080c14] relative overflow-hidden">
         <div className="max-w-4xl mx-auto text-center">
           <div className="scroll-reveal">
-            <p className="text-gray-300 text-sm md:text-2xl font-bold serif-font leading-relaxed mb-2 md:mb-4">
+            <p className="text-gray-300 text-[20px] md:text-2xl font-bold serif-font leading-relaxed mb-2 md:mb-4">
               權證小哥將多年實戰經驗，結合新上市的
             </p>
             <h2 className="text-2xl md:text-6xl font-black text-gold-gradient serif-font mb-4 md:mb-8">
@@ -280,13 +280,13 @@ const App: React.FC = () => {
           </div>
           <div className="scroll-reveal">
             <div className="space-y-2 md:space-y-4">
-              <p className="text-gray-300 text-sm md:text-2xl font-bold serif-font leading-relaxed">
+              <p className="text-gray-300 text-[20px] md:text-2xl font-bold serif-font leading-relaxed">
                 帶你從認識處置的基礎規則到高階機率學
               </p>
-              <p className="text-gray-300 text-sm md:text-2xl font-bold serif-font leading-relaxed">
+              <p className="text-gray-300 text-[20px] md:text-2xl font-bold serif-font leading-relaxed">
                 應用<span className="text-[#d4af37]">預判主力動向</span>
               </p>
-              <p className="text-white text-base md:text-3xl font-black serif-font leading-relaxed mt-4 md:mt-8">
+              <p className="text-white text-[20px] md:text-3xl font-black serif-font leading-relaxed mt-4 md:mt-8">
                 不玩猜測，而是用數據說話！
               </p>
             </div>
@@ -294,7 +294,7 @@ const App: React.FC = () => {
           <div className="scroll-reveal mt-6 md:mt-12">
             <CTAButton
               onClick={() => scrollToSection(registrationRef)}
-              className="!px-8 md:!px-12 !py-3 md:!py-5 !text-sm md:!text-xl"
+              className="!px-8 md:!px-12 !py-3 md:!py-5 !text-[20px] md:!text-xl"
               trackingLocation="app_intro"
             >
               報名體驗課
@@ -306,24 +306,24 @@ const App: React.FC = () => {
       {/* 1. Problem Section - 痛點分析 */}
       <section
         ref={problemRef}
-        className="relative py-8 md:py-20 px-4 md:px-6 deep-glow-bg overflow-hidden flex flex-col items-center justify-center "
+        className="relative py-12 md:py-24 px-4 md:px-6 deep-glow-bg overflow-hidden flex flex-col items-center justify-center "
       >
         <div className="max-w-7xl mx-auto w-full relative z-10">
           <div className="flex flex-col items-center mb-6 md:mb-8 text-center">
             <div className="scroll-reveal">
               <div className="bg-black/40 border border-[#d4af37]/30 rounded-full px-6 md:px-10 py-2 md:py-3 mb-4 md:mb-8 shadow-lg">
-                <h3 className="text-base md:text-3xl font-bold serif-font italic">
+                <h3 className="text-[20px] md:text-3xl font-bold serif-font italic">
                   你是否曾買入強勢股，隔天卻被公告<span className="text-blue-500">處置</span>？
                 </h3>
               </div>
             </div>
 
             <div className="scroll-reveal flex flex-col gap-2 md:gap-4 mb-6 md:mb-12">
-              <h4 className="text-[#d4af37] text-lg md:text-5xl font-black tracking-widest md:tracking-[0.4em] serif-font text-gold-gradient">
-                處置股策略
+              <h4 className="text-[#d4af37] text-[24px] md:text-4xl font-black   serif-font text-gold-gradient">
+                處置股不可怕，真正的威脅來自於對規則的陌生
               </h4>
-              <p className="text-white/70 text-sm md:text-3xl font-bold serif-font tracking-widest">
-                處置股不是洪水猛獸，它是股市中最透明的送分題
+              <p className="text-white/70 text-[20px] md:text-3xl font-bold serif-font tracking-widest">
+                你是否經常深受這四大困擾所苦：
               </p>
             </div>
           </div>
@@ -340,10 +340,10 @@ const App: React.FC = () => {
                   alt={`${idx + 1}`}
                   className="h-14 md:h-24 w-auto object-contain mb-2 md:mb-4 group-hover:scale-110 transition-transform duration-500 rounded-lg"
                 />
-                <h4 className="text-[#d4af37] text-sm md:text-2xl font-black mb-1 md:mb-3 serif-font group-hover:text-white transition-colors tracking-wider md:tracking-widest">
+                <h4 className="text-[#d4af37] text-[20px] md:text-2xl font-black mb-1 md:mb-3 serif-font group-hover:text-white transition-colors tracking-wider md:tracking-widest">
                   {problem.title}
                 </h4>
-                <p className="text-white text-xs md:text-lg font-bold serif-font opacity-80">
+                <p className="text-white text-[20px] md:text-lg font-bold serif-font opacity-80">
                   {problem.desc}
                 </p>
               </div>
@@ -353,7 +353,7 @@ const App: React.FC = () => {
           <div className="scroll-reveal flex justify-center">
             <CTAButton
               onClick={() => scrollToSection(registrationRef)}
-              className="!px-10 md:!px-24 !py-4 md:!py-8 !text-base md:!text-3xl shadow-[0_0_40px_rgba(26,58,106,0.4)]"
+              className="!px-10 md:!px-24 !py-4 md:!py-8 !text-[20px] md:!text-3xl shadow-[0_0_40px_rgba(26,58,106,0.4)]"
               trackingLocation="problem_section"
             >
               報名體驗課
@@ -365,7 +365,7 @@ const App: React.FC = () => {
       {/* 2. Core Method Section */}
       <section
         ref={methodRef}
-        className="py-8 md:py-16 px-4 md:px-6 deep-glow-bg relative overflow-hidden flex flex-col items-center justify-center border-b border-white/5"
+        className="py-12 md:py-24 px-4 md:px-6 deep-glow-bg relative overflow-hidden flex flex-col items-center justify-center border-b border-white/5"
       >
         <div className="max-w-7xl mx-auto w-full relative z-10 flex flex-col items-center h-full">
           <div className="text-center mb-4 md:mb-12 flex flex-col items-center">
@@ -395,7 +395,7 @@ const App: React.FC = () => {
           <div className="scroll-reveal mt-6 md:mt-12">
             <CTAButton
               onClick={() => scrollToSection(registrationRef)}
-              className="!px-8 md:!px-12 !py-3 md:!py-5 !text-sm md:!text-xl"
+              className="!px-8 md:!px-12 !py-3 md:!py-5 !text-[20px] md:!text-xl"
               trackingLocation="method_section"
             >
               獲取處置股策略
@@ -407,7 +407,7 @@ const App: React.FC = () => {
       {/* 3. Course Chapters */}
       <section
         ref={chaptersRef}
-        className="py-8 md:py-32 px-3 md:px-4 bg-black overflow-visible relative border-t border-white/5"
+        className="py-12 md:py-24 px-3 md:px-4 bg-black overflow-visible relative border-t border-white/5"
       >
         <div className="max-w-4xl mx-auto flex flex-col items-center">
           <div className="text-center mb-10 md:mb-20 scroll-reveal">
@@ -415,7 +415,7 @@ const App: React.FC = () => {
               課程內容大綱
             </h3>
             <div className="inline-block px-4 md:px-8 py-2 md:py-3 bg-[#d4af37]/5 border border-[#d4af37]/20 rounded-full">
-              <span className="text-xs md:text-2xl text-[#d4af37] font-bold tracking-wider md:tracking-widest serif-font italic">
+              <span className="text-[20px] md:text-2xl text-[#d4af37] font-bold tracking-wider md:tracking-widest serif-font italic">
                 {COURSE_DURATION_INFO}
               </span>
             </div>
@@ -434,7 +434,7 @@ const App: React.FC = () => {
       </section>
 
       {/* 4. Course Includes Section */}
-      <section className="py-8 md:py-32 px-4 md:px-6 bg-black relative border-t border-white/5 overflow-hidden">
+      <section className="py-12 md:py-24 px-4 md:px-6 bg-black relative border-t border-white/5 overflow-hidden">
         <div className="absolute top-0 right-0 w-96 h-96 bg-[#d4af37]/5 blur-[120px] rounded-full -translate-y-1/2 translate-x-1/2"></div>
         <div className="absolute bottom-0 left-0 w-96 h-96 bg-[#d4af37]/5 blur-[120px] rounded-full translate-y-1/2 -translate-x-1/2"></div>
 
@@ -475,7 +475,7 @@ const App: React.FC = () => {
                     {item.title}
                   </h4>
                   {item.subtitle && (
-                    <span className="text-blue-400 text-xs md:text-sm font-bold mb-3 md:mb-6 block tracking-widest">
+                    <span className="text-blue-400 text-[20px] md:text-sm font-bold mb-3 md:mb-6 block tracking-widest">
                       {item.subtitle}
                     </span>
                   )}
@@ -488,7 +488,7 @@ const App: React.FC = () => {
                         key={i}
                         className="flex items-start justify-center gap-2 md:gap-3"
                       >
-                        <p className="text-gray-300 font-bold text-xs md:text-base leading-relaxed">
+                        <p className="text-gray-300 font-bold text-[20px] md:text-base leading-relaxed">
                           {d}
                         </p>
                       </li>
@@ -496,7 +496,7 @@ const App: React.FC = () => {
                   </ul>
 
                   <div className="mt-auto pt-2 md:pt-4 flex items-center gap-3 text-blue-400 transition-all duration-300 group-hover:gap-5">
-                    <span className="text-[10px] md:text-xs font-black tracking-widest uppercase">
+                    <span className="text-[20px] md:text-xs font-black tracking-widest uppercase">
                       查看詳情
                     </span>
                     <i className="fas fa-arrow-right text-[8px] md:text-[10px] animate-pulse"></i>
@@ -511,7 +511,7 @@ const App: React.FC = () => {
       {/* 5. Lecturer Section & Marquee */}
       <section
         ref={lecturerRef}
-        className="py-8 md:py-32 px-4 md:px-6 lecturer-blue-gradient relative border-t border-white/5 overflow-hidden"
+        className="py-12 md:py-24 px-4 md:px-6 lecturer-blue-gradient relative border-t border-white/5 overflow-hidden"
       >
         <div className="max-w-6xl mx-auto flex flex-col items-center md:flex-row md:items-center md:justify-center gap-6 md:gap-16">
           {/* 左側(桌面) / 上方(手機)：科技感圓形人物照 */}
@@ -567,8 +567,8 @@ const App: React.FC = () => {
                 { text: "【理財達人秀】常駐嘉賓，\n擁有", bold: "千萬觀看", after: "次數。" },
               ].map((line, idx) => (
                 <div key={idx} className="scroll-reveal">
-                  <p className="text-gray-300 text-sm md:text-xl font-bold leading-relaxed serif-font flex items-start gap-2 md:gap-3 justify-center">
-                    <span className="text-[#2563eb] text-sm md:text-base mt-0.5 flex-shrink-0">&#x25C9;</span>
+                  <p className="text-gray-300 text-[20px] md:text-xl font-bold leading-relaxed serif-font flex items-start gap-2 md:gap-3 justify-center">
+                    <span className="text-[#2563eb] text-[20px] md:text-base mt-0.5 flex-shrink-0">&#x25C9;</span>
                     <span className="whitespace-pre-line text-left">
                       {line.text}<span className="text-blue-400 font-black">{line.bold}</span>{line.after}
                     </span>
@@ -587,11 +587,11 @@ const App: React.FC = () => {
       {/* 4. APP VIP Section */}
       <section
         ref={appVipRef}
-        className="py-8 md:py-20 px-4 md:px-6 bg-gradient-to-b from-[#080c14] to-[#0f1a2e] flex flex-col justify-center overflow-hidden "
+        className="py-12 md:py-24 px-4 md:px-6 bg-gradient-to-b from-[#080c14] to-[#0f1a2e] flex flex-col justify-center overflow-hidden "
       >
         <div className="max-w-7xl mx-auto w-full relative">
           <div className="text-center mb-8 md:mb-24 scroll-reveal">
-            <h3 className="text-[#d4af37] text-sm md:text-xl font-black tracking-widest mb-2 md:mb-4 uppercase">
+            <h3 className="text-[#d4af37] text-[20px] md:text-xl font-black tracking-widest mb-2 md:mb-4 uppercase">
               VIP EXCLUSIVE
             </h3>
             <h2 className="text-2xl md:text-7xl font-black mb-4 md:mb-8 italic">
@@ -601,7 +601,7 @@ const App: React.FC = () => {
 
             <CTAButton
               onClick={() => scrollToSection(registrationRef)}
-              className="!px-8 md:!px-12 !py-3 md:!py-5 !text-sm md:!text-xl"
+              className="!px-8 md:!px-12 !py-3 md:!py-5 !text-[20px] md:!text-xl"
               trackingLocation="app_vip_section"
             >
               體驗課獨家教學
@@ -616,10 +616,10 @@ const App: React.FC = () => {
               >
                 <div className="app-feature-card-bg rounded-[1.5rem] md:rounded-[2.5rem] pt-6 md:pt-10 flex flex-col border border-white/5 shadow-2xl relative overflow-hidden h-[480px] md:h-[600px]">
                   <div className="text-center px-4 md:px-6 mb-4 md:mb-10 relative z-10">
-                    <h4 className="text-[#d4af37] text-base md:text-2xl font-black mb-1 md:mb-3 italic serif-font drop-shadow-lg">
+                    <h4 className="text-[#d4af37] text-[20px] md:text-2xl font-black mb-1 md:mb-3 italic serif-font drop-shadow-lg">
                       {item.title}
                     </h4>
-                    <p className="text-white font-bold text-xs md:text-base leading-relaxed opacity-90">
+                    <p className="text-white font-bold text-[20px] md:text-base leading-relaxed opacity-90">
                       {item.subtitle}
                     </p>
                   </div>
@@ -642,7 +642,7 @@ const App: React.FC = () => {
       {/* 7. Registration Events */}
       <section
         ref={registrationRef}
-        className="py-8 md:py-16 px-4 md:px-6 bg-gradient-to-b from-black to-[#0a1528] border-t border-[#d4af37]/20"
+        className="py-12 md:py-24 px-4 md:px-6 bg-gradient-to-b from-black to-[#0a1528] border-t border-[#d4af37]/20"
       >
         <div className="max-w-7xl mx-auto w-full">
           <div className="text-center mb-6 md:mb-12 scroll-reveal">
@@ -658,28 +658,28 @@ const App: React.FC = () => {
                 className="scroll-reveal bg-[#0b0f1a] border border-[#d4af37]/30 rounded-[1.5rem] md:rounded-[2.5rem] overflow-hidden flex flex-col shadow-2xl transition-all hover:border-[#d4af37] hover:-translate-y-1 group h-full"
               >
                 <div className="p-4 md:p-10 flex-1 flex flex-col">
-                  <h3 className="text-base md:text-3xl font-black text-white serif-font mb-3 md:mb-6 leading-tight min-h-0 md:min-h-[4rem] group-hover:text-[#d4af37] transition-colors">
+                  <h3 className="text-[20px] md:text-3xl font-black text-white serif-font mb-3 md:mb-6 leading-tight min-h-0 md:min-h-[4rem] group-hover:text-[#d4af37] transition-colors">
                     {event.title}
                   </h3>
                   <div className="bg-[#d4af37]/5 border-l-4 border-[#d4af37] p-3 md:p-5 mb-2 md:mb-4 rounded-r-xl text-left">
                     <div className="flex flex-col gap-0.5 md:gap-1">
-                      <span className="text-[#d4af37] text-[8px] md:text-[10px] font-black tracking-widest uppercase opacity-70">
+                      <span className="text-[#d4af37] text-[20px] md:text-[10px] font-black tracking-widest uppercase opacity-70">
                         上課日期與時間
                       </span>
-                      <span className="text-base md:text-3xl font-black text-white serif-font leading-none py-0.5 md:py-1">
+                      <span className="text-[20px] md:text-3xl font-black text-white serif-font leading-none py-0.5 md:py-1">
                         {event.dateStr}
                       </span>
-                      <span className="text-sm md:text-2xl font-bold text-gray-400">
+                      <span className="text-[20px] md:text-2xl font-bold text-gray-400">
                         {event.timeStr}
                       </span>
                     </div>
                   </div>
                   <div className="flex items-center justify-between mt-auto mb-3 md:mb-6 py-3 md:py-4 px-4 md:px-6 bg-white/5 rounded-xl md:rounded-2xl border border-white/10">
                     <div className="flex flex-col text-left">
-                      <span className="text-[10px] md:text-xs text-gray-500 font-bold line-through">
+                      <span className="text-[20px] md:text-xs text-gray-500 font-bold line-through">
                         原價 NT${event.originalPrice.toLocaleString()}
                       </span>
-                      <span className="text-[#d4af37] text-[10px] md:text-xs font-black italic">
+                      <span className="text-[#d4af37] text-[20px] md:text-xs font-black italic">
                         省 NT$
                         {(
                           event.originalPrice - event.discountPrice
@@ -688,7 +688,7 @@ const App: React.FC = () => {
                     </div>
                     <div className="text-right">
                       <div className="flex items-baseline gap-1 md:gap-2">
-                        <span className="text-[10px] md:text-xs font-normal text-gray-400">
+                        <span className="text-[20px] md:text-xs font-normal text-gray-400">
                           限時
                         </span>
                         <span className="text-xl md:text-4xl font-black text-white">
@@ -699,7 +699,7 @@ const App: React.FC = () => {
                   </div>
                   <button
                     onClick={() => handleRegistrationClick(event)}
-                    className="w-full blue-shimmer-btn py-4 md:py-6 rounded-[1rem] md:rounded-[1.2rem] text-center text-base md:text-xl font-black text-white shadow-xl hover:scale-[1.01] active:scale-95 transition-all cursor-pointer"
+                    className="w-full blue-shimmer-btn py-4 md:py-6 rounded-[1rem] md:rounded-[1.2rem] text-center text-[20px] md:text-xl font-black text-white shadow-xl hover:scale-[1.01] active:scale-95 transition-all cursor-pointer"
                   >
                     立即免費預約
                   </button>
@@ -713,7 +713,7 @@ const App: React.FC = () => {
       {/* 8. 聯繫客服 Section */}
       <section
         ref={faqRef}
-        className="py-8 md:py-20 px-4 md:px-6 bg-black border-t border-white/5"
+        className="py-12 md:py-24 px-4 md:px-6 bg-black border-t border-white/5"
       >
         <div className="max-w-2xl mx-auto text-center">
           <div className="scroll-reveal mb-6 md:mb-10">
@@ -725,14 +725,14 @@ const App: React.FC = () => {
           <div className="scroll-reveal flex flex-col items-center gap-4 md:gap-6">
             <div className="flex items-center gap-3 md:gap-4">
               <i className="fab fa-line text-2xl md:text-4xl text-[#06C755]"></i>
-              <span className="text-white text-base md:text-2xl font-bold">
+              <span className="text-white text-[20px] md:text-2xl font-bold">
                 線上客服 Line ID：<span className="text-[#d4af37]">@153fwvvy</span>
               </span>
             </div>
             <a
               href="http://cmy.tw/008I6c"
               target="_blank"
-              className="inline-flex items-center gap-3 md:gap-4 px-8 md:px-12 py-3 md:py-5 rounded-full bg-[#06C755] hover:bg-[#05b34c] text-white text-base md:text-xl font-black transition-all hover:scale-105 active:scale-95 shadow-lg"
+              className="inline-flex items-center gap-3 md:gap-4 px-8 md:px-12 py-3 md:py-5 rounded-full bg-[#06C755] hover:bg-[#05b34c] text-white text-[20px] md:text-xl font-black transition-all hover:scale-105 active:scale-95 shadow-lg"
             >
               <i className="fab fa-line text-xl md:text-2xl"></i>
               加入 Line 聯繫客服
@@ -841,7 +841,7 @@ const App: React.FC = () => {
       {/* Fixed bottom-right CTA */}
       <button
         onClick={() => scrollToSection(registrationRef)}
-        className="fixed bottom-6 right-6 z-50 bg-[#1d4ed8] hover:bg-[#1e40af] px-4 py-3 md:px-6 md:py-4 text-sm md:text-base font-black text-white rounded-full shadow-[0_4px_24px_rgba(37,99,235,0.6)] active:scale-95 transition-all cursor-pointer"
+        className="fixed bottom-6 right-6 z-50 bg-[#1d4ed8] hover:bg-[#1e40af] px-4 py-3 md:px-6 md:py-4 text-[20px] md:text-base font-black text-white rounded-full shadow-[0_4px_24px_rgba(37,99,235,0.6)] active:scale-95 transition-all cursor-pointer"
       >
         免費報名
       </button>
