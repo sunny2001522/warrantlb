@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { CTAButton } from "./components/Button";
 import { StackingCard } from "./components/StackingCard";
-import { FAQCard } from "./components/FAQCard";
 
 import { MarqueeCarousel } from "./components/MarqueeCarousel";
 import heroBg from "./assets/bg.jpg";
@@ -14,7 +13,6 @@ import {
   PROBLEMS,
   COURSE_DURATION_INFO,
   APP_VIP_FEATURES,
-  FAQ_DATA,
   COURSE_INCLUDES,
   LECTURER_GALLERY,
   REGISTRATION_EVENTS,
@@ -133,8 +131,8 @@ const App: React.FC = () => {
         {/* Desktop Anchor Menu */}
         <div className="hidden lg:flex items-center gap-8 mr-8">
           {[
-            { label: "痛點分析", ref: problemRef },
-            { label: "核心方法", ref: methodRef },
+            { label: "處置盲區", ref: problemRef },
+            { label: "獲利模型", ref: methodRef },
             { label: "講師介紹", ref: lecturerRef },
             { label: "課程大綱", ref: chaptersRef },
             { label: "APP介紹", ref: appVipRef },
@@ -152,13 +150,22 @@ const App: React.FC = () => {
           ))}
         </div>
 
-        <CTAButton
-          onClick={() => scrollToSection(registrationRef)}
-          className="!px-4 md:!px-6 !py-1.5 md:!py-2 !text-[10px] md:!text-sm"
-          trackingLocation="nav"
-        >
-          報名體驗課
-        </CTAButton>
+        <div className="flex items-center gap-2 md:gap-3">
+          <a
+            href="http://cmy.tw/008I6c"
+            target="_blank"
+            className="px-4 md:px-6 py-1.5 md:py-2 text-[10px] md:text-sm font-black tracking-widest border border-[#d4af37] text-[#d4af37] rounded-full hover:bg-[#d4af37] hover:text-black transition-all"
+          >
+            聯繫客服
+          </a>
+          <CTAButton
+            onClick={() => scrollToSection(registrationRef)}
+            className="!px-4 md:!px-6 !py-1.5 md:!py-2 !text-[10px] md:!text-sm"
+            trackingLocation="nav"
+          >
+            報名體驗課
+          </CTAButton>
+        </div>
       </nav>
 
       {/* Hero Section */}
@@ -703,21 +710,33 @@ const App: React.FC = () => {
         </div>
       </section>
 
-      {/* 8. FAQ Section */}
+      {/* 8. 聯繫客服 Section */}
       <section
         ref={faqRef}
-        className="py-8 md:py-32 px-3 md:px-4 bg-black overflow-visible relative border-t border-white/5"
+        className="py-8 md:py-20 px-4 md:px-6 bg-black border-t border-white/5"
       >
-        <div className="max-w-4xl mx-auto flex flex-col items-center">
-          <div className="text-center mb-10 md:mb-20 scroll-reveal">
-            <h3 className="text-2xl md:text-6xl font-black mb-4 md:mb-8 px-3 italic serif-font text-gold-gradient">
-              FAQ 常見問題
+        <div className="max-w-2xl mx-auto text-center">
+          <div className="scroll-reveal mb-6 md:mb-10">
+            <h3 className="text-2xl md:text-6xl font-black mb-4 md:mb-8 italic serif-font text-gold-gradient">
+              聯繫客服
             </h3>
+            <div className="w-16 md:w-24 h-1 bg-[#d4af37] mx-auto rounded-full"></div>
           </div>
-          <div className="relative pb-20 md:pb-40 w-full">
-            {FAQ_DATA.map((item, idx) => (
-              <FAQCard key={item.id} item={item} index={idx} />
-            ))}
+          <div className="scroll-reveal flex flex-col items-center gap-4 md:gap-6">
+            <div className="flex items-center gap-3 md:gap-4">
+              <i className="fab fa-line text-2xl md:text-4xl text-[#06C755]"></i>
+              <span className="text-white text-base md:text-2xl font-bold">
+                線上客服 Line ID：<span className="text-[#d4af37]">@153fwvvy</span>
+              </span>
+            </div>
+            <a
+              href="http://cmy.tw/008I6c"
+              target="_blank"
+              className="inline-flex items-center gap-3 md:gap-4 px-8 md:px-12 py-3 md:py-5 rounded-full bg-[#06C755] hover:bg-[#05b34c] text-white text-base md:text-xl font-black transition-all hover:scale-105 active:scale-95 shadow-lg"
+            >
+              <i className="fab fa-line text-xl md:text-2xl"></i>
+              加入 Line 聯繫客服
+            </a>
           </div>
         </div>
       </section>
@@ -754,8 +773,8 @@ const App: React.FC = () => {
               </h4>
               <div className="grid grid-cols-2 gap-x-4 gap-y-2">
                 {[
-                  { label: "痛點分析", ref: problemRef },
-                  { label: "核心方法", ref: methodRef },
+                  { label: "處置盲區", ref: problemRef },
+                  { label: "獲利模型", ref: methodRef },
                   { label: "講師介紹", ref: lecturerRef },
                   { label: "課程內容", ref: chaptersRef },
                   { label: "APP介紹", ref: appVipRef },
