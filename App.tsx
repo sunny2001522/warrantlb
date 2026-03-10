@@ -28,82 +28,6 @@ import {
   trackRegistrationStart,
 } from "./analytics";
 
-const CountdownTimer: React.FC<{ targetDate: string; compact?: boolean }> = ({
-  targetDate,
-  compact,
-}) => {
-  const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0 });
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      const now = new Date().getTime();
-      const distance = new Date(targetDate).getTime() - now;
-      if (distance < 0) {
-        clearInterval(timer);
-        return;
-      }
-      setTimeLeft({
-        days: Math.floor(distance / (1000 * 60 * 60 * 24)),
-        hours: Math.floor(
-          (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
-        ),
-        minutes: Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)),
-      });
-    }, 60000);
-
-    const now = new Date().getTime();
-    const distance = new Date(targetDate).getTime() - now;
-    if (distance > 0) {
-      setTimeLeft({
-        days: Math.floor(distance / (1000 * 60 * 60 * 24)),
-        hours: Math.floor(
-          (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
-        ),
-        minutes: Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)),
-      });
-    }
-
-    return () => clearInterval(timer);
-  }, [targetDate]);
-
-  return (
-    <div
-      className={`flex gap-3 md:gap-4 items-center justify-center border-y border-white/10 ${compact ? "py-1.5 md:py-2 my-2 md:my-4" : "py-2 md:py-4 my-3 md:my-6"}`}
-    >
-      <div className="flex flex-col items-center">
-        <span
-          className={`${compact ? "text-lg md:text-3xl" : "text-2xl md:text-5xl"} font-black text-[#d4af37]`}
-        >
-          {timeLeft.days}
-        </span>
-        <span className="text-[8px] md:text-[10px] text-gray-500 font-bold">
-          天
-        </span>
-      </div>
-      <div className="flex flex-col items-center">
-        <span
-          className={`${compact ? "text-lg md:text-3xl" : "text-2xl md:text-5xl"} font-black text-[#d4af37]`}
-        >
-          {timeLeft.hours}
-        </span>
-        <span className="text-[8px] md:text-[10px] text-gray-500 font-bold">
-          時
-        </span>
-      </div>
-      <div className="flex flex-col items-center">
-        <span
-          className={`${compact ? "text-lg md:text-3xl" : "text-2xl md:text-5xl"} font-black text-[#d4af37]`}
-        >
-          {timeLeft.minutes}
-        </span>
-        <span className="text-[8px] md:text-[10px] text-gray-500 font-bold">
-          分
-        </span>
-      </div>
-    </div>
-  );
-};
-
 const App: React.FC = () => {
   const problemRef = useRef<HTMLDivElement>(null);
   const methodRef = useRef<HTMLDivElement>(null);
@@ -151,6 +75,12 @@ const App: React.FC = () => {
 
     // 等待 300ms 確保追蹤事件發送完成
     await new Promise((resolve) => setTimeout(resolve, 300));
+
+    // Free courses (productType=0, functionId=0): navigate directly to class detail page
+    if (!registration.productType && !registration.functionId) {
+      window.open(registration.url, "_self");
+      return;
+    }
 
     try {
       const res = await fetch(`${CASHFLOW_DOMAIN}cashflow/api/shoppingcarts`, {
@@ -734,12 +664,6 @@ const App: React.FC = () => {
                         {event.timeStr}
                       </span>
                     </div>
-                  </div>
-                  <div className="mb-1 md:mb-2">
-                    <CountdownTimer
-                      targetDate={event.targetDate}
-                      compact={true}
-                    />
                   </div>
                   <div className="flex items-center justify-between mt-auto mb-3 md:mb-6 py-3 md:py-4 px-4 md:px-6 bg-white/5 rounded-xl md:rounded-2xl border border-white/10">
                     <div className="flex flex-col text-left">
