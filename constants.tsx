@@ -196,7 +196,7 @@ export const APP_VIP_FEATURES: AppVIPFeature[] = [
   {
     id: 2,
     title: "處置統計",
-    subtitle: "獨家統計5分/20分處置股，清楚揭示「先跌後踩」的股價黃金週期",
+    subtitle: "獨家統計5分/20分處置股，清楚揭示特定時間的漲跌趨勢",
     imgUrl: shop2,
   },
   {

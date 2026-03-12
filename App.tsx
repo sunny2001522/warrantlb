@@ -270,15 +270,16 @@ const App: React.FC = () => {
 
           {/* 底部文字 + CTA，疊在人物上 */}
           <div className="relative z-20 text-center px-4 pb-4 -mt-28">
+            <h1 className="sr-only">權證小哥官網 - 處置股策略教學</h1>
             <p className="text-[#d4af37] text-[20px] font-bold serif-font italic mb-1 drop-shadow-lg">
               其實處置股不是洪水猛獸
             </p>
-            <h1 className="text-2xl font-black serif-font leading-tight drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)]">
+            <p className="text-2xl font-black serif-font leading-tight drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)]" role="heading" aria-level={2}>
               <span className="text-white">它是股市中最透明的</span>
-            </h1>
-            <h1 className="text-4xl font-black serif-font text-gold-gradient leading-tight mb-3">
+            </p>
+            <p className="text-4xl font-black serif-font text-gold-gradient leading-tight mb-3" role="heading" aria-level={2}>
               送分題
-            </h1>
+            </p>
             <CTAButton
               onClick={() => scrollToSection(registrationRef)}
               className="!px-8 !py-3 !text-[20px] shadow-[0_0_50px_rgba(26,58,106,0.6)]"
@@ -305,12 +306,12 @@ const App: React.FC = () => {
             <p className="text-[#d4af37] text-base lg:text-lg font-bold serif-font italic mb-2 drop-shadow-lg">
               其實處置股不是洪水猛獸
             </p>
-            <h1 className="text-4xl lg:text-6xl font-black serif-font leading-tight drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)] mb-1">
+            <p className="text-4xl lg:text-6xl font-black serif-font leading-tight drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)] mb-1" role="heading" aria-level={2}>
               <span className="text-white">它是股市中最透明的</span>
-            </h1>
-            <h1 className="text-5xl lg:text-8xl font-black serif-font text-gold-gradient leading-tight mb-4 lg:mb-8">
+            </p>
+            <p className="text-5xl lg:text-8xl font-black serif-font text-gold-gradient leading-tight mb-4 lg:mb-8" role="heading" aria-level={2}>
               送分題
-            </h1>
+            </p>
             <CTAButton
               onClick={() => scrollToSection(registrationRef)}
               className="!px-10 lg:!px-16 !py-4 lg:!py-6 !text-xl lg:!text-3xl shadow-[0_0_50px_rgba(26,58,106,0.6)]"
