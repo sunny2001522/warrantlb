@@ -1,8 +1,3 @@
-import heroImg from "./assets/warrant_hero.png";
-import methodImg from "./assets/warrant_method.png";
-import chaptersImg from "./assets/warrant_chapters.png";
-import skillsImg from "./assets/warrant_skills.png";
-import appIntroImg from "./assets/warrant_app_intro.png";
 import shop1 from "./assets/商店頁-1.png";
 import shop2 from "./assets/商店頁-2.png";
 import shop3 from "./assets/商店頁-3.png";
@@ -23,14 +18,10 @@ export const CTA_LINK = "https://www.cmoney.tw/cashflow/Index.aspx?platform=1";
 
 export const CASHFLOW_DOMAIN = "https://www.cmoney.tw/";
 
-export const HERO_IMAGE = heroImg;
-
 export const LOGO_URL =
   "https://www.cmoney.tw/course-media/_nuxt/img/logo.ef6c96d.svg";
 
 export const COURSE_DURATION_INFO = "VVIP 進階版 4 章 | 永久觀看 影音課程";
-
-export const APP_VIP_LONG_IMAGE = appIntroImg;
 
 // 講師相關
 export const LECTURER_BIO =
@@ -211,25 +202,21 @@ export const PROBLEMS = [
   {
     title: "買入強勢股",
     desc: "隔天卻被公告處置",
-    img: heroImg,
     numberImg: gold1,
   },
   {
     title: "資金被鎖死",
     desc: "無能為力只能乾等",
-    img: methodImg,
     numberImg: gold2,
   },
   {
     title: "不懂處置規則",
     desc: "錯過大好行情",
-    img: chaptersImg,
     numberImg: gold3,
   },
   {
     title: "主力動向難判斷",
     desc: "不知道該跟還是該跑",
-    img: skillsImg,
     numberImg: gold4,
   },
 ];
