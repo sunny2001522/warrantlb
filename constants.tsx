@@ -6,9 +6,6 @@ import appIntroImg from "./assets/warrant_app_intro.png";
 import shop1 from "./assets/商店頁-1.png";
 import shop2 from "./assets/商店頁-2.png";
 import shop3 from "./assets/商店頁-3.png";
-import shop4 from "./assets/商店頁-4.png";
-import shop5 from "./assets/商店頁-5.png";
-import shop6 from "./assets/商店頁-6.png";
 import gold1 from "./assets/藍金_01.png";
 import gold2 from "./assets/藍金_02.png";
 import gold3 from "./assets/藍金_03.png";
@@ -75,8 +72,8 @@ export const REGISTRATION_EVENTS: RegistrationInfo[] = [
     originalPrice: 6000,
     discountPrice: 0,
     url: "https://www.cmoney.tw/datasite/shoppingcar.ashx?action=checkout&productType=777004&functionid=3043",
-    productType: 0,
-    functionId: 0,
+    productType: 777004,
+    functionId: 3043,
   },
   {
     id: 2,
@@ -87,8 +84,8 @@ export const REGISTRATION_EVENTS: RegistrationInfo[] = [
     originalPrice: 6000,
     discountPrice: 0,
     url: "https://www.cmoney.tw/datasite/shoppingcar.ashx?action=checkout&productType=777004&functionid=3044",
-    productType: 0,
-    functionId: 0,
+    productType: 777004,
+    functionId: 3044,
   },
   {
     id: 3,
@@ -99,8 +96,8 @@ export const REGISTRATION_EVENTS: RegistrationInfo[] = [
     originalPrice: 6000,
     discountPrice: 0,
     url: "https://www.cmoney.tw/datasite/shoppingcar.ashx?action=checkout&productType=777004&functionid=3045",
-    productType: 0,
-    functionId: 0,
+    productType: 777004,
+    functionId: 3045,
   },
 ];
 
@@ -143,11 +140,10 @@ export const COURSE_FEATURES: Feature[] = [
 ];
 
 export const SKILLS: Feature[] = [
-  { id: 1, title: "預判能力", duration: "掌握「一進聽」策略，在被關之前開始布局或撤退", points: [] },
-  { id: 2, title: "避險思維", duration: "學會 C 幾取幾模型，算出主力必閃躲的「關鍵日子」", points: [] },
+  { id: 1, title: "基本處置策略", duration: "掌握「一進聽」策略，精準判斷處置前的進退時機", points: [] },
+  { id: 2, title: "監控主力控盤節奏", duration: "部份主力不會等到最後一天才動作，算出主力必閃躲的「關鍵日子」", points: [] },
   { id: 3, title: "多空對鎖技巧", duration: "利用相關係數篩選高度連動股，啟動「雙刀戰法」策略", points: [] },
-  { id: 4, title: "工具應用", duration: "學會操作「處置神器 APP」，用科學大數據取代複雜人工計算", points: [] },
-  { id: 5, title: "主力邏輯", duration: "洞悉處置股入關後的「浪子回頭」操作時機", points: [] },
+  { id: 4, title: "處置神器 APP", duration: "教你正確利用工具，不用要懂艱澀的法規條文，直接從結果就能輔助判斷", points: [] },
 ];
 
 export interface FAQItem {
@@ -208,24 +204,6 @@ export const APP_VIP_FEATURES: AppVIPFeature[] = [
     title: "注意停看聽",
     subtitle: "用燈號辨識危險性",
     imgUrl: shop3,
-  },
-  {
-    id: 4,
-    title: "今日出關",
-    subtitle: "出關日必有大行情，當沖客必掌握的關鍵日",
-    imgUrl: shop4,
-  },
-  {
-    id: 5,
-    title: "注意監控",
-    subtitle: "觸發細節詳解，不只抓魚、還教釣魚",
-    imgUrl: shop5,
-  },
-  {
-    id: 6,
-    title: "處置坐牢中",
-    subtitle: "坐牢中的飆股，往往才是潛力股",
-    imgUrl: shop6,
   },
 ];
 

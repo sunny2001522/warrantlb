@@ -1,6 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import { CTAButton } from "./components/Button";
 import { StackingCard } from "./components/StackingCard";
+import { AdminPanel } from "./components/AdminPanel";
+import { useSecretTap } from "./hooks/useSecretTap";
+import { db } from "./firebase";
+import { collection, getDocs, deleteDoc, doc, setDoc } from "firebase/firestore";
 
 import { MarqueeCarousel } from "./components/MarqueeCarousel";
 import heroBg from "./assets/bg.jpg";
@@ -34,6 +38,67 @@ const App: React.FC = () => {
   const registrationRef = useRef<HTMLDivElement>(null);
   const appVipRef = useRef<HTMLDivElement>(null);
   const faqRef = useRef<HTMLDivElement>(null);
+
+  // 從 Firestore 載入講座資料，失敗則 fallback 到 constants
+  const [events, setEvents] = useState<RegistrationInfo[]>(REGISTRATION_EVENTS);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const snapshot = await getDocs(collection(db, "registrationEvents"));
+        if (!snapshot.empty) {
+          const allEvents = snapshot.docs
+            .map((d) => ({ id: Number(d.id), ...d.data() } as RegistrationInfo))
+            .sort((a, b) => a.id - b.id);
+
+          const now = new Date();
+          const active: RegistrationInfo[] = [];
+
+          for (const event of allEvents) {
+            const endMatch = event.timeStr.match(/-\s*(\d{1,2}):(\d{2})/);
+            if (!endMatch) { active.push(event); continue; }
+            const endTime = new Date(event.targetDate);
+            endTime.setHours(parseInt(endMatch[1]), parseInt(endMatch[2]), 0, 0);
+
+            if (now >= endTime) {
+              // 已結束 → 從 Firestore 刪除
+              await deleteDoc(doc(db, "registrationEvents", String(event.id)));
+            } else {
+              active.push(event);
+            }
+          }
+          setEvents(active);
+        } else {
+          // Firestore 是空的，自動把 constants 推上去
+          for (const event of REGISTRATION_EVENTS) {
+            const { id, ...rest } = event;
+            await setDoc(doc(db, "registrationEvents", String(id)), rest);
+          }
+          setEvents([...REGISTRATION_EVENTS]);
+        }
+      } catch {
+        // Firestore 失敗，保持 constants fallback
+      }
+    })();
+  }, []);
+
+  // 快速點 8 下（3 秒內）開啟管理後台
+  const { triggered: adminOpen, handleTap: handleSecretTap, close: closeAdmin } = useSecretTap(8, 3000);
+
+  // 管理後台關閉時重新載入資料
+  const handleAdminClose = () => {
+    closeAdmin();
+    getDocs(collection(db, "registrationEvents"))
+      .then((snapshot) => {
+        if (!snapshot.empty) {
+          const data = snapshot.docs
+            .map((d) => ({ id: Number(d.id), ...d.data() } as RegistrationInfo))
+            .sort((a, b) => a.id - b.id);
+          setEvents(data);
+        }
+      })
+      .catch(() => {});
+  };
 
   // GA4 追蹤: 滾動深度
   useScrollTracking();
@@ -112,7 +177,9 @@ const App: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-[#080c14] text-white selection:bg-[#d4af37] selection:text-black">
+    <div className="min-h-screen bg-[#080c14] text-white selection:bg-[#d4af37] selection:text-black" onClick={handleSecretTap}>
+      {/* 管理後台 - 快速點 8 下觸發 */}
+      <AdminPanel open={adminOpen} onClose={handleAdminClose} />
       {/* Navigation */}
       <nav className="fixed top-0 left-0 right-0 z-50 bg-[#080c14]/90 backdrop-blur-md border-b border-[#d4af37]/20 px-4 md:px-6 py-2 md:py-4 flex justify-between items-center">
         <div className="flex items-center gap-2 md:gap-3">
@@ -156,7 +223,7 @@ const App: React.FC = () => {
             target="_blank"
             className="px-4 md:px-6 py-1.5 md:py-2 text-[10px] md:text-sm font-black tracking-widest border border-[#d4af37] text-[#d4af37] rounded-full hover:bg-[#d4af37] hover:text-black transition-all"
           >
-            聯繫客服
+            【聯繫客服】
           </a>
           <CTAButton
             onClick={() => scrollToSection(registrationRef)}
@@ -267,38 +334,63 @@ const App: React.FC = () => {
         </div>
       </section>
 
-      {/* Slide 3 - 處置神器APP介紹 */}
-      <section className="py-12 md:py-24 px-4 md:px-6 bg-[#080c14] relative overflow-hidden">
-        <div className="max-w-4xl mx-auto text-center">
-          <div className="scroll-reveal">
-            <p className="text-gray-300 text-[20px] md:text-2xl font-bold serif-font leading-relaxed mb-2 md:mb-4">
-              權證小哥將多年實戰經驗，結合新上市的
-            </p>
-            <h2 className="text-2xl md:text-6xl font-black text-gold-gradient serif-font mb-4 md:mb-8">
-              處置神器 APP
+      {/* APP VIP Section - 處置神器App */}
+      <section
+        ref={appVipRef}
+        className="py-12 md:py-24 px-4 md:px-6 bg-gradient-to-b from-[#080c14] to-[#0f1a2e] flex flex-col justify-center overflow-hidden "
+      >
+        <div className="max-w-7xl mx-auto w-full relative">
+          <div className="text-center mb-8 md:mb-24 scroll-reveal">
+            <h3 className="text-[#d4af37] text-[20px] md:text-xl font-black tracking-widest mb-2 md:mb-4 uppercase">
+              VIP EXCLUSIVE
+            </h3>
+            <h2 className="text-2xl md:text-7xl font-black mb-4 md:mb-8 italic">
+              處置神器
+              <span className="text-gold-gradient px-2 md:px-4">App</span>
             </h2>
-          </div>
-          <div className="scroll-reveal">
-            <div className="space-y-2 md:space-y-4">
-              <p className="text-gray-300 text-[20px] md:text-2xl font-bold serif-font leading-relaxed">
-                帶你從認識處置的基礎規則到高階機率學
-              </p>
-              <p className="text-gray-300 text-[20px] md:text-2xl font-bold serif-font leading-relaxed">
-                應用<span className="text-[#d4af37]">預判主力動向</span>
-              </p>
-              <p className="text-white text-[20px] md:text-3xl font-black serif-font leading-relaxed mt-4 md:mt-8">
-                不玩猜測，而是用數據說話！
-              </p>
-            </div>
-          </div>
-          <div className="scroll-reveal mt-6 md:mt-12">
+            <p className="text-gray-300 text-[16px] md:text-[20px] font-normal md:font-bold serif-font leading-relaxed mb-2 md:mb-4">
+              所有的複雜計算已經交由 APP 處理
+            </p>
+            <p className="text-gray-300 text-[16px] md:text-[20px] font-normal md:font-bold serif-font leading-relaxed mb-6 md:mb-8">
+              體驗課用實戰案例帶你了解，如何直接帶結果上戰場！
+            </p>
+
             <CTAButton
-              onClick={() => scrollToSection(registrationRef)}
+              onClick={() => scrollToSection(faqRef)}
               className="!px-8 md:!px-12 !py-3 md:!py-5 !text-[20px] md:!text-xl"
-              trackingLocation="app_intro"
+              trackingLocation="app_vip_section"
             >
-              報名體驗課
+              【聯繫客服】
             </CTAButton>
+          </div>
+
+          <div className="flex items-start md:grid md:grid-cols-3 md:items-start gap-4 md:gap-6 xl:gap-8 overflow-x-auto md:overflow-visible no-scrollbar snap-x snap-mandatory px-2 md:px-0 mb-8 md:mb-32">
+            {APP_VIP_FEATURES.map((item, idx) => (
+              <div
+                key={item.id}
+                className={`scroll-reveal scroll-stagger-${idx + 1} flex-shrink-0 w-[55vw] md:w-auto snap-center flex flex-col group`}
+              >
+                <div className="app-feature-card-bg rounded-[1.5rem] md:rounded-[2.5rem] pt-6 md:pt-10 flex flex-col border border-white/5 shadow-2xl relative overflow-hidden h-[480px] md:h-[600px]">
+                  <div className="text-center px-4 md:px-6 mb-4 md:mb-10 relative z-10 min-h-[100px] md:min-h-[120px] flex flex-col justify-start">
+                    <h4 className="text-[#d4af37] text-[20px] md:text-2xl font-black mb-1 md:mb-3 italic serif-font drop-shadow-lg">
+                      {item.title}
+                    </h4>
+                    <p className="text-white font-normal md:font-bold text-[16px] md:text-lg leading-relaxed opacity-90">
+                      {item.subtitle}
+                    </p>
+                  </div>
+                  <div className="relative px-1 flex-1 overflow-hidden bg-transparent">
+                    <img
+                      src={item.imgUrl}
+                      alt={item.title}
+                      className="w-full h-full object-cover object-top"
+                    />
+                  </div>
+                  {/* 卡片底部漸層遮罩 */}
+                  <div className="absolute inset-x-0 bottom-0 h-1/4 bg-gradient-to-t from-[#0a1528] via-[#0a1528]/90 to-transparent pointer-events-none rounded-b-[1.5rem] md:rounded-b-[2.5rem]"></div>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -343,7 +435,7 @@ const App: React.FC = () => {
                 <h4 className="text-[#d4af37] text-[20px] md:text-2xl font-black mb-1 md:mb-3 serif-font group-hover:text-white transition-colors tracking-wider md:tracking-widest">
                   {problem.title}
                 </h4>
-                <p className="text-white text-[20px] md:text-lg font-bold serif-font opacity-80">
+                <p className="text-white text-[16px] md:text-lg font-normal md:font-bold serif-font opacity-80">
                   {problem.desc}
                 </p>
               </div>
@@ -475,7 +567,7 @@ const App: React.FC = () => {
                     {item.title}
                   </h4>
                   {item.subtitle && (
-                    <span className="text-blue-400 text-[20px] md:text-sm font-bold mb-3 md:mb-6 block tracking-widest">
+                    <span className="text-blue-400 text-[16px] md:text-sm font-normal md:font-bold mb-3 md:mb-6 block tracking-widest">
                       {item.subtitle}
                     </span>
                   )}
@@ -488,7 +580,7 @@ const App: React.FC = () => {
                         key={i}
                         className="flex items-start justify-center gap-2 md:gap-3"
                       >
-                        <p className="text-gray-300 font-bold text-[20px] md:text-base leading-relaxed">
+                        <p className="text-gray-300 font-normal md:font-bold text-[16px] md:text-base leading-relaxed">
                           {d}
                         </p>
                       </li>
@@ -567,7 +659,7 @@ const App: React.FC = () => {
                 { text: "【理財達人秀】常駐嘉賓，\n擁有", bold: "千萬觀看", after: "次數。" },
               ].map((line, idx) => (
                 <div key={idx} className="scroll-reveal">
-                  <p className="text-gray-300 text-[20px] md:text-xl font-bold leading-relaxed serif-font flex items-start gap-2 md:gap-3 justify-center">
+                  <p className="text-gray-300 text-[16px] md:text-xl font-normal md:font-bold leading-relaxed serif-font flex items-start gap-2 md:gap-3">
                     <span className="text-[#2563eb] text-[20px] md:text-base mt-0.5 flex-shrink-0">&#x25C9;</span>
                     <span className="whitespace-pre-line text-left">
                       {line.text}<span className="text-blue-400 font-black">{line.bold}</span>{line.after}
@@ -584,61 +676,6 @@ const App: React.FC = () => {
         </div>
       </section>
 
-      {/* 4. APP VIP Section */}
-      <section
-        ref={appVipRef}
-        className="py-12 md:py-24 px-4 md:px-6 bg-gradient-to-b from-[#080c14] to-[#0f1a2e] flex flex-col justify-center overflow-hidden "
-      >
-        <div className="max-w-7xl mx-auto w-full relative">
-          <div className="text-center mb-8 md:mb-24 scroll-reveal">
-            <h3 className="text-[#d4af37] text-[20px] md:text-xl font-black tracking-widest mb-2 md:mb-4 uppercase">
-              VIP EXCLUSIVE
-            </h3>
-            <h2 className="text-2xl md:text-7xl font-black mb-4 md:mb-8 italic">
-              處置神器
-              <span className="text-gold-gradient px-2 md:px-4">App</span>
-            </h2>
-
-            <CTAButton
-              onClick={() => scrollToSection(registrationRef)}
-              className="!px-8 md:!px-12 !py-3 md:!py-5 !text-[20px] md:!text-xl"
-              trackingLocation="app_vip_section"
-            >
-              體驗課獨家教學
-            </CTAButton>
-          </div>
-
-          <div className="flex md:grid md:grid-cols-3 gap-4 md:gap-6 xl:gap-8 overflow-x-auto md:overflow-visible no-scrollbar snap-x snap-mandatory px-2 md:px-0 mb-8 md:mb-32">
-            {APP_VIP_FEATURES.map((item, idx) => (
-              <div
-                key={item.id}
-                className={`scroll-reveal scroll-stagger-${idx + 1} flex-shrink-0 w-[55vw] md:w-auto snap-center flex flex-col group`}
-              >
-                <div className="app-feature-card-bg rounded-[1.5rem] md:rounded-[2.5rem] pt-6 md:pt-10 flex flex-col border border-white/5 shadow-2xl relative overflow-hidden h-[480px] md:h-[600px]">
-                  <div className="text-center px-4 md:px-6 mb-4 md:mb-10 relative z-10">
-                    <h4 className="text-[#d4af37] text-[20px] md:text-2xl font-black mb-1 md:mb-3 italic serif-font drop-shadow-lg">
-                      {item.title}
-                    </h4>
-                    <p className="text-white font-bold text-[20px] md:text-base leading-relaxed opacity-90">
-                      {item.subtitle}
-                    </p>
-                  </div>
-                  <div className="relative px-1 flex-1 overflow-hidden bg-transparent">
-                    <img
-                      src={item.imgUrl}
-                      alt={item.title}
-                      className="w-full h-full object-cover object-top"
-                    />
-                  </div>
-                  {/* 卡片底部漸層遮罩 */}
-                  <div className="absolute inset-x-0 bottom-0 h-1/4 bg-gradient-to-t from-[#0a1528] via-[#0a1528]/90 to-transparent pointer-events-none rounded-b-[1.5rem] md:rounded-b-[2.5rem]"></div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* 7. Registration Events */}
       <section
         ref={registrationRef}
@@ -652,7 +689,7 @@ const App: React.FC = () => {
             <div className="w-16 md:w-24 h-1 bg-[#d4af37] mx-auto rounded-full"></div>
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6 xl:gap-8 max-w-7xl mx-auto">
-            {REGISTRATION_EVENTS.map((event, idx) => (
+            {events.map((event, idx) => (
               <div
                 key={event.id}
                 className="scroll-reveal bg-[#0b0f1a] border border-[#d4af37]/30 rounded-[1.5rem] md:rounded-[2.5rem] overflow-hidden flex flex-col shadow-2xl transition-all hover:border-[#d4af37] hover:-translate-y-1 group h-full"
@@ -713,30 +750,44 @@ const App: React.FC = () => {
       {/* 8. 聯繫客服 Section */}
       <section
         ref={faqRef}
-        className="py-12 md:py-24 px-4 md:px-6 bg-black border-t border-white/5"
+        className="py-12 md:py-24 px-4 md:px-6 bg-gradient-to-b from-[#0a1528] to-black border-t border-white/5"
       >
-        <div className="max-w-2xl mx-auto text-center">
-          <div className="scroll-reveal mb-6 md:mb-10">
-            <h3 className="text-2xl md:text-6xl font-black mb-4 md:mb-8 italic serif-font text-gold-gradient">
-              聯繫客服
+        <div className="max-w-4xl mx-auto">
+          <div className="scroll-reveal text-center mb-8 md:mb-12">
+            <h3 className="text-2xl md:text-5xl font-black italic serif-font text-gold-gradient mb-4 md:mb-6">
+              理財寶官方客服
             </h3>
-            <div className="w-16 md:w-24 h-1 bg-[#d4af37] mx-auto rounded-full"></div>
           </div>
-          <div className="scroll-reveal flex flex-col items-center gap-4 md:gap-6">
+
+          <div className="scroll-reveal space-y-4 md:space-y-6">
+            <p className="text-gray-300 text-[16px] md:text-xl font-normal md:font-bold leading-relaxed">
+              對體驗課有疑問？歡迎您使用『 <span className="text-[#06C755] font-bold">理財寶 Line線上客服</span> 』，線上將有專人為您服務解答喔!!
+            </p>
+
             <div className="flex items-center gap-3 md:gap-4">
-              <i className="fab fa-line text-2xl md:text-4xl text-[#06C755]"></i>
-              <span className="text-white text-[20px] md:text-2xl font-bold">
-                線上客服 Line ID：<span className="text-[#d4af37]">@153fwvvy</span>
+              <i className="fab fa-line text-2xl md:text-3xl text-[#06C755]"></i>
+              <span className="text-white text-[16px] md:text-xl font-normal md:font-bold">
+                線上客服 Line ID：<span className="text-[#d4af37] font-bold">@153fwvvy</span>
               </span>
             </div>
+
+            <div className="space-y-2 md:space-y-3 text-gray-300 text-[16px] md:text-lg font-normal md:font-bold">
+              <p>服務時間：週一至週五 09:00 - 18:00</p>
+              <p>客服信箱：csservice@cmoney.com.tw</p>
+            </div>
+
             <a
               href="http://cmy.tw/008I6c"
               target="_blank"
-              className="inline-flex items-center gap-3 md:gap-4 px-8 md:px-12 py-3 md:py-5 rounded-full bg-[#06C755] hover:bg-[#05b34c] text-white text-[20px] md:text-xl font-black transition-all hover:scale-105 active:scale-95 shadow-lg"
+              className="inline-flex items-center gap-3 md:gap-4 px-8 md:px-12 py-3 md:py-5 rounded-full bg-[#06C755] hover:bg-[#05b34c] text-white text-[16px] md:text-xl font-black transition-all hover:scale-105 active:scale-95 shadow-lg"
             >
               <i className="fab fa-line text-xl md:text-2xl"></i>
               加入 Line 聯繫客服
             </a>
+
+            <p className="text-gray-500 text-[14px] md:text-sm font-normal md:font-bold mt-4 md:mt-6">
+              備註：體驗課程免費！我們不會主動要求您匯款或提供密碼、驗證碼或先繳費
+            </p>
           </div>
         </div>
       </section>

@@ -45,7 +45,7 @@ export const StackingCard: React.FC<StackingCardProps> = ({ feature, index, tota
             </h3>
 
             {variant === 'skill' && feature.duration && (
-              <p className="text-gray-300 text-[20px] md:text-lg font-bold serif-font mt-1 md:mt-2 leading-relaxed">
+              <p className="text-gray-300 text-[16px] md:text-lg font-normal md:font-bold serif-font mt-1 md:mt-2 leading-relaxed">
                 {feature.duration}
               </p>
             )}
