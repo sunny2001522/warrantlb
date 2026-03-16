@@ -3,6 +3,7 @@ import { CTAButton } from "./components/Button";
 import { StackingCard } from "./components/StackingCard";
 import { db } from "./firebase";
 import { collection, getDocs, deleteDoc, doc, setDoc } from "firebase/firestore";
+import LiveStreamSection from "./components/LiveStreamSection";
 
 import { MarqueeCarousel } from "./components/MarqueeCarousel";
 import heroMobile from "./assets/限時動態（1080x1920）.jpg";
@@ -37,6 +38,8 @@ const App: React.FC = () => {
   const registrationRef = useRef<HTMLDivElement>(null);
   const appVipRef = useRef<HTMLDivElement>(null);
   const faqRef = useRef<HTMLDivElement>(null);
+
+  const [hasLiveStream, setHasLiveStream] = useState(false);
 
   // 從 Firestore 載入講座資料，失敗則 fallback 到 constants
   const [events, setEvents] = useState<RegistrationInfo[]>(REGISTRATION_EVENTS);
@@ -251,6 +254,9 @@ const App: React.FC = () => {
           </p>
         </div>
       </section>
+
+      {/* Live Stream Section */}
+      <LiveStreamSection onStatusChange={setHasLiveStream} />
 
       {/* APP VIP Section - 處置神器App */}
       <section
