@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import App from './App';
+import { AdminPage } from './components/AdminPage';
 import { ChatPage } from './pages/ChatPage';
 import { initGA, initMetaPixel } from './analytics';
 
@@ -22,6 +23,7 @@ root.render(
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<App />} />
+        <Route path="/admin-w7k3m9" element={<AdminPage />} />
         <Route path="/chat" element={<ChatPage />} />
       </Routes>
     </BrowserRouter>

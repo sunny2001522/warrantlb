@@ -1,8 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { CTAButton } from "./components/Button";
 import { StackingCard } from "./components/StackingCard";
-import { AdminPanel } from "./components/AdminPanel";
-import { useSecretTap } from "./hooks/useSecretTap";
 import { db } from "./firebase";
 import { collection, getDocs, deleteDoc, doc, setDoc } from "firebase/firestore";
 
@@ -83,23 +81,6 @@ const App: React.FC = () => {
     })();
   }, []);
 
-  // 快速點 8 下（3 秒內）開啟管理後台
-  const { triggered: adminOpen, handleTap: handleSecretTap, close: closeAdmin } = useSecretTap(8, 3000);
-
-  // 管理後台關閉時重新載入資料
-  const handleAdminClose = () => {
-    closeAdmin();
-    getDocs(collection(db, "registrationEvents"))
-      .then((snapshot) => {
-        if (!snapshot.empty) {
-          const data = snapshot.docs
-            .map((d) => ({ id: Number(d.id), ...d.data() } as RegistrationInfo))
-            .sort((a, b) => a.id - b.id);
-          setEvents(data);
-        }
-      })
-      .catch(() => {});
-  };
 
   // GA4 追蹤: 滾動深度
   useScrollTracking();
@@ -178,9 +159,7 @@ const App: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-[#080c14] text-white selection:bg-[#d4af37] selection:text-black" onClick={handleSecretTap}>
-      {/* 管理後台 - 快速點 8 下觸發 */}
-      <AdminPanel open={adminOpen} onClose={handleAdminClose} />
+    <div className="min-h-screen bg-[#080c14] text-white selection:bg-[#d4af37] selection:text-black">
       {/* Navigation */}
       <nav className="fixed top-0 left-0 right-0 z-50 bg-[#080c14]/90 backdrop-blur-md border-b border-[#d4af37]/20 px-4 md:px-6 py-2 md:py-4 flex justify-between items-center">
         <div className="flex items-center gap-2 md:gap-3">
