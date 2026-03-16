@@ -7,8 +7,9 @@ import { db } from "./firebase";
 import { collection, getDocs, deleteDoc, doc, setDoc } from "firebase/firestore";
 
 import { MarqueeCarousel } from "./components/MarqueeCarousel";
-import heroBg from "./assets/bg.jpg";
-import heroMan from "./assets/man stand.png";
+import heroMobile from "./assets/限時動態（1080x1920）.jpg";
+import heroTablet from "./assets/1200X900(沒有日期&CTA).png";
+import heroDesktop from "./assets/內廣A (1200x500)_0402.jpg";
 import lecturerImg from "./assets/man look.png";
 import cmLogo from "./assets/CM logo.png";
 import {
@@ -223,7 +224,7 @@ const App: React.FC = () => {
             target="_blank"
             className="px-4 md:px-6 py-1.5 md:py-2 text-[10px] md:text-sm font-black tracking-widest border border-[#d4af37] text-[#d4af37] rounded-full hover:bg-[#d4af37] hover:text-black transition-all"
           >
-            【聯繫客服】
+            聯繫客服
           </a>
           <CTAButton
             onClick={() => scrollToSection(registrationRef)}
@@ -236,102 +237,39 @@ const App: React.FC = () => {
       </nav>
 
       {/* Hero Section */}
-      <section className="relative w-full pt-12 md:pt-[72px] bg-[#080c14] overflow-hidden" style={{ height: "75vh" }}>
-        {/* Background image */}
-        <img
-          src={heroBg}
-          alt=""
-          className="absolute inset-0 w-full h-full object-cover"
-        />
-        <div className="absolute inset-0 bg-black/20"></div>
-        {/* Bottom gradient fade to dark */}
-        <div className="absolute inset-x-0 bottom-0 h-[55%] bg-gradient-to-t from-[#080c14] via-[#080c14]/90 to-transparent pointer-events-none"></div>
+      <section className="relative w-full pt-10 md:pt-[72px] bg-[#080c14] overflow-hidden">
+        <h1 className="sr-only">權證小哥官網 - 處置股策略教學</h1>
 
-        {/* Mobile: 上下排列 */}
-        <div className="relative z-10 h-full flex flex-col md:hidden pt-14">
-          {/* 上方問句 */}
-          <div className="text-center px-5 mb-1">
-            <p className="text-white text-[20px] font-bold serif-font leading-relaxed drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]">
-              你是否曾買入強勢股，隔天卻被公告處置？
-            </p>
-            <p className="text-white/80 text-[20px] font-bold serif-font leading-relaxed mt-1 drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]">
-              看著資金被鎖死、股價跳空卻無能為力？
-            </p>
-          </div>
-
-          {/* 人物 — 放大裁切更多，只露上半身 */}
-          <div className="flex-1 relative overflow-hidden flex justify-center">
-            <img
-              src={heroMan}
-              alt="權證小哥"
-              className="h-[130%] w-auto object-cover object-top drop-shadow-[0_10px_40px_rgba(0,0,0,0.7)]"
-            />
-          </div>
-
-          {/* 底部文字 + CTA，疊在人物上 */}
-          <div className="relative z-20 text-center px-4 pb-4 -mt-28">
-            <h1 className="sr-only">權證小哥官網 - 處置股策略教學</h1>
-            <p className="text-[#d4af37] text-[20px] font-bold serif-font italic mb-1 drop-shadow-lg">
-              其實處置股不是洪水猛獸
-            </p>
-            <p className="text-2xl font-black serif-font leading-tight drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)]" role="heading" aria-level={2}>
-              <span className="text-white">它是股市中最透明的</span>
-            </p>
-            <p className="text-4xl font-black serif-font text-gold-gradient leading-tight mb-3" role="heading" aria-level={2}>
-              送分題
-            </p>
-            <CTAButton
-              onClick={() => scrollToSection(registrationRef)}
-              className="!px-8 !py-3 !text-[20px] shadow-[0_0_50px_rgba(26,58,106,0.6)]"
-              trackingLocation="hero_mobile"
-            >
-              【限量報名】直播體驗課
-            </CTAButton>
-            <p className="text-gray-400 text-[20px] font-bold tracking-widest mt-2 drop-shadow-lg">
-              名額有限，額滿關閉。
-            </p>
-          </div>
+        {/* Mobile (<640px): 直式 1080x1920，寬螢幕上下平均裁切 */}
+        <div className="relative sm:hidden overflow-hidden flex items-center" style={{ maxHeight: "85vh" }}>
+          <img src={heroMobile} alt="高勝率處置策略線上體驗課" className="w-full h-auto block" />
+          <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[#080c14] to-transparent pointer-events-none"></div>
         </div>
 
-        {/* Desktop: 左右 flex，靠中間 */}
-        <div className="relative z-10 h-full hidden md:flex items-center justify-center max-w-6xl mx-auto px-8">
-          {/* 左側文字 — 靠右對齊向中間 */}
-          <div className="flex-1 pr-4 flex flex-col items-end text-right min-w-0">
-            <p className="text-white text-lg lg:text-2xl font-bold serif-font leading-relaxed drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)] mb-2">
-              你是否曾買入強勢股，隔天卻被公告處置？
-            </p>
-            <p className="text-white/80 text-base lg:text-xl font-bold serif-font leading-relaxed drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)] mb-4 lg:mb-8">
-              看著資金被鎖死、股價跳空卻無能為力？
-            </p>
-            <p className="text-[#d4af37] text-base lg:text-lg font-bold serif-font italic mb-2 drop-shadow-lg">
-              其實處置股不是洪水猛獸
-            </p>
-            <p className="text-4xl lg:text-6xl font-black serif-font leading-tight drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)] mb-1" role="heading" aria-level={2}>
-              <span className="text-white">它是股市中最透明的</span>
-            </p>
-            <p className="text-5xl lg:text-8xl font-black serif-font text-gold-gradient leading-tight mb-4 lg:mb-8" role="heading" aria-level={2}>
-              送分題
-            </p>
-            <CTAButton
-              onClick={() => scrollToSection(registrationRef)}
-              className="!px-10 lg:!px-16 !py-4 lg:!py-6 !text-xl lg:!text-3xl shadow-[0_0_50px_rgba(26,58,106,0.6)]"
-              trackingLocation="hero_desktop"
-            >
-              【限量報名】直播體驗課
-            </CTAButton>
-            <p className="text-gray-400 text-sm font-bold tracking-widest mt-4 drop-shadow-lg">
-              名額有限，額滿關閉。
-            </p>
-          </div>
+        {/* sm~lg (640px~1024px): 4:3 1200x900，完整顯示不裁切 */}
+        <div className="relative hidden sm:block lg:hidden">
+          <img src={heroTablet} alt="高勝率處置策略線上體驗課" className="w-full h-auto block" />
+          <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-[#080c14] to-transparent pointer-events-none"></div>
+        </div>
 
-          {/* 右側人物 — 裁切更多，放大，靠中間 */}
-          <div className="w-[40%] flex-shrink-0 h-full relative overflow-hidden flex justify-center">
-            <img
-              src={heroMan}
-              alt="權證小哥"
-              className="h-[115%] w-auto object-cover object-top drop-shadow-[0_10px_40px_rgba(0,0,0,0.7)]"
-            />
-          </div>
+        {/* Desktop (>=1024px): 寬幅 1200x500 */}
+        <div className="relative hidden lg:block">
+          <img src={heroDesktop} alt="高勝率處置策略線上體驗課" className="w-full h-auto block" />
+          <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-[#080c14] to-transparent pointer-events-none"></div>
+        </div>
+
+        {/* CTA — 圖片下方 */}
+        <div className="text-center -mt-8 md:-mt-6 relative z-10 pb-6 md:pb-8">
+          <CTAButton
+            onClick={() => scrollToSection(registrationRef)}
+            className="!px-8 !py-3 !text-lg md:!px-12 md:!py-5 md:!text-2xl lg:!px-16 lg:!py-6 lg:!text-3xl shadow-[0_0_50px_rgba(26,58,106,0.6)]"
+            trackingLocation="hero"
+          >
+            【限量報名】直播體驗課
+          </CTAButton>
+          <p className="text-gray-400 text-xs md:text-sm font-bold tracking-widest mt-2 md:mt-3">
+            名額有限，額滿關閉。
+          </p>
         </div>
       </section>
 
@@ -357,11 +295,11 @@ const App: React.FC = () => {
             </p>
 
             <CTAButton
-              onClick={() => scrollToSection(faqRef)}
+              onClick={() => scrollToSection(registrationRef)}
               className="!px-8 md:!px-12 !py-3 md:!py-5 !text-[20px] md:!text-xl"
               trackingLocation="app_vip_section"
             >
-              【聯繫客服】
+              免費體驗處置神器
             </CTAButton>
           </div>
 
@@ -523,6 +461,15 @@ const App: React.FC = () => {
               />
             ))}
           </div>
+          <div className="scroll-reveal">
+            <CTAButton
+              onClick={() => scrollToSection(registrationRef)}
+              className="!px-10 md:!px-24 !py-4 md:!py-8 !text-[20px] md:!text-3xl shadow-[0_0_40px_rgba(26,58,106,0.4)]"
+              trackingLocation="chapters_section"
+            >
+              立即報名體驗課
+            </CTAButton>
+          </div>
         </div>
       </section>
 
@@ -597,6 +544,15 @@ const App: React.FC = () => {
                 </div>
               </div>
             ))}
+          </div>
+          <div className="scroll-reveal flex justify-center mt-8 md:mt-16">
+            <CTAButton
+              onClick={() => scrollToSection(registrationRef)}
+              className="!px-10 md:!px-24 !py-4 md:!py-8 !text-[20px] md:!text-3xl shadow-[0_0_40px_rgba(26,58,106,0.4)]"
+              trackingLocation="includes_section"
+            >
+              搶先預約體驗課
+            </CTAButton>
           </div>
         </div>
       </section>
@@ -674,6 +630,16 @@ const App: React.FC = () => {
 
         <div className="w-full mt-8 md:mt-16">
           <MarqueeCarousel images={marqueeImages} />
+        </div>
+
+        <div className="scroll-reveal flex justify-center mt-8 md:mt-16">
+          <CTAButton
+            onClick={() => scrollToSection(registrationRef)}
+            className="!px-10 md:!px-24 !py-4 md:!py-8 !text-[20px] md:!text-3xl shadow-[0_0_40px_rgba(26,58,106,0.4)]"
+            trackingLocation="lecturer_section"
+          >
+            跟著小哥學處置股
+          </CTAButton>
         </div>
       </section>
 
