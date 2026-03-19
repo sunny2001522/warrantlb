@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-import { getFirestore } from "firebase/firestore";
+import { getFirestore, getDoc, doc as firestoreDoc, setDoc } from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAYJsGahiNxAh0YS7Ykrj3Kvxe13stWtLI",
@@ -16,3 +16,24 @@ const app = initializeApp(firebaseConfig);
 export const analytics = getAnalytics(app);
 export const db = getFirestore(app);
 export default app;
+
+// LiveStream
+export interface LiveStreamData {
+  youtubeUrl: string;
+  scheduledTime: string;
+  title?: string;
+  isActive: boolean;
+}
+
+const LIVE_STREAM_DOC = "current";
+const LIVE_STREAM_COLLECTION = "liveStreams";
+
+export async function fetchLiveStream(): Promise<LiveStreamData | null> {
+  const snap = await getDoc(firestoreDoc(db, LIVE_STREAM_COLLECTION, LIVE_STREAM_DOC));
+  if (!snap.exists()) return null;
+  return snap.data() as LiveStreamData;
+}
+
+export async function setLiveStream(data: LiveStreamData): Promise<void> {
+  await setDoc(firestoreDoc(db, LIVE_STREAM_COLLECTION, LIVE_STREAM_DOC), data);
+}

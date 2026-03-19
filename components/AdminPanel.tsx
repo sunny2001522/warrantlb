@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { db } from "../firebase";
+import { db, fetchLiveStream, setLiveStream, type LiveStreamData } from "../firebase";
 import { collection, getDocs, doc, setDoc, deleteDoc } from "firebase/firestore";
 import {
   REGISTRATION_EVENTS,
@@ -17,6 +17,35 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ open, onClose }) => {
   const [saving, setSaving] = useState(false);
   const [source, setSource] = useState<"firestore" | "constants">("constants");
   const [editingEvent, setEditingEvent] = useState<RegistrationInfo | null>(null);
+
+  // Live Stream state
+  const [liveForm, setLiveForm] = useState<LiveStreamData>({
+    youtubeUrl: "",
+    scheduledTime: "",
+    title: "",
+    isActive: false,
+  });
+  const [liveSaving, setLiveSaving] = useState(false);
+  const [liveLoaded, setLiveLoaded] = useState(false);
+
+  useEffect(() => {
+    if (!open) return;
+    fetchLiveStream().then((data) => {
+      if (data) setLiveForm(data);
+      setLiveLoaded(true);
+    }).catch(() => setLiveLoaded(true));
+  }, [open]);
+
+  const handleLiveSave = async () => {
+    setLiveSaving(true);
+    try {
+      await setLiveStream(liveForm);
+    } catch (e: any) {
+      alert("直播儲存失敗：" + (e.message || e));
+    } finally {
+      setLiveSaving(false);
+    }
+  };
 
   const loadFromFirestore = useCallback(async () => {
     setLoading(true);
@@ -143,6 +172,80 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ open, onClose }) => {
             <div className="text-center py-12 text-gray-400">載入中...</div>
           ) : (
             <>
+              {/* Live Stream Management */}
+              <div className="bg-black/40 border border-[#d4af37]/30 rounded-xl p-4">
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="text-[#d4af37] font-bold text-sm">直播管理</h3>
+                  {liveLoaded && (
+                    <div className="flex items-center gap-2">
+                      <button
+                        onClick={() => setLiveForm((p) => ({ ...p, isActive: !p.isActive }))}
+                        className={`w-12 h-6 rounded-full transition-colors relative ${
+                          liveForm.isActive ? "bg-green-600" : "bg-gray-600"
+                        }`}
+                      >
+                        <span
+                          className={`absolute top-0.5 w-5 h-5 bg-white rounded-full transition-transform ${
+                            liveForm.isActive ? "translate-x-6" : "translate-x-0.5"
+                          }`}
+                        />
+                      </button>
+                      <span className={`text-xs font-bold ${liveForm.isActive ? "text-green-400" : "text-gray-500"}`}>
+                        {liveForm.isActive ? "ON" : "OFF"}
+                      </span>
+                    </div>
+                  )}
+                </div>
+                {liveLoaded ? (
+                  <div className="space-y-3">
+                    <div>
+                      <label className="text-gray-400 text-[10px] font-bold block mb-1">YouTube URL</label>
+                      <input
+                        type="text"
+                        value={liveForm.youtubeUrl}
+                        placeholder="https://www.youtube.com/watch?v=..."
+                        onChange={(e) => setLiveForm((p) => ({ ...p, youtubeUrl: e.target.value }))}
+                        className="w-full bg-black/60 border border-white/20 rounded-lg px-3 py-2 text-white text-sm focus:border-[#d4af37] focus:outline-none transition-colors"
+                      />
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      <div>
+                        <label className="text-gray-400 text-[10px] font-bold block mb-1">預定時間</label>
+                        <input
+                          type="datetime-local"
+                          value={liveForm.scheduledTime ? liveForm.scheduledTime.slice(0, 16) : ""}
+                          onChange={(e) => setLiveForm((p) => ({ ...p, scheduledTime: e.target.value }))}
+                          className="w-full bg-black/60 border border-white/20 rounded-lg px-3 py-2 text-white text-sm focus:border-[#d4af37] focus:outline-none transition-colors"
+                        />
+                      </div>
+                      <div>
+                        <label className="text-gray-400 text-[10px] font-bold block mb-1">標題（選填，空白自動抓 YouTube 標題）</label>
+                        <input
+                          type="text"
+                          value={liveForm.title || ""}
+                          placeholder="不填則自動顯示 YouTube 影片標題"
+                          onChange={(e) => setLiveForm((p) => ({ ...p, title: e.target.value }))}
+                          className="w-full bg-black/60 border border-white/20 rounded-lg px-3 py-2 text-white text-sm focus:border-[#d4af37] focus:outline-none transition-colors"
+                        />
+                      </div>
+                    </div>
+                    <button
+                      onClick={handleLiveSave}
+                      disabled={liveSaving}
+                      className={`w-full py-2.5 font-bold text-sm rounded-lg transition-colors disabled:opacity-50 ${
+                        liveForm.isActive
+                          ? "bg-green-600 hover:bg-green-700 text-white"
+                          : "bg-[#d4af37] hover:bg-[#b8962e] text-black"
+                      }`}
+                    >
+                      {liveSaving ? "儲存中..." : liveForm.isActive ? "儲存並啟用直播" : "儲存直播設定（目前關閉）"}
+                    </button>
+                  </div>
+                ) : (
+                  <div className="text-gray-400 text-sm">載入中...</div>
+                )}
+              </div>
+
               {/* Action buttons */}
               <div className="flex gap-2 flex-wrap">
                 <button
