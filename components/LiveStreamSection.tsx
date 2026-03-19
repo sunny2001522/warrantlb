@@ -86,7 +86,7 @@ const LiveStreamSection: React.FC<LiveStreamSectionProps> = ({ onStatusChange })
 
   // 標題區塊（共用）
   const header = (
-    <div className="text-center mb-6 md:mb-10">
+    <div className="text-center mt-16 mb-6 md:mb-10">
       <h2 className="text-xl
        md:text-4xl font-black text-gold-gradient serif-font leading-tight mb-3 md:mb-5  overflow-hidden text-ellipsis max-w-full px-2">
         {resolvedTitle}

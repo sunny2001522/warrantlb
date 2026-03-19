@@ -218,6 +218,9 @@ const App: React.FC = () => {
         </div>
       </nav>
 
+      {/* Live Stream Section */}
+      <LiveStreamSection onStatusChange={setHasLiveStream} />
+
       {/* Hero Section */}
       <section className="relative w-full pt-10 md:pt-[72px] bg-[#080c14] overflow-hidden">
         <h1 className="sr-only">權證小哥官網 - 處置股策略教學</h1>
@@ -254,9 +257,6 @@ const App: React.FC = () => {
           </p>
         </div>
       </section>
-
-      {/* Live Stream Section */}
-      <LiveStreamSection onStatusChange={setHasLiveStream} />
 
       {/* APP VIP Section - 處置神器App */}
       <section
