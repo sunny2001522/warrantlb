@@ -1,7 +1,8 @@
 {
   "permissions": {
     "allow": [
-      "Bash(cygpath:*)"
+      "Bash(cygpath:*)",
+      "WebFetch(domain:warrantlb8888.cmoney.tw)"
     ]
   }
 }
