@@ -19,7 +19,7 @@ export const CTA_LINK = "https://www.cmoney.tw/cashflow/Index.aspx?platform=1";
 export const CASHFLOW_DOMAIN = "https://www.cmoney.tw/";
 
 export const LOGO_URL =
-  "https://www.cmoney.tw/course-media/_nuxt/img/logo.ef6c96d.svg";
+  "/assets/同學會 (1).png";
 
 export const COURSE_DURATION_INFO = "VVIP 進階版 4 章 | 永久觀看 影音課程";
 

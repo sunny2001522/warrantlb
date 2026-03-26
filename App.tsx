@@ -10,7 +10,7 @@ import heroMobile from "./assets/限時動態（1080x1920）.jpg";
 import heroTablet from "./assets/1200X900(沒有日期&CTA).png";
 import heroDesktop from "./assets/內廣A (1200x500)_0402.jpg";
 import lecturerImg from "./assets/man look.png";
-import cmLogo from "./assets/CM logo.png";
+import cmLogo from "./assets/同學會 (1).png";
 import {
   COURSE_FEATURES,
   SKILLS,
