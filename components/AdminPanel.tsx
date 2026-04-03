@@ -10,6 +10,7 @@ import {
 import { collection, getDocs, doc, setDoc, deleteDoc } from "firebase/firestore";
 import {
   REGISTRATION_EVENTS,
+  isFreeRegistrationEvent,
   type RegistrationInfo,
 } from "../constants";
 
@@ -70,7 +71,8 @@ function mapExperienceCoursesToEvents(items: ExperienceCourseResponseItem[]): Re
         productType: 0,
         functionId: 0,
       };
-    });
+    })
+    .filter(isFreeRegistrationEvent);
 }
 
 export const AdminPanel: React.FC<AdminPanelProps> = ({ open, onClose }) => {
@@ -120,15 +122,16 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ open, onClose }) => {
       if (!snapshot.empty) {
         const data = snapshot.docs
           .map((d) => ({ id: Number(d.id), ...d.data() } as RegistrationInfo))
+          .filter(isFreeRegistrationEvent)
           .sort((a, b) => a.id - b.id);
         setEvents(data);
         setSource("firestore");
       } else {
-        setEvents([...REGISTRATION_EVENTS]);
+        setEvents(REGISTRATION_EVENTS.filter(isFreeRegistrationEvent));
         setSource("constants");
       }
     } catch {
-      setEvents([...REGISTRATION_EVENTS]);
+      setEvents(REGISTRATION_EVENTS.filter(isFreeRegistrationEvent));
       setSource("constants");
     }
     setLoading(false);

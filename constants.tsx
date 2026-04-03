@@ -53,6 +53,10 @@ export interface RegistrationInfo {
   functionId: number;
 }
 
+export function isFreeRegistrationEvent(event: RegistrationInfo): boolean {
+  return Number(event.discountPrice) === 0;
+}
+
 export const REGISTRATION_EVENTS: RegistrationInfo[] = [
   {
     id: 1,

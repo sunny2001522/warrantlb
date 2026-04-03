@@ -21,6 +21,7 @@ import {
   LECTURER_GALLERY,
   REGISTRATION_EVENTS,
   CASHFLOW_DOMAIN,
+  isFreeRegistrationEvent,
   type RegistrationInfo,
 } from "./constants";
 import {
@@ -42,7 +43,7 @@ const App: React.FC = () => {
   const [hasLiveStream, setHasLiveStream] = useState(false);
 
   // 從 Firestore 載入講座資料，失敗則 fallback 到 constants
-  const [events, setEvents] = useState<RegistrationInfo[]>(REGISTRATION_EVENTS);
+  const [events, setEvents] = useState<RegistrationInfo[]>(REGISTRATION_EVENTS.filter(isFreeRegistrationEvent));
 
   useEffect(() => {
     (async () => {
@@ -51,6 +52,7 @@ const App: React.FC = () => {
         if (!snapshot.empty) {
           const allEvents = snapshot.docs
             .map((d) => ({ id: Number(d.id), ...d.data() } as RegistrationInfo))
+            .filter(isFreeRegistrationEvent)
             .sort((a, b) => a.id - b.id);
 
           const now = new Date();
@@ -76,7 +78,7 @@ const App: React.FC = () => {
             const { id, ...rest } = event;
             await setDoc(doc(db, "registrationEvents", String(id)), rest);
           }
-          setEvents([...REGISTRATION_EVENTS]);
+          setEvents(REGISTRATION_EVENTS.filter(isFreeRegistrationEvent));
         }
       } catch {
         // Firestore 失敗，保持 constants fallback
