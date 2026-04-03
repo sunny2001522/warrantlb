@@ -126,6 +126,9 @@ const App: React.FC = () => {
 
     // Free courses (productType=0, functionId=0): navigate directly to class detail page
     if (!registration.productType && !registration.functionId) {
+      if (!registration.url) {
+        return;
+      }
       window.open(registration.url, "_self");
       return;
     }
@@ -640,17 +643,17 @@ const App: React.FC = () => {
             </h2>
             <div className="w-16 md:w-24 h-1 bg-[#d4af37] mx-auto rounded-full"></div>
           </div>
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6 xl:gap-8 max-w-7xl mx-auto">
-            {events.map((event, idx) => (
+          <div className="flex flex-wrap justify-center gap-4 md:gap-6 xl:gap-8 max-w-7xl mx-auto">
+            {events.map((event) => (
               <div
                 key={event.id}
-                className="scroll-reveal bg-[#0b0f1a] border border-[#d4af37]/30 rounded-[1.5rem] md:rounded-[2.5rem] overflow-hidden flex flex-col shadow-2xl transition-all hover:border-[#d4af37] hover:-translate-y-1 group h-full"
+                className="scroll-reveal w-full lg:w-[calc((100%-1.5rem)/2)] xl:w-[calc((100%-5rem)/3)] max-w-[32rem] bg-[#0b0f1a] border border-[#d4af37]/30 rounded-[1.5rem] md:rounded-[2.5rem] overflow-hidden flex flex-col shadow-2xl transition-all hover:border-[#d4af37] hover:-translate-y-1 group h-full"
               >
-                <div className="p-4 md:p-10 flex-1 flex flex-col">
+                <div className="p-4 md:p-10 flex-1 flex flex-col items-center text-center">
                   <h3 className="text-[20px] md:text-3xl font-black text-white serif-font mb-3 md:mb-6 leading-tight min-h-0 md:min-h-[4rem] group-hover:text-[#d4af37] transition-colors">
                     {event.title}
                   </h3>
-                  <div className="bg-[#d4af37]/5 border-l-4 border-[#d4af37] p-3 md:p-5 mb-2 md:mb-4 rounded-r-xl text-left">
+                  <div className="w-full bg-[#d4af37]/5 border border-[#d4af37]/30 p-3 md:p-5 mb-2 md:mb-4 rounded-2xl text-center">
                     <div className="flex flex-col gap-0.5 md:gap-1">
                       <span className="text-[#d4af37] text-[20px] md:text-[10px] font-black tracking-widest uppercase opacity-70">
                         上課日期與時間
@@ -663,8 +666,8 @@ const App: React.FC = () => {
                       </span>
                     </div>
                   </div>
-                  <div className="flex items-center justify-between mt-auto mb-3 md:mb-6 py-3 md:py-4 px-4 md:px-6 bg-white/5 rounded-xl md:rounded-2xl border border-white/10">
-                    <div className="flex flex-col text-left">
+                  <div className="flex w-full items-center justify-center gap-6 mt-auto mb-3 md:mb-6 py-3 md:py-4 px-4 md:px-6 bg-white/5 rounded-xl md:rounded-2xl border border-white/10 text-center">
+                    <div className="flex flex-col items-center">
                       <span className="text-[20px] md:text-xs text-gray-500 font-bold line-through">
                         原價 NT${event.originalPrice.toLocaleString()}
                       </span>
@@ -675,8 +678,8 @@ const App: React.FC = () => {
                         ).toLocaleString()}
                       </span>
                     </div>
-                    <div className="text-right">
-                      <div className="flex items-baseline gap-1 md:gap-2">
+                    <div className="text-center">
+                      <div className="flex items-baseline justify-center gap-1 md:gap-2">
                         <span className="text-[20px] md:text-xs font-normal text-gray-400">
                           限時
                         </span>
@@ -688,9 +691,10 @@ const App: React.FC = () => {
                   </div>
                   <button
                     onClick={() => handleRegistrationClick(event)}
-                    className="w-full blue-shimmer-btn py-4 md:py-6 rounded-[1rem] md:rounded-[1.2rem] text-center text-[20px] md:text-xl font-black text-white shadow-xl hover:scale-[1.01] active:scale-95 transition-all cursor-pointer"
+                    disabled={!event.url && !event.productType && !event.functionId}
+                    className="w-full blue-shimmer-btn py-4 md:py-6 rounded-[1rem] md:rounded-[1.2rem] text-center text-[20px] md:text-xl font-black text-white shadow-xl hover:scale-[1.01] active:scale-95 transition-all cursor-pointer disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:scale-100"
                   >
-                    立即免費預約
+                    {!event.url && !event.productType && !event.functionId ? "報名資訊待補" : "立即免費預約"}
                   </button>
                 </div>
               </div>

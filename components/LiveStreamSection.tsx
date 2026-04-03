@@ -42,10 +42,11 @@ function isInTimeWindow(scheduledTime: string): boolean {
 }
 
 const LiveStreamSection: React.FC<LiveStreamSectionProps> = ({ onStatusChange }) => {
-  const { isAuthenticated, login } = useAuth();
+  const { isAuthenticated, login, isLoginInProgress } = useAuth();
   const [liveData, setLiveData] = useState<LiveStreamData | null>(null);
   const [showStream, setShowStream] = useState(false);
   const [resolvedTitle, setResolvedTitle] = useState<string>("投資體驗課");
+  const [loginError, setLoginError] = useState<string | null>(null);
 
   useEffect(() => {
     fetchLiveStream().then((data) => {
@@ -141,6 +142,16 @@ const LiveStreamSection: React.FC<LiveStreamSectionProps> = ({ onStatusChange })
   // 未登入：模糊縮圖 + 登入按鈕
   const thumbnailUrl = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
 
+  const handleLogin = useCallback(async () => {
+    setLoginError(null);
+
+    try {
+      await login();
+    } catch {
+      setLoginError("登入服務目前忙碌，請稍後再試一次。");
+    }
+  }, [login]);
+
   return (
     <section className="w-full py-8 md:py-14 px-4 md:px-6 bg-[#0a0806]">
       <div className="max-w-5xl mx-auto">
@@ -164,12 +175,18 @@ const LiveStreamSection: React.FC<LiveStreamSectionProps> = ({ onStatusChange })
               <p className="text-white/70 text-sm md:text-base mb-4">
                 登入後即可觀看完整直播
               </p>
+              {loginError && (
+                <p className="text-red-300 text-xs md:text-sm mb-4">
+                  {loginError}
+                </p>
+              )}
             </div>
             <button
-              onClick={() => login()}
-              className="px-8 py-3 bg-[#d4af37] hover:bg-[#b8962e] text-black font-bold text-sm md:text-base rounded-xl transition-colors shadow-lg cursor-pointer"
+              onClick={handleLogin}
+              disabled={isLoginInProgress}
+              className="px-8 py-3 bg-[#d4af37] hover:bg-[#b8962e] disabled:bg-[#8f7b35] disabled:text-black/70 text-black font-bold text-sm md:text-base rounded-xl transition-colors shadow-lg cursor-pointer disabled:cursor-not-allowed"
             >
-              立即登入觀看
+              {isLoginInProgress ? "登入跳轉中..." : "立即登入觀看"}
             </button>
           </div>
         </div>

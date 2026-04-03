@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-import { getFirestore, getDoc, doc as firestoreDoc, setDoc } from "firebase/firestore";
+import { Timestamp, getFirestore, getDoc, doc as firestoreDoc, setDoc } from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAYJsGahiNxAh0YS7Ykrj3Kvxe13stWtLI",
@@ -25,15 +25,91 @@ export interface LiveStreamData {
   isActive: boolean;
 }
 
+interface FirestoreTimestampLike {
+  toDate?: () => Date;
+  seconds?: number;
+  nanoseconds?: number;
+}
+
 const LIVE_STREAM_DOC = "current";
 const LIVE_STREAM_COLLECTION = "liveStreams";
+
+function padTimePart(value: number): string {
+  return String(value).padStart(2, "0");
+}
+
+export function formatDateTimeLocalValue(value: string): string {
+  if (!value) return "";
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "";
+
+  return [
+    date.getFullYear(),
+    padTimePart(date.getMonth() + 1),
+    padTimePart(date.getDate()),
+  ].join("-") + `T${padTimePart(date.getHours())}:${padTimePart(date.getMinutes())}`;
+}
+
+export function normalizeLiveStreamData(data: Partial<LiveStreamData> & {
+  scheduledTime?: string | Timestamp | FirestoreTimestampLike | null;
+}): LiveStreamData {
+  const scheduledTime = data.scheduledTime;
+
+  if (typeof scheduledTime === "string") {
+    const date = new Date(scheduledTime);
+    return {
+      youtubeUrl: data.youtubeUrl ?? "",
+      scheduledTime: Number.isNaN(date.getTime()) ? scheduledTime : date.toISOString(),
+      title: data.title ?? "",
+      isActive: Boolean(data.isActive),
+    };
+  }
+
+  if (scheduledTime instanceof Timestamp) {
+    return {
+      youtubeUrl: data.youtubeUrl ?? "",
+      scheduledTime: scheduledTime.toDate().toISOString(),
+      title: data.title ?? "",
+      isActive: Boolean(data.isActive),
+    };
+  }
+
+  if (scheduledTime && typeof scheduledTime === "object") {
+    if (typeof scheduledTime.toDate === "function") {
+      return {
+        youtubeUrl: data.youtubeUrl ?? "",
+        scheduledTime: scheduledTime.toDate().toISOString(),
+        title: data.title ?? "",
+        isActive: Boolean(data.isActive),
+      };
+    }
+
+    if (typeof scheduledTime.seconds === "number") {
+      const ms = scheduledTime.seconds * 1000 + Math.floor((scheduledTime.nanoseconds ?? 0) / 1_000_000);
+      return {
+        youtubeUrl: data.youtubeUrl ?? "",
+        scheduledTime: new Date(ms).toISOString(),
+        title: data.title ?? "",
+        isActive: Boolean(data.isActive),
+      };
+    }
+  }
+
+  return {
+    youtubeUrl: data.youtubeUrl ?? "",
+    scheduledTime: "",
+    title: data.title ?? "",
+    isActive: Boolean(data.isActive),
+  };
+}
 
 export async function fetchLiveStream(): Promise<LiveStreamData | null> {
   const snap = await getDoc(firestoreDoc(db, LIVE_STREAM_COLLECTION, LIVE_STREAM_DOC));
   if (!snap.exists()) return null;
-  return snap.data() as LiveStreamData;
+  return normalizeLiveStreamData(snap.data() as Partial<LiveStreamData>);
 }
 
 export async function setLiveStream(data: LiveStreamData): Promise<void> {
-  await setDoc(firestoreDoc(db, LIVE_STREAM_COLLECTION, LIVE_STREAM_DOC), data);
+  const normalized = normalizeLiveStreamData(data);
+  await setDoc(firestoreDoc(db, LIVE_STREAM_COLLECTION, LIVE_STREAM_DOC), normalized);
 }

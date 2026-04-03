@@ -1,5 +1,12 @@
-import React, { useState, useEffect, useCallback } from "react";
-import { db, fetchLiveStream, setLiveStream, type LiveStreamData } from "../firebase";
+import React, { useState, useEffect, useCallback, useRef } from "react";
+import {
+  db,
+  fetchLiveStream,
+  formatDateTimeLocalValue,
+  normalizeLiveStreamData,
+  setLiveStream,
+  type LiveStreamData,
+} from "../firebase";
 import { collection, getDocs, doc, setDoc, deleteDoc } from "firebase/firestore";
 import {
   REGISTRATION_EVENTS,
@@ -11,12 +18,69 @@ interface AdminPanelProps {
   onClose: () => void;
 }
 
+interface ExperienceCourseResponseItem {
+  experienceCourses?: {
+    id: number;
+    name: string;
+    showDateTime: string;
+    price: number;
+    originalPrice: number;
+  };
+}
+
+const FIXED_MEMBER_ID = "13997";
+
+function parseShowDateTime(showDateTime: string) {
+  const match = showDateTime.match(
+    /^(\d{4})年(\d{2})月(\d{2})日\([^)]+\)\s+(\d{2}):(\d{2})-(\d{2}):(\d{2})$/,
+  );
+
+  if (!match) {
+    return {
+      dateStr: showDateTime,
+      timeStr: "",
+      targetDate: "",
+    };
+  }
+
+  const [, year, month, day, startHour, startMinute, endHour, endMinute] = match;
+
+  return {
+    dateStr: `${Number(month)}/${Number(day)}`,
+    timeStr: `${startHour}:${startMinute} - ${endHour}:${endMinute}`,
+    targetDate: `${year}-${month}-${day}T${startHour}:${startMinute}:00`,
+  };
+}
+
+function mapExperienceCoursesToEvents(items: ExperienceCourseResponseItem[]): RegistrationInfo[] {
+  return items
+    .map((item) => item.experienceCourses)
+    .filter((course): course is NonNullable<ExperienceCourseResponseItem["experienceCourses"]> => Boolean(course))
+    .map((course, index) => {
+      const parsed = parseShowDateTime(course.showDateTime);
+      return {
+        id: course.id ?? index + 1,
+        title: course.name,
+        dateStr: parsed.dateStr,
+        timeStr: parsed.timeStr,
+        targetDate: parsed.targetDate,
+        originalPrice: Number(course.originalPrice ?? 0),
+        discountPrice: Number(course.price ?? 0),
+        url: "",
+        productType: 0,
+        functionId: 0,
+      };
+    });
+}
+
 export const AdminPanel: React.FC<AdminPanelProps> = ({ open, onClose }) => {
   const [events, setEvents] = useState<RegistrationInfo[]>([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [source, setSource] = useState<"firestore" | "constants">("constants");
   const [editingEvent, setEditingEvent] = useState<RegistrationInfo | null>(null);
+  const [memberImporting, setMemberImporting] = useState(false);
+  const hasAutoSyncedRef = useRef(false);
 
   // Live Stream state
   const [liveForm, setLiveForm] = useState<LiveStreamData>({
@@ -39,7 +103,9 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ open, onClose }) => {
   const handleLiveSave = async () => {
     setLiveSaving(true);
     try {
-      await setLiveStream(liveForm);
+      const normalized = normalizeLiveStreamData(liveForm);
+      await setLiveStream(normalized);
+      setLiveForm(normalized);
     } catch (e: any) {
       alert("直播儲存失敗：" + (e.message || e));
     } finally {
@@ -145,29 +211,83 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ open, onClose }) => {
     setSaving(false);
   };
 
+  const handleImportByMemberId = async () => {
+    setMemberImporting(true);
+    try {
+      const response = await fetch(
+        `/api/experience-course?authorMemberId=${FIXED_MEMBER_ID}`,
+      );
+
+      if (!response.ok) {
+        throw new Error(`API 錯誤 (${response.status})`);
+      }
+
+      const result = (await response.json()) as ExperienceCourseResponseItem[];
+      const importedEvents = mapExperienceCoursesToEvents(result);
+
+      if (importedEvents.length === 0) {
+        throw new Error("查無講座資料");
+      }
+
+      const existingSnapshot = await getDocs(collection(db, "registrationEvents"));
+      await Promise.all(existingSnapshot.docs.map((item) => deleteDoc(item.ref)));
+
+      for (const event of importedEvents) {
+        await setDoc(doc(db, "registrationEvents", String(event.id)), event);
+      }
+
+      setEvents(importedEvents);
+      setSource("firestore");
+      setEditingEvent(null);
+    } catch (err) {
+      alert("匯入講座失敗: " + (err as Error).message);
+    } finally {
+      setMemberImporting(false);
+    }
+  };
+
+  useEffect(() => {
+    if (!open) {
+      hasAutoSyncedRef.current = false;
+      return;
+    }
+
+    if (hasAutoSyncedRef.current) return;
+    hasAutoSyncedRef.current = true;
+    void handleImportByMemberId();
+  }, [open]);
+
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 z-[9999] bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-      <div className="bg-[#0f1a2e] border border-[#d4af37]/40 rounded-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto shadow-2xl">
-        {/* Header */}
-        <div className="sticky top-0 bg-[#0f1a2e] border-b border-[#d4af37]/20 p-4 flex items-center justify-between z-10">
-          <div>
-            <h2 className="text-xl font-black text-[#d4af37]">管理後台</h2>
-            <span className="text-xs text-gray-400">
-              資料來源：{source === "firestore" ? "Firestore" : "Constants (本機)"}
-            </span>
+    <div className="min-h-screen bg-[#080c14] text-white px-4 py-6 md:px-6 md:py-10">
+      <div className="mx-auto w-full max-w-5xl">
+        <div className="mb-6 rounded-[2rem] border border-[#d4af37]/20 bg-gradient-to-br from-[#121d34] via-[#0f1a2e] to-[#0a111f] p-6 shadow-2xl md:p-8">
+          <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+            <div>
+              <span className="text-xs font-bold tracking-[0.35em] text-[#d4af37]/70">ADMIN</span>
+              <h1 className="mt-2 text-3xl font-black text-[#d4af37] md:text-4xl">管理後台</h1>
+              <span className="mt-2 block text-sm text-gray-400">
+                資料來源：{source === "firestore" ? "Firestore" : "Constants (本機)"}
+              </span>
+            </div>
+            <button
+              onClick={onClose}
+              className="inline-flex h-11 items-center justify-center rounded-full border border-white/15 bg-white/5 px-5 text-sm font-bold text-white transition-colors hover:bg-white/10"
+            >
+              返回首頁
+            </button>
           </div>
-          <button
-            onClick={onClose}
-            className="w-10 h-10 rounded-full bg-white/10 hover:bg-red-500/30 flex items-center justify-center text-white transition-colors"
-          >
-            ✕
-          </button>
         </div>
 
+        <div className="rounded-[2rem] border border-[#d4af37]/25 bg-[#0f1a2e] shadow-2xl">
+        {/* Header */}
+          <div className="sticky top-0 z-10 rounded-t-[2rem] border-b border-[#d4af37]/20 bg-[#0f1a2e]/95 p-4 backdrop-blur md:p-5">
+            <h2 className="text-lg font-black text-[#d4af37] md:text-xl">直播與講座資料管理</h2>
+          </div>
+
         {/* Body */}
-        <div className="p-4 space-y-4">
+          <div className="p-4 space-y-4 md:p-6">
           {loading ? (
             <div className="text-center py-12 text-gray-400">載入中...</div>
           ) : (
@@ -213,8 +333,13 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ open, onClose }) => {
                         <label className="text-gray-400 text-[10px] font-bold block mb-1">預定時間</label>
                         <input
                           type="datetime-local"
-                          value={liveForm.scheduledTime ? liveForm.scheduledTime.slice(0, 16) : ""}
-                          onChange={(e) => setLiveForm((p) => ({ ...p, scheduledTime: e.target.value }))}
+                          value={formatDateTimeLocalValue(liveForm.scheduledTime)}
+                          onChange={(e) =>
+                            setLiveForm((p) => ({
+                              ...p,
+                              scheduledTime: e.target.value ? new Date(e.target.value).toISOString() : "",
+                            }))
+                          }
                           className="w-full bg-black/60 border border-white/20 rounded-lg px-3 py-2 text-white text-sm focus:border-[#d4af37] focus:outline-none transition-colors"
                         />
                       </div>
@@ -272,6 +397,27 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ open, onClose }) => {
                 </button>
               </div>
 
+              <div className="rounded-xl border border-[#d4af37]/20 bg-black/20 p-4">
+                <div className="flex flex-col gap-3 md:flex-row md:items-end">
+                  <div className="flex-1">
+                    <span className="mb-1 block text-xs font-bold text-gray-400">固定講座 Member ID</span>
+                    <div className="rounded-lg border border-white/10 bg-black/40 px-3 py-2 text-sm font-bold text-white">
+                      {FIXED_MEMBER_ID}
+                    </div>
+                  </div>
+                  <button
+                    onClick={handleImportByMemberId}
+                    disabled={memberImporting}
+                    className="px-4 py-2 bg-[#d4af37] hover:bg-[#c9a230] text-black text-sm font-bold rounded-lg transition-colors disabled:opacity-50"
+                  >
+                    {memberImporting ? "匯入中..." : "用 Member ID 匯入講座"}
+                  </button>
+                </div>
+                <p className="mt-2 text-xs text-gray-500">
+                  會從 `authorMemberId` API 抓講座，並直接覆蓋 Firestore 目前的講座清單。
+                </p>
+              </div>
+
               {/* Editing form */}
               {editingEvent && (
                 <EditForm
@@ -324,6 +470,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ open, onClose }) => {
               ))}
             </>
           )}
+        </div>
         </div>
       </div>
     </div>

@@ -11,6 +11,7 @@ interface AuthContextType {
   isAuthenticated: boolean
   isLoading: boolean
   isInitialized: boolean
+  isLoginInProgress: boolean
   login: (redirectPath?: string) => Promise<void>
   logout: (redirectPath?: string) => Promise<void>
   loginCallback: () => Promise<void>
@@ -34,6 +35,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [isInitialized, setIsInitialized] = useState(false)
+  const [isLoginInProgress, setIsLoginInProgress] = useState(false)
 
   const isAuthenticated = useMemo(() => {
     return !!user && !user.expired && !!user.access_token
@@ -42,6 +44,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const clearState = useCallback(() => {
     setUser(null)
     setIsInitialized(false)
+    setIsLoginInProgress(false)
   }, [])
 
   const loadUser = useCallback(async () => {
@@ -64,20 +67,28 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, [manager])
 
   const login = useCallback(async (redirectPath: string = '/') => {
+    if (isLoginInProgress) {
+      return
+    }
+
     try {
+      setIsLoginInProgress(true)
       localStorage.setItem(LOGIN_REDIRECT_PATH, JSON.stringify(redirectPath))
       await manager.signinRedirect()
     } catch (error) {
+      setIsLoginInProgress(false)
       console.error('Login failed:', error)
       throw error
     }
-  }, [manager])
+  }, [isLoginInProgress, manager])
 
   const loginCallback = useCallback(async () => {
     try {
       await manager.signinRedirectCallback()
       await manager.clearStaleState()
+      setIsLoginInProgress(false)
     } catch (error) {
+      setIsLoginInProgress(false)
       console.error('Login callback failed:', error)
       throw error
     }
@@ -151,6 +162,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       isAuthenticated,
       isLoading,
       isInitialized,
+      isLoginInProgress,
       login,
       logout,
       loginCallback,

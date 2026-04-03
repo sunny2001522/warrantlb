@@ -11,6 +11,12 @@ export default defineConfig(({ mode }) => {
         port: 3003,
         host: '0.0.0.0',
         https: {},
+        proxy: {
+          '/api/experience-course': {
+            target: 'https://columnist-landingpage.cmoney.tw',
+            changeOrigin: true,
+          },
+        },
       },
       plugins: [react(), basicSsl()],
       define: {
