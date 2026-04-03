@@ -1,10 +1,27 @@
 import React, { createContext, useContext, useState, useEffect, useCallback, useMemo } from 'react'
 import type { User } from 'oidc-client-ts'
 import { getOidcManager } from './oidcConfig'
+import { trackLiveLoginAttempt, trackLiveLoginBlocked, trackLiveLoginResult } from '../analytics'
 
 const LOGIN_REDIRECT_PATH = 'imoney_login_redirect_path'
 const LOGOUT_REDIRECT_PATH = 'imoney_logout_redirect_path'
 const LOGOUT_IN_PROGRESS = 'imoney_logout_in_progress'
+const LOGIN_LAST_ATTEMPT_AT = 'imoney_login_last_attempt_at'
+const LOGIN_COOLDOWN_MS = 15_000
+
+type LoginErrorCode = 'login_in_progress' | 'login_cooldown' | 'login_redirect_failed'
+
+class LoginFlowError extends Error {
+  code: LoginErrorCode
+  retryAfterMs?: number
+
+  constructor(code: LoginErrorCode, message: string, retryAfterMs?: number) {
+    super(message)
+    this.name = 'LoginFlowError'
+    this.code = code
+    this.retryAfterMs = retryAfterMs
+  }
+}
 
 interface AuthContextType {
   user: User | null
@@ -68,17 +85,37 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const login = useCallback(async (redirectPath: string = '/') => {
     if (isLoginInProgress) {
-      return
+      trackLiveLoginBlocked('in_progress')
+      throw new LoginFlowError('login_in_progress', 'Login is already in progress.')
+    }
+
+    const now = Date.now()
+    const lastAttemptAt = Number(sessionStorage.getItem(LOGIN_LAST_ATTEMPT_AT) || '0')
+    const retryAfterMs = LOGIN_COOLDOWN_MS - (now - lastAttemptAt)
+
+    if (retryAfterMs > 0) {
+      trackLiveLoginBlocked('cooldown', Math.ceil(retryAfterMs / 1000))
+      throw new LoginFlowError(
+        'login_cooldown',
+        'Login is temporarily cooling down.',
+        retryAfterMs,
+      )
     }
 
     try {
       setIsLoginInProgress(true)
+      sessionStorage.setItem(LOGIN_LAST_ATTEMPT_AT, String(now))
       localStorage.setItem(LOGIN_REDIRECT_PATH, JSON.stringify(redirectPath))
+      trackLiveLoginAttempt('live_stream_gate')
       await manager.signinRedirect()
     } catch (error) {
       setIsLoginInProgress(false)
+      trackLiveLoginResult('failed', error instanceof Error ? error.message : 'signin_redirect_failed')
       console.error('Login failed:', error)
-      throw error
+      if (error instanceof LoginFlowError) {
+        throw error
+      }
+      throw new LoginFlowError('login_redirect_failed', 'Login redirect failed.')
     }
   }, [isLoginInProgress, manager])
 
@@ -87,8 +124,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       await manager.signinRedirectCallback()
       await manager.clearStaleState()
       setIsLoginInProgress(false)
+      sessionStorage.removeItem(LOGIN_LAST_ATTEMPT_AT)
+      trackLiveLoginResult('success')
     } catch (error) {
       setIsLoginInProgress(false)
+      trackLiveLoginResult('failed', error instanceof Error ? error.message : 'signin_callback_failed')
       console.error('Login callback failed:', error)
       throw error
     }

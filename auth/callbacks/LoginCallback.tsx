@@ -10,6 +10,7 @@ export default function LoginCallback() {
   const { loginCallback, isAuthenticated, isInitialized } = useAuth()
   const processedRef = useRef(false)
   const [callbackDone, setCallbackDone] = useState(false)
+  const [callbackErrorCode, setCallbackErrorCode] = useState<'login_failed' | 'login_busy' | null>(null)
 
   useEffect(() => {
     // Guard against StrictMode double-mount
@@ -26,6 +27,9 @@ export default function LoginCallback() {
         await loginCallback()
       } catch (err) {
         console.warn('Login callback error (may be stale state):', err)
+        const errorMessage = err instanceof Error ? err.message : String(err)
+        const isBusyError = /stale|state|No matching state/i.test(errorMessage)
+        setCallbackErrorCode(isBusyError ? 'login_busy' : 'login_failed')
       }
       setCallbackDone(true)
     }
@@ -43,9 +47,9 @@ export default function LoginCallback() {
       localStorage.removeItem(LOGIN_REDIRECT_PATH)
       navigate(redirectPath, { replace: true })
     } else {
-      navigate('/?error=login_failed', { replace: true })
+      navigate(`/?error=${callbackErrorCode || 'login_failed'}`, { replace: true })
     }
-  }, [callbackDone, isInitialized, isAuthenticated, navigate])
+  }, [callbackDone, callbackErrorCode, isInitialized, isAuthenticated, navigate])
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-black">

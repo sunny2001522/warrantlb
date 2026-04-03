@@ -1,6 +1,12 @@
 import React, { useEffect, useState, useCallback } from "react";
+import { useLocation } from "react-router-dom";
 import { useAuth } from "../auth/AuthContext";
-import { fetchLiveStream, type LiveStreamData } from "../firebase";
+import {
+  fetchLiveStream,
+  isLiveStreamExpired,
+  setLiveStream,
+  type LiveStreamData,
+} from "../firebase";
 
 async function fetchYouTubeTitle(videoId: string): Promise<string | null> {
   try {
@@ -43,6 +49,7 @@ function isInTimeWindow(scheduledTime: string): boolean {
 
 const LiveStreamSection: React.FC<LiveStreamSectionProps> = ({ onStatusChange }) => {
   const { isAuthenticated, login, isLoginInProgress } = useAuth();
+  const location = useLocation();
   const [liveData, setLiveData] = useState<LiveStreamData | null>(null);
   const [showStream, setShowStream] = useState(false);
   const [resolvedTitle, setResolvedTitle] = useState<string>("投資體驗課");
@@ -57,11 +64,35 @@ const LiveStreamSection: React.FC<LiveStreamSectionProps> = ({ onStatusChange })
   }, []);
 
   useEffect(() => {
+    if (liveData?.isActive && liveData.scheduledTime && isLiveStreamExpired(liveData.scheduledTime)) {
+      const nextData = { ...liveData, isActive: false };
+      setLiveData(nextData);
+      void setLiveStream(nextData);
+      return;
+    }
+
     const active = !!(liveData && liveData.isActive &&
       (!liveData.scheduledTime || isInTimeWindow(liveData.scheduledTime)));
     setShowStream(active);
     onStatusChange(active);
   }, [liveData, onStatusChange]);
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const error = params.get("error");
+
+    if (error === "login_failed") {
+      setLoginError("登入沒有完成，可能是高峰流量較大，請稍後再試一次。");
+      return;
+    }
+
+    if (error === "login_busy") {
+      setLoginError("登入請求處理中，請稍候幾秒再試。");
+      return;
+    }
+
+    setLoginError(null);
+  }, [location.search]);
 
   // 標題解析：admin 有填就用，沒填就抓 YouTube 標題
   useEffect(() => {
@@ -146,11 +177,24 @@ const LiveStreamSection: React.FC<LiveStreamSectionProps> = ({ onStatusChange })
     setLoginError(null);
 
     try {
-      await login();
-    } catch {
+      await login(`${location.pathname}${location.search}${location.hash}`);
+    } catch (error) {
+      const typedError = error as { code?: string; retryAfterMs?: number };
+
+      if (typedError.code === "login_in_progress") {
+        setLoginError("登入請求處理中，請不要重複點擊。");
+        return;
+      }
+
+      if (typedError.code === "login_cooldown") {
+        const retrySeconds = Math.max(1, Math.ceil((typedError.retryAfterMs ?? 0) / 1000));
+        setLoginError(`剛剛已送出登入請求，請 ${retrySeconds} 秒後再試。`);
+        return;
+      }
+
       setLoginError("登入服務目前忙碌，請稍後再試一次。");
     }
-  }, [login]);
+  }, [location.hash, location.pathname, location.search, login]);
 
   return (
     <section className="w-full py-8 md:py-14 px-4 md:px-6 bg-[#0a0806]">

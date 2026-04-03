@@ -61,3 +61,34 @@ export const trackOutboundClick = (url: string, linkText: string): void => {
     link_text: linkText,
   });
 };
+
+export const trackLiveLoginAttempt = (source: string): void => {
+  sendEvent("live_login_attempt", {
+    event_category: GA_CONFIG.EVENT_CATEGORIES.CONVERSION,
+    source,
+  });
+};
+
+export const trackLiveLoginBlocked = (
+  reason: "in_progress" | "cooldown",
+  retryAfterSeconds?: number
+): void => {
+  sendEvent("live_login_blocked", {
+    event_category: GA_CONFIG.EVENT_CATEGORIES.ENGAGEMENT,
+    reason,
+    retry_after_seconds: retryAfterSeconds,
+  });
+};
+
+export const trackLiveLoginResult = (
+  status: "success" | "failed",
+  detail?: string
+): void => {
+  sendEvent("live_login_result", {
+    event_category: status === "success"
+      ? GA_CONFIG.EVENT_CATEGORIES.CONVERSION
+      : GA_CONFIG.EVENT_CATEGORIES.ENGAGEMENT,
+    status,
+    detail,
+  });
+};

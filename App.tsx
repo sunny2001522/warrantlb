@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { CTAButton } from "./components/Button";
 import { StackingCard } from "./components/StackingCard";
 import { db } from "./firebase";
-import { collection, getDocs, deleteDoc, doc, setDoc } from "firebase/firestore";
+import { collection, getDocs, doc, setDoc } from "firebase/firestore";
 import LiveStreamSection from "./components/LiveStreamSection";
 
 import { MarqueeCarousel } from "./components/MarqueeCarousel";
@@ -59,15 +59,8 @@ const App: React.FC = () => {
           const active: RegistrationInfo[] = [];
 
           for (const event of allEvents) {
-            const endMatch = event.timeStr.match(/-\s*(\d{1,2}):(\d{2})/);
-            if (!endMatch) { active.push(event); continue; }
-            const endTime = new Date(event.targetDate);
-            endTime.setHours(parseInt(endMatch[1]), parseInt(endMatch[2]), 0, 0);
-
-            if (now >= endTime) {
-              // 已結束 → 從 Firestore 刪除
-              await deleteDoc(doc(db, "registrationEvents", String(event.id)));
-            } else {
+            const startTime = new Date(event.targetDate);
+            if (Number.isNaN(startTime.getTime()) || now < startTime) {
               active.push(event);
             }
           }

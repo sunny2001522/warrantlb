@@ -50,6 +50,14 @@ export function formatDateTimeLocalValue(value: string): string {
   ].join("-") + `T${padTimePart(date.getHours())}:${padTimePart(date.getMinutes())}`;
 }
 
+export function isLiveStreamExpired(scheduledTime: string): boolean {
+  if (!scheduledTime) return false;
+  const scheduled = new Date(scheduledTime).getTime();
+  if (Number.isNaN(scheduled)) return false;
+  const after3h = scheduled + 3 * 60 * 60 * 1000;
+  return Date.now() > after3h;
+}
+
 export function normalizeLiveStreamData(data: Partial<LiveStreamData> & {
   scheduledTime?: string | Timestamp | FirestoreTimestampLike | null;
 }): LiveStreamData {
