@@ -16,40 +16,16 @@ const db = getFirestore(app);
 
 const REGISTRATION_EVENTS = [
   {
-    id: 1,
-    title: "【免費直播】權證小哥-高勝率處置策略線上體驗課",
-    dateStr: "3/19 (四)",
+    id: 3045,
+    title: "權證小哥-高勝率處置策略｜線上體驗課",
+    dateStr: "4/7 (二)",
     timeStr: "21:00 - 22:00",
-    targetDate: "2026-03-19T21:00:00",
+    targetDate: "2026-04-07T21:00:00",
     originalPrice: 6000,
     discountPrice: 0,
-    url: "https://www.cmoney.tw/datasite/shoppingcar.ashx?action=checkout&productType=777004&functionid=3043",
-    productType: 0,
-    functionId: 0,
-  },
-  {
-    id: 2,
-    title: "【免費直播】權證小哥-高勝率處置策略線上體驗課",
-    dateStr: "3/26 (四)",
-    timeStr: "21:00 - 22:00",
-    targetDate: "2026-03-26T21:00:00",
-    originalPrice: 6000,
-    discountPrice: 0,
-    url: "https://www.cmoney.tw/datasite/shoppingcar.ashx?action=checkout&productType=777004&functionid=3044",
-    productType: 0,
-    functionId: 0,
-  },
-  {
-    id: 3,
-    title: "【免費直播】權證小哥-高勝率處置策略線上體驗課",
-    dateStr: "4/09 (四)",
-    timeStr: "21:00 - 22:00",
-    targetDate: "2026-04-09T21:00:00",
-    originalPrice: 6000,
-    discountPrice: 0,
-    url: "https://www.cmoney.tw/datasite/shoppingcar.ashx?action=checkout&productType=777004&functionid=3045",
-    productType: 0,
-    functionId: 0,
+    url: "https://www.cmoney.tw/classes/classdetail/3045",
+    productType: 777004,
+    functionId: 3045,
   },
 ];
 
@@ -60,7 +36,7 @@ async function seed() {
     await setDoc(doc(db, "registrationEvents", String(id)), rest);
     console.log(`✓ 寫入講座 ${id}: ${rest.dateStr}`);
   }
-  console.log("完成！共寫入 3 筆講座資料。");
+  console.log(`完成！共寫入 ${REGISTRATION_EVENTS.length} 筆講座資料。`);
   process.exit(0);
 }
 

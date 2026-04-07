@@ -57,40 +57,37 @@ export function isFreeRegistrationEvent(event: RegistrationInfo): boolean {
   return Number(event.discountPrice) === 0;
 }
 
+const BLOCKED_REGISTRATION_DATES = new Set([
+  "2026-03-19",
+  "2026-03-26",
+  "2026-04-09",
+]);
+
+function getRegistrationDateKey(event: RegistrationInfo): string {
+  return String(event.targetDate || "").slice(0, 10);
+}
+
+export function isBlockedRegistrationEvent(event: RegistrationInfo): boolean {
+  return BLOCKED_REGISTRATION_DATES.has(getRegistrationDateKey(event));
+}
+
+export function sanitizeRegistrationEvents(events: RegistrationInfo[]): RegistrationInfo[] {
+  return events
+    .filter(isFreeRegistrationEvent)
+    .filter((event) => !isBlockedRegistrationEvent(event))
+    .sort((a, b) => a.id - b.id);
+}
+
 export const REGISTRATION_EVENTS: RegistrationInfo[] = [
   {
-    id: 1,
-    title: "【免費直播】權證小哥-高勝率處置策略線上體驗課",
-    dateStr: "3/19 (四)",
+    id: 3045,
+    title: "權證小哥-高勝率處置策略｜線上體驗課",
+    dateStr: "4/7 (二)",
     timeStr: "21:00 - 22:00",
-    targetDate: "2026-03-19T21:00:00",
+    targetDate: "2026-04-07T21:00:00",
     originalPrice: 6000,
     discountPrice: 0,
-    url: "https://www.cmoney.tw/datasite/shoppingcar.ashx?action=checkout&productType=777004&functionid=3043",
-    productType: 777004,
-    functionId: 3043,
-  },
-  {
-    id: 2,
-    title: "【免費直播】權證小哥-高勝率處置策略線上體驗課",
-    dateStr: "3/26 (四)",
-    timeStr: "21:00 - 22:00",
-    targetDate: "2026-03-26T21:00:00",
-    originalPrice: 6000,
-    discountPrice: 0,
-    url: "https://www.cmoney.tw/datasite/shoppingcar.ashx?action=checkout&productType=777004&functionid=3044",
-    productType: 777004,
-    functionId: 3044,
-  },
-  {
-    id: 3,
-    title: "【免費直播】權證小哥-高勝率處置策略線上體驗課",
-    dateStr: "4/09 (四)",
-    timeStr: "21:00 - 22:00",
-    targetDate: "2026-04-09T21:00:00",
-    originalPrice: 6000,
-    discountPrice: 0,
-    url: "https://www.cmoney.tw/datasite/shoppingcar.ashx?action=checkout&productType=777004&functionid=3045",
+    url: "https://www.cmoney.tw/classes/classdetail/3045",
     productType: 777004,
     functionId: 3045,
   },

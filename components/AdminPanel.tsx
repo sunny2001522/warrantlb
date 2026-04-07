@@ -11,7 +11,7 @@ import {
 import { collection, getDocs, doc, setDoc, deleteDoc } from "firebase/firestore";
 import {
   REGISTRATION_EVENTS,
-  isFreeRegistrationEvent,
+  sanitizeRegistrationEvents,
   type RegistrationInfo,
 } from "../constants";
 
@@ -71,7 +71,7 @@ function formatShowDateTime(event: RegistrationInfo): string {
 }
 
 function mapExperienceCoursesToEvents(items: ExperienceCourseResponseItem[]): RegistrationInfo[] {
-  return items
+  return sanitizeRegistrationEvents(items
     .map((item) => item.experienceCourses)
     .filter((course): course is NonNullable<ExperienceCourseResponseItem["experienceCourses"]> => Boolean(course))
     .map((course, index) => {
@@ -88,8 +88,7 @@ function mapExperienceCoursesToEvents(items: ExperienceCourseResponseItem[]): Re
         productType: 777004,
         functionId: course.id,
       };
-    })
-    .filter(isFreeRegistrationEvent);
+    }));
 }
 
 export const AdminPanel: React.FC<AdminPanelProps> = ({ open, onClose }) => {
@@ -99,7 +98,6 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ open, onClose }) => {
   const [source, setSource] = useState<"firestore" | "constants">("constants");
   const [editingEvent, setEditingEvent] = useState<RegistrationInfo | null>(null);
   const [memberImporting, setMemberImporting] = useState(false);
-  const hasAutoSyncedRef = useRef(false);
 
   // Live Stream state
   const [liveForm, setLiveForm] = useState<LiveStreamData>({
@@ -146,18 +144,17 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ open, onClose }) => {
     try {
       const snapshot = await getDocs(collection(db, "registrationEvents"));
       if (!snapshot.empty) {
-        const data = snapshot.docs
-          .map((d) => ({ id: Number(d.id), ...d.data() } as RegistrationInfo))
-          .filter(isFreeRegistrationEvent)
-          .sort((a, b) => a.id - b.id);
+        const data = sanitizeRegistrationEvents(
+          snapshot.docs.map((d) => ({ id: Number(d.id), ...d.data() } as RegistrationInfo)),
+        );
         setEvents(data);
         setSource("firestore");
       } else {
-        setEvents(REGISTRATION_EVENTS.filter(isFreeRegistrationEvent));
+        setEvents(sanitizeRegistrationEvents(REGISTRATION_EVENTS));
         setSource("constants");
       }
     } catch {
-      setEvents(REGISTRATION_EVENTS.filter(isFreeRegistrationEvent));
+      setEvents(sanitizeRegistrationEvents(REGISTRATION_EVENTS));
       setSource("constants");
     }
     setLoading(false);
@@ -236,17 +233,6 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ open, onClose }) => {
     }
   };
 
-  useEffect(() => {
-    if (!open) {
-      hasAutoSyncedRef.current = false;
-      return;
-    }
-
-    if (hasAutoSyncedRef.current) return;
-    hasAutoSyncedRef.current = true;
-    void handleImportByMemberId();
-  }, [open]);
-
   if (!open) return null;
 
   return (
@@ -281,6 +267,9 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ open, onClose }) => {
                     {memberImporting ? "同步中..." : "同步講座"}
                   </button>
                 </div>
+                <p className="text-sm text-gray-400">
+                  只會在你按下「同步講座」時，才用 CMoney 後台資料覆蓋 Firestore。
+                </p>
 
                 <div className="rounded-3xl border border-white/10 bg-[#0f1a2e] p-4 shadow-xl md:p-6">
                   {editingEvent && (

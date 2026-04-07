@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { CTAButton } from "./components/Button";
 import { StackingCard } from "./components/StackingCard";
 import { db } from "./firebase";
-import { collection, getDocs, doc, setDoc } from "firebase/firestore";
+import { collection, getDocs } from "firebase/firestore";
 import LiveStreamSection from "./components/LiveStreamSection";
 
 import { MarqueeCarousel } from "./components/MarqueeCarousel";
@@ -21,7 +21,7 @@ import {
   LECTURER_GALLERY,
   REGISTRATION_EVENTS,
   CASHFLOW_DOMAIN,
-  isFreeRegistrationEvent,
+  sanitizeRegistrationEvents,
   type RegistrationInfo,
 } from "./constants";
 import {
@@ -43,17 +43,16 @@ const App: React.FC = () => {
   const [hasLiveStream, setHasLiveStream] = useState(false);
 
   // 從 Firestore 載入講座資料，失敗則 fallback 到 constants
-  const [events, setEvents] = useState<RegistrationInfo[]>(REGISTRATION_EVENTS.filter(isFreeRegistrationEvent));
+  const [events, setEvents] = useState<RegistrationInfo[]>(sanitizeRegistrationEvents(REGISTRATION_EVENTS));
 
   useEffect(() => {
     (async () => {
       try {
         const snapshot = await getDocs(collection(db, "registrationEvents"));
         if (!snapshot.empty) {
-          const allEvents = snapshot.docs
-            .map((d) => ({ id: Number(d.id), ...d.data() } as RegistrationInfo))
-            .filter(isFreeRegistrationEvent)
-            .sort((a, b) => a.id - b.id);
+          const allEvents = sanitizeRegistrationEvents(
+            snapshot.docs.map((d) => ({ id: Number(d.id), ...d.data() } as RegistrationInfo)),
+          );
 
           const now = new Date();
           const active: RegistrationInfo[] = [];
@@ -66,12 +65,7 @@ const App: React.FC = () => {
           }
           setEvents(active);
         } else {
-          // Firestore 是空的，自動把 constants 推上去
-          for (const event of REGISTRATION_EVENTS) {
-            const { id, ...rest } = event;
-            await setDoc(doc(db, "registrationEvents", String(id)), rest);
-          }
-          setEvents(REGISTRATION_EVENTS.filter(isFreeRegistrationEvent));
+          setEvents(sanitizeRegistrationEvents(REGISTRATION_EVENTS));
         }
       } catch {
         // Firestore 失敗，保持 constants fallback
