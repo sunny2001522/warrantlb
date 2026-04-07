@@ -109,6 +109,29 @@ const LiveStreamSection: React.FC<LiveStreamSectionProps> = ({ onStatusChange })
     }
   }, [liveData]);
 
+  const handleLogin = useCallback(async () => {
+    setLoginError(null);
+
+    try {
+      await login(`${location.pathname}${location.search}${location.hash}`);
+    } catch (error) {
+      const typedError = error as { code?: string; retryAfterMs?: number };
+
+      if (typedError.code === "login_in_progress") {
+        setLoginError("登入請求處理中，請不要重複點擊。");
+        return;
+      }
+
+      if (typedError.code === "login_cooldown") {
+        const retrySeconds = Math.max(1, Math.ceil((typedError.retryAfterMs ?? 0) / 1000));
+        setLoginError(`剛剛已送出登入請求，請 ${retrySeconds} 秒後再試。`);
+        return;
+      }
+
+      setLoginError("登入服務目前忙碌，請稍後再試一次。");
+    }
+  }, [location.hash, location.pathname, location.search, login]);
+
   if (!showStream || !liveData) return null;
 
   const videoId = extractVideoId(liveData.youtubeUrl);
@@ -172,29 +195,6 @@ const LiveStreamSection: React.FC<LiveStreamSectionProps> = ({ onStatusChange })
 
   // 未登入：模糊縮圖 + 登入按鈕
   const thumbnailUrl = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
-
-  const handleLogin = useCallback(async () => {
-    setLoginError(null);
-
-    try {
-      await login(`${location.pathname}${location.search}${location.hash}`);
-    } catch (error) {
-      const typedError = error as { code?: string; retryAfterMs?: number };
-
-      if (typedError.code === "login_in_progress") {
-        setLoginError("登入請求處理中，請不要重複點擊。");
-        return;
-      }
-
-      if (typedError.code === "login_cooldown") {
-        const retrySeconds = Math.max(1, Math.ceil((typedError.retryAfterMs ?? 0) / 1000));
-        setLoginError(`剛剛已送出登入請求，請 ${retrySeconds} 秒後再試。`);
-        return;
-      }
-
-      setLoginError("登入服務目前忙碌，請稍後再試一次。");
-    }
-  }, [location.hash, location.pathname, location.search, login]);
 
   return (
     <section className="w-full py-8 md:py-14 px-4 md:px-6 bg-[#0a0806]">
