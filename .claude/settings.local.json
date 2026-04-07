@@ -2,7 +2,8 @@
   "permissions": {
     "allow": [
       "Bash(cygpath:*)",
-      "WebFetch(domain:warrantlb8888.cmoney.tw)"
+      "WebFetch(domain:warrantlb8888.cmoney.tw)",
+      "Bash(grep -r \"lecture\\\\|register\\\\|purchase\\\\|cmoney\" /c/Users/user1/Documents/warrantlb --include=\"*.ts\" --include=\"*.tsx\" --include=\"*.js\" --exclude-dir=node_modules -l 2>/dev/null | head -20)"
     ]
   }
 }

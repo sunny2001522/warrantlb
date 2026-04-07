@@ -84,9 +84,9 @@ function mapExperienceCoursesToEvents(items: ExperienceCourseResponseItem[]): Re
         targetDate: parsed.targetDate,
         originalPrice: Number(course.originalPrice ?? 0),
         discountPrice: Number(course.price ?? 0),
-        url: "",
-        productType: 0,
-        functionId: 0,
+        url: `https://www.cmoney.tw/classes/classdetail/${course.id}`,
+        productType: 777004,
+        functionId: course.id,
       };
     })
     .filter(isFreeRegistrationEvent);
