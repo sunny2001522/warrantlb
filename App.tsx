@@ -6,6 +6,7 @@ import { collection, getDocs } from "firebase/firestore";
 import LiveStreamSection from "./components/LiveStreamSection";
 
 import { MarqueeCarousel } from "./components/MarqueeCarousel";
+import { FeatureCarousel } from "./components/FeatureCarousel";
 import heroMobile from "./assets/限時動態（1080x1920）.jpg";
 import heroTablet from "./assets/1200X900(沒有日期&CTA).png";
 import heroDesktop from "./assets/內廣A (1200x500)_0402.jpg";
@@ -19,7 +20,6 @@ import {
   APP_VIP_FEATURES,
   COURSE_INCLUDES,
   LECTURER_GALLERY,
-  REGISTRATION_EVENTS,
   CASHFLOW_DOMAIN,
   sanitizeRegistrationEvents,
   type RegistrationInfo,
@@ -43,7 +43,7 @@ const App: React.FC = () => {
   const [hasLiveStream, setHasLiveStream] = useState(false);
 
   // 從 Firestore 載入講座資料，失敗則 fallback 到 constants
-  const [events, setEvents] = useState<RegistrationInfo[]>(sanitizeRegistrationEvents(REGISTRATION_EVENTS));
+  const [events, setEvents] = useState<RegistrationInfo[]>([]);
 
   useEffect(() => {
     (async () => {
@@ -53,22 +53,15 @@ const App: React.FC = () => {
           const allEvents = sanitizeRegistrationEvents(
             snapshot.docs.map((d) => ({ id: Number(d.id), ...d.data() } as RegistrationInfo)),
           );
-
           const now = new Date();
-          const active: RegistrationInfo[] = [];
-
-          for (const event of allEvents) {
+          setEvents(allEvents.filter((event) => {
             const startTime = new Date(event.targetDate);
-            if (Number.isNaN(startTime.getTime()) || now < startTime) {
-              active.push(event);
-            }
-          }
-          setEvents(active);
-        } else {
-          setEvents(sanitizeRegistrationEvents(REGISTRATION_EVENTS));
+            return Number.isNaN(startTime.getTime()) || now < startTime;
+          }));
         }
+        // Firestore 空的就保持 events = []，不 fallback
       } catch {
-        // Firestore 失敗，保持 constants fallback
+        // Firestore 失敗也不 fallback，保持空陣列
       }
     })();
   }, []);
@@ -168,6 +161,19 @@ const App: React.FC = () => {
               CMoney
             </span>
           </div>
+        </div>
+
+        {/* Top-level page tabs */}
+        <div className="flex items-center gap-0.5 md:gap-1 mr-2 md:mr-4">
+          <span className="px-2 md:px-4 py-1 md:py-1.5 text-[10px] md:text-sm font-black tracking-wider md:tracking-widest text-[#d4af37] border-b-2 border-[#d4af37]">
+            處置策略體驗課
+          </span>
+          <a
+            href="/disposition-god"
+            className="px-2 md:px-4 py-1 md:py-1.5 text-[10px] md:text-sm font-bold tracking-wider md:tracking-widest text-gray-400 hover:text-white border-b-2 border-transparent hover:border-white/30 transition-all"
+          >
+            處置神器
+          </a>
         </div>
 
         {/* Desktop Anchor Menu */}
@@ -280,6 +286,10 @@ const App: React.FC = () => {
             </CTAButton>
           </div>
 
+          <div className="scroll-reveal w-full max-w-3xl mx-auto mb-8 md:mb-16">
+            <FeatureCarousel />
+          </div>
+
           <div className="flex items-start md:grid md:grid-cols-3 md:items-start gap-4 md:gap-6 xl:gap-8 overflow-x-auto md:overflow-visible no-scrollbar snap-x snap-mandatory px-2 md:px-0 mb-8 md:mb-32">
             {APP_VIP_FEATURES.map((item, idx) => (
               <div
@@ -302,7 +312,6 @@ const App: React.FC = () => {
                       className="w-full h-full object-cover object-top"
                     />
                   </div>
-                  {/* 卡片底部漸層遮罩 */}
                   <div className="absolute inset-x-0 bottom-0 h-1/4 bg-gradient-to-t from-[#0a1528] via-[#0a1528]/90 to-transparent pointer-events-none rounded-b-[1.5rem] md:rounded-b-[2.5rem]"></div>
                 </div>
               </div>
@@ -633,7 +642,11 @@ const App: React.FC = () => {
             <div className="w-16 md:w-24 h-1 bg-[#d4af37] mx-auto rounded-full"></div>
           </div>
           <div className="flex flex-wrap justify-center gap-4 md:gap-6 xl:gap-8 max-w-7xl mx-auto">
-            {events.map((event) => (
+            {events.length === 0 ? (
+              <div className="w-full text-center py-12 md:py-20">
+                <p className="text-2xl md:text-4xl font-black text-gray-500 serif-font">尚未開放報名</p>
+              </div>
+            ) : events.map((event) => (
               <div
                 key={event.id}
                 className="scroll-reveal w-full lg:w-[calc((100%-1.5rem)/2)] xl:w-[calc((100%-5rem)/3)] max-w-[32rem] bg-[#0b0f1a] border border-[#d4af37]/30 rounded-[1.5rem] md:rounded-[2.5rem] overflow-hidden flex flex-col shadow-2xl transition-all hover:border-[#d4af37] hover:-translate-y-1 group h-full"

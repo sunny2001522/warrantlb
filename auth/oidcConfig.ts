@@ -14,7 +14,6 @@ export function getOidcManager(): UserManager {
   const OIDC_DOMAIN = isProduction
     ? 'https://auth.cmoney.tw'
     : 'https://development-auth.cmoney.tw'
-
   manager = new UserManager({
     authority: OIDC_DOMAIN,
     client_id: 'cm-warrentlb-web',

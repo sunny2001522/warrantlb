@@ -226,6 +226,27 @@
         filter: drop-shadow(0 0 8px rgba(212, 175, 55, 0.3));
       }
 
+      .desktop-screenshot {
+        border: 2px solid transparent;
+        border-radius: 1rem;
+        background: linear-gradient(#060a14, #060a14) padding-box,
+                    linear-gradient(145deg, #fef9c3, #d4af37, #854d0e, #d4af37, #fef9c3) border-box;
+        position: relative;
+        overflow: hidden;
+        transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.4s ease;
+        box-shadow:
+          0 0 30px rgba(212, 175, 55, 0.25),
+          0 0 60px rgba(212, 175, 55, 0.08),
+          0 8px 32px rgba(0, 0, 0, 0.5);
+      }
+      .desktop-screenshot:hover {
+        transform: translateY(-8px);
+        box-shadow:
+          0 0 50px rgba(212, 175, 55, 0.4),
+          0 0 100px rgba(212, 175, 55, 0.15),
+          0 20px 60px rgba(0, 0, 0, 0.6);
+      }
+
       .text-silver-gradient {
         background: linear-gradient(to bottom, #ffffff 0%, #d1d5db 30%, #9ca3af 60%, #4b5563 100%);
         -webkit-background-clip: text;

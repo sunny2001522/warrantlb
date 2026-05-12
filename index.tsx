@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import App from './App';
 import { AdminPage } from './components/AdminPage';
 import { ChatPage } from './pages/ChatPage';
+import DispositionGodLanding from './pages/DispositionGodLanding';
 import { AuthProvider } from './auth/AuthContext';
 import LoginCallback from './auth/callbacks/LoginCallback';
 import LogoutCallback from './auth/callbacks/LogoutCallback';
@@ -30,6 +31,7 @@ root.render(
           <Route path="/" element={<App />} />
           <Route path="/admin-w7k3m9" element={<AdminPage />} />
           <Route path="/chat" element={<ChatPage />} />
+          <Route path="/disposition-god" element={<DispositionGodLanding />} />
           <Route path="/login" element={<LoginCallback />} />
           <Route path="/logout" element={<LogoutCallback />} />
           <Route path="/refresh" element={<SilentRefresh />} />

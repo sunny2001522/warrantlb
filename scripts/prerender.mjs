@@ -4,7 +4,7 @@ import { readFileSync, writeFileSync, existsSync } from 'fs';
 import { resolve, join, extname } from 'path';
 
 const DIST = resolve('dist');
-const ROUTES = ['/'];
+const ROUTES = ['/', '/disposition-god'];
 const PORT = 45678;
 
 // Simple static file server for dist/
