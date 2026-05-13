@@ -1,10 +1,10 @@
 import { launch } from 'puppeteer';
 import { createServer } from 'http';
-import { readFileSync, writeFileSync, existsSync } from 'fs';
-import { resolve, join, extname } from 'path';
+import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'fs';
+import { resolve, join, extname, dirname } from 'path';
 
 const DIST = resolve('dist');
-const ROUTES = ['/', '/disposition-god'];
+const ROUTES = ['/', '/about/DispositionGod'];
 const PORT = 45678;
 
 // Simple static file server for dist/
@@ -43,6 +43,7 @@ server.listen(PORT, async () => {
 
     const html = await page.content();
     const outFile = join(DIST, route === '/' ? 'index.html' : `${route}/index.html`);
+    mkdirSync(dirname(outFile), { recursive: true });
     writeFileSync(outFile, html, 'utf-8');
     console.log(`[prerender] Wrote ${outFile} (${(html.length / 1024).toFixed(1)} KB)`);
     await page.close();

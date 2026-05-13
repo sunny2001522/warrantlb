@@ -1,8 +1,55 @@
 // 轉換事件追蹤
 import { sendEvent } from "../gtag";
-import { sendFBEvent } from "../fbq";
+import { sendFBEvent, sendFBCustomEvent } from "../fbq";
 import { GA_CONFIG } from "../config";
 import type { RegistrationInfo } from "../../constants";
+
+export type DispositionGodPlatform = "web" | "ios" | "android";
+
+export interface OpenDispositionGodParams {
+  buttonLocation: string;
+  buttonText: string;
+  platform?: DispositionGodPlatform;
+  destinationUrl?: string;
+}
+
+// 「打開處置神器」轉換事件 (GA4 + Meta Pixel)
+export const trackOpenDispositionGod = (
+  params: OpenDispositionGodParams,
+): void => {
+  const platform = params.platform ?? "web";
+
+  // GA4 — 自訂事件 + GA4 推薦的 select_content
+  sendEvent("open_disposition_god", {
+    event_category: GA_CONFIG.EVENT_CATEGORIES.CONVERSION,
+    button_location: params.buttonLocation,
+    button_text: params.buttonText,
+    platform,
+    destination_url: params.destinationUrl,
+  });
+
+  sendEvent("select_content", {
+    event_category: GA_CONFIG.EVENT_CATEGORIES.CONVERSION,
+    content_type: "disposition_god",
+    item_id: `disposition_god_${platform}`,
+    button_location: params.buttonLocation,
+  });
+
+  // Meta Pixel — 標準 Lead 事件 + 自訂 OpenDispositionGod
+  sendFBEvent("Lead", {
+    content_name: "DispositionGod",
+    content_category: "disposition_god",
+    button_location: params.buttonLocation,
+    platform,
+  });
+
+  sendFBCustomEvent("OpenDispositionGod", {
+    button_location: params.buttonLocation,
+    button_text: params.buttonText,
+    platform,
+    destination_url: params.destinationUrl,
+  });
+};
 
 // 報名開始追蹤 (使用 GA4 電商事件 + Meta Pixel)
 export const trackRegistrationStart = (registration: RegistrationInfo): void => {

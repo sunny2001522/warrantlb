@@ -5,14 +5,14 @@ import gold1 from "./assets/藍金_01.png";
 import gold2 from "./assets/藍金_02.png";
 import gold3 from "./assets/藍金_03.png";
 import gold4 from "./assets/藍金_04.png";
-import gallery1 from "./assets/LINE_NOTE_260309_1.jpg";
-import gallery2 from "./assets/LINE_NOTE_260309_2.jpg";
-import gallery3 from "./assets/LINE_NOTE_260309_3.jpg";
-import gallery4 from "./assets/LINE_NOTE_260309_4.jpg";
-import gallery5 from "./assets/LINE_NOTE_260309_5.jpg";
-import gallery6 from "./assets/LINE_NOTE_260309_6.jpg";
-import gallery7 from "./assets/LINE_NOTE_260309_7.jpg";
-import gallery8 from "./assets/LINE_NOTE_260309_8.jpg";
+import gallery1 from "./assets/LINE_NOTE_260309_1.webp";
+import gallery2 from "./assets/LINE_NOTE_260309_2.webp";
+import gallery3 from "./assets/LINE_NOTE_260309_3.webp";
+import gallery4 from "./assets/LINE_NOTE_260309_4.webp";
+import gallery5 from "./assets/LINE_NOTE_260309_5.webp";
+import gallery6 from "./assets/LINE_NOTE_260309_6.webp";
+import gallery7 from "./assets/LINE_NOTE_260309_7.webp";
+import gallery8 from "./assets/LINE_NOTE_260309_8.webp";
 
 export const CTA_LINK = "https://www.cmoney.tw/cashflow/Index.aspx?platform=1";
 
