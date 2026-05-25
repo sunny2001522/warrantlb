@@ -28,6 +28,14 @@ root.render(
       <AuthProvider>
         <Routes>
           <Route path="/" element={<App />} />
+          <Route path="/about/DispositionGod" element={
+            <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#080c14', color: '#fff', fontFamily: 'serif' }}>
+              <div style={{ textAlign: 'center' }}>
+                <h1 style={{ fontSize: '2rem', marginBottom: '1rem', color: '#d4af37' }}>尚未推出</h1>
+                <p style={{ fontSize: '1.2rem', color: '#ccc' }}>請耐心等待</p>
+              </div>
+            </div>
+          } />
           <Route path="/admin-w7k3m9" element={<AdminPage />} />
           <Route path="/chat" element={<ChatPage />} />
           <Route path="/login" element={<LoginCallback />} />

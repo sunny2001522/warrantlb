@@ -96,9 +96,6 @@ const App: React.FC = () => {
         scrollToSection(chaptersRef);
         break;
       case 2:
-        scrollToSection(appVipRef);
-        break;
-      case 3:
         scrollToSection(registrationRef);
         break;
       default:
@@ -177,7 +174,6 @@ const App: React.FC = () => {
             { label: "獲利模型", ref: methodRef },
             { label: "講師介紹", ref: lecturerRef },
             { label: "課程大綱", ref: chaptersRef },
-            { label: "APP介紹", ref: appVipRef },
           ].map((item, idx) => (
             <button
               key={idx}
@@ -250,7 +246,8 @@ const App: React.FC = () => {
         </div>
       </section>
 
-      {/* APP VIP Section - 處置神器App */}
+      {/* APP VIP Section - 處置神器App - 暫時隱藏 */}
+      {/*
       <section
         ref={appVipRef}
         className="py-12 md:py-24 px-4 md:px-6 bg-gradient-to-b from-[#080c14] to-[#0f1a2e] flex flex-col justify-center overflow-hidden "
@@ -302,7 +299,6 @@ const App: React.FC = () => {
                       className="w-full h-full object-cover object-top"
                     />
                   </div>
-                  {/* 卡片底部漸層遮罩 */}
                   <div className="absolute inset-x-0 bottom-0 h-1/4 bg-gradient-to-t from-[#0a1528] via-[#0a1528]/90 to-transparent pointer-events-none rounded-b-[1.5rem] md:rounded-b-[2.5rem]"></div>
                 </div>
               </div>
@@ -310,6 +306,7 @@ const App: React.FC = () => {
           </div>
         </div>
       </section>
+      */}
 
       {/* 1. Problem Section - 痛點分析 */}
       <section
@@ -773,7 +770,6 @@ const App: React.FC = () => {
                   { label: "獲利模型", ref: methodRef },
                   { label: "講師介紹", ref: lecturerRef },
                   { label: "課程內容", ref: chaptersRef },
-                  { label: "APP介紹", ref: appVipRef },
                   { label: "報名場次", ref: registrationRef },
                 ].map((item, idx) => (
                   <button

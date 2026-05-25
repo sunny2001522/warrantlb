@@ -27,6 +27,15 @@ export default defineConfig(({ mode }) => {
         alias: {
           '@': path.resolve(__dirname, '.'),
         }
+      },
+      build: {
+        rollupOptions: {
+          output: {
+            assetFileNames: 'assets/[hash][extname]',
+            chunkFileNames: 'assets/[hash].js',
+            entryFileNames: 'assets/[hash].js',
+          }
+        }
       }
     };
 });
