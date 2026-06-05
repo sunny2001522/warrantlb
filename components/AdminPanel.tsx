@@ -10,7 +10,6 @@ import {
 } from "../firebase";
 import { collection, getDocs, doc, setDoc, deleteDoc } from "firebase/firestore";
 import {
-  REGISTRATION_EVENTS,
   sanitizeRegistrationEvents,
   type RegistrationInfo,
 } from "../constants";
@@ -150,12 +149,12 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ open, onClose }) => {
         setEvents(data);
         setSource("firestore");
       } else {
-        setEvents(sanitizeRegistrationEvents(REGISTRATION_EVENTS));
-        setSource("constants");
+        setEvents([]);
+        setSource("firestore");
       }
     } catch {
-      setEvents(sanitizeRegistrationEvents(REGISTRATION_EVENTS));
-      setSource("constants");
+      setEvents([]);
+      setSource("firestore");
     }
     setLoading(false);
   }, []);
