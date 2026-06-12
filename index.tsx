@@ -9,7 +9,6 @@ import { AuthProvider } from './auth/AuthContext';
 import LoginCallback from './auth/callbacks/LoginCallback';
 import LogoutCallback from './auth/callbacks/LogoutCallback';
 import SilentRefresh from './auth/callbacks/SilentRefresh';
-import DispositionGodLanding from './pages/DispositionGodLanding';
 import { initGA, initMetaPixel } from './analytics';
 
 // 初始化 Google Analytics 4
@@ -33,7 +32,6 @@ root.render(
           <Route path="/about/DispositionGod" element={<DispositionGodLanding />} />
           <Route path="/admin-w7k3m9" element={<AdminPage />} />
           <Route path="/chat" element={<ChatPage />} />
-          <Route path="/about/DispositionGod" element={<DispositionGodLanding />} />
           <Route path="/disposition-god" element={<Navigate to="/about/DispositionGod" replace />} />
           <Route path="/login" element={<LoginCallback />} />
           <Route path="/logout" element={<LogoutCallback />} />
