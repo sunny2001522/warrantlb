@@ -113,11 +113,23 @@ const DispositionGodLanding: React.FC = () => {
             href="/"
             className="px-2 md:px-4 py-1 md:py-1.5 text-[10px] md:text-sm font-bold tracking-wider md:tracking-widest text-gray-400 hover:text-white border-b-2 border-transparent hover:border-white/30 transition-all"
           >
+            關於小哥
+          </a>
+          <a
+            href="/course"
+            className="px-2 md:px-4 py-1 md:py-1.5 text-[10px] md:text-sm font-bold tracking-wider md:tracking-widest text-gray-400 hover:text-white border-b-2 border-transparent hover:border-white/30 transition-all"
+          >
             處置體驗課
           </a>
           <span className="px-2 md:px-4 py-1 md:py-1.5 text-[10px] md:text-sm font-black tracking-wider md:tracking-widest text-[#d4af37] border-b-2 border-[#d4af37]">
             處置神器
           </span>
+          <a
+            href="/software"
+            className="hidden sm:inline-block px-2 md:px-4 py-1 md:py-1.5 text-[10px] md:text-sm font-bold tracking-wider md:tracking-widest text-gray-400 hover:text-white border-b-2 border-transparent hover:border-white/30 transition-all"
+          >
+            軟體工具
+          </a>
         </div>
 
         <a

@@ -166,6 +166,13 @@ const App: React.FC = () => {
 
         {/* Top-level page tabs */}
         <div className="flex items-center gap-0.5 md:gap-1 flex-shrink min-w-0 overflow-x-auto">
+          <a
+            href="/"
+            className="px-1.5 md:px-4 py-1 md:py-1.5 text-[10px] md:text-sm font-black tracking-wider md:tracking-widest text-gray-400 hover:text-[#d4af37] whitespace-nowrap transition-colors"
+          >
+            <span className="md:hidden">首頁</span>
+            <span className="hidden md:inline">關於小哥</span>
+          </a>
           <span className="px-1.5 md:px-4 py-1 md:py-1.5 text-[10px] md:text-sm font-black tracking-wider md:tracking-widest text-[#d4af37] border-b-2 border-[#d4af37] whitespace-nowrap">
             <span className="md:hidden">體驗課</span>
             <span className="hidden md:inline">處置策略體驗課</span>
@@ -187,12 +194,6 @@ const App: React.FC = () => {
             className="hidden sm:inline-block px-1.5 md:px-4 py-1 md:py-1.5 text-[10px] md:text-sm font-black tracking-wider md:tracking-widest text-gray-400 hover:text-[#d4af37] whitespace-nowrap transition-colors"
           >
             影音專區
-          </a>
-          <a
-            href="/about"
-            className="hidden sm:inline-block px-1.5 md:px-4 py-1 md:py-1.5 text-[10px] md:text-sm font-black tracking-wider md:tracking-widest text-gray-400 hover:text-[#d4af37] whitespace-nowrap transition-colors"
-          >
-            關於小哥
           </a>
         </div>
 
@@ -803,11 +804,11 @@ const App: React.FC = () => {
               </h4>
               <div className="grid grid-cols-2 gap-x-4 gap-y-2">
                 {[
-                  { label: "處置體驗課", href: "/" },
+                  { label: "關於小哥", href: "/" },
+                  { label: "處置體驗課", href: "/course" },
                   { label: "處置神器", href: "/about/DispositionGod" },
                   { label: "軟體工具", href: "/software" },
                   { label: "影音專區", href: "/media" },
-                  { label: "關於小哥", href: "/about" },
                 ].map((item, idx) => (
                   <a
                     key={idx}

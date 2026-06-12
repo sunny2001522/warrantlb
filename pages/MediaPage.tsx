@@ -5,6 +5,8 @@ import {
   YOUTUBE_CHANNEL_URL,
   TUTORIAL_SERIES,
   FEATURED_VIDEOS,
+  YOUTUBE_SHOWS,
+  CMONEY_COURSES,
   SOCIAL_LINKS,
   type VideoItem,
 } from "../siteContent";
@@ -20,7 +22,7 @@ const VideoCard: React.FC<{ video: VideoItem; index: number }> = ({ video, index
         href={href}
         target="_blank"
         rel="noreferrer"
-        className="block bg-[#0b0f1a] border border-[#d4af37]/25 rounded-[1.25rem] overflow-hidden hover:border-[#d4af37] hover:-translate-y-1 transition-all group h-full"
+        className="block bg-[#0d1830] border border-[#2563eb]/25 rounded-[1.25rem] overflow-hidden hover:border-[#d4af37] hover:-translate-y-1 transition-all group h-full"
       >
         <div className="relative aspect-video bg-gradient-to-br from-[#10182a] to-black flex items-center justify-center overflow-hidden">
           {video.videoId ? (
@@ -64,12 +66,12 @@ const MediaPage: React.FC = () => {
   });
 
   return (
-    <div className="min-h-screen bg-[#080c14] text-white selection:bg-[#d4af37] selection:text-black">
+    <div className="min-h-screen bg-[#0a1228] text-white selection:bg-[#d4af37] selection:text-black">
       <SiteHeader active="/media" />
 
       {/* Hero */}
-      <section className="relative pt-24 md:pt-40 pb-10 md:pb-16 px-4 md:px-6 overflow-hidden">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[80vw] h-[40vh] bg-red-600/5 blur-[120px] rounded-full pointer-events-none"></div>
+      <section className="relative pt-24 md:pt-40 pb-10 md:pb-16 px-4 md:px-6 overflow-hidden bg-gradient-to-b from-[#0d1d42] to-[#0a1228]">
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[80vw] h-[40vh] bg-[#2563eb]/15 blur-[120px] rounded-full pointer-events-none"></div>
         <div className="max-w-5xl mx-auto text-center relative z-10">
           <Reveal>
             <p className="text-[#d4af37] text-sm md:text-base font-black tracking-[0.3em] mb-3">
@@ -96,7 +98,7 @@ const MediaPage: React.FC = () => {
       </section>
 
       {/* 新手教學系列 */}
-      <section className="py-10 md:py-20 px-4 md:px-6 bg-gradient-to-b from-[#080c14] to-black border-t border-white/5">
+      <section className="py-10 md:py-20 px-4 md:px-6 bg-gradient-to-b from-[#0a1228] to-[#091022] border-t border-white/5">
         <div className="max-w-6xl mx-auto">
           <Reveal className="text-center mb-8 md:mb-14">
             <h2 className="text-2xl md:text-5xl font-black serif-font italic text-gold-gradient mb-3">
@@ -113,7 +115,7 @@ const MediaPage: React.FC = () => {
       </section>
 
       {/* 精選影片 */}
-      <section className="py-10 md:py-20 px-4 md:px-6 bg-black border-t border-white/5">
+      <section className="py-10 md:py-20 px-4 md:px-6 bg-[#091022] border-t border-white/5">
         <div className="max-w-6xl mx-auto">
           <Reveal className="text-center mb-8 md:mb-14">
             <h2 className="text-2xl md:text-5xl font-black serif-font italic text-gold-gradient mb-3">
@@ -124,6 +126,73 @@ const MediaPage: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-8">
             {FEATURED_VIDEOS.map((v, i) => (
               <VideoCard key={v.title} video={v} index={i} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 電視節目單元 */}
+      <section className="py-10 md:py-20 px-4 md:px-6 bg-gradient-to-b from-[#091022] to-[#0a1228] border-t border-white/5">
+        <div className="max-w-6xl mx-auto">
+          <Reveal className="text-center mb-8 md:mb-14">
+            <h2 className="text-2xl md:text-5xl font-black serif-font italic text-gold-gradient mb-3">
+              節目單元
+            </h2>
+            <p className="text-gray-400 text-sm md:text-lg">東森《理財達人秀》常駐嘉賓,節目累積千萬觀看</p>
+          </Reveal>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+            {YOUTUBE_SHOWS.map((s, i) => (
+              <Reveal key={s.title} delay={i * 100}>
+                <a
+                  href={s.url}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="flex items-center gap-4 bg-[#0d1830] border border-[#2563eb]/25 rounded-[1.25rem] p-5 md:p-7 hover:border-[#d4af37] hover:-translate-y-1 transition-all group h-full"
+                >
+                  <div className="w-12 h-12 md:w-16 md:h-16 rounded-full bg-[#2563eb]/15 border border-[#2563eb]/40 flex items-center justify-center flex-shrink-0">
+                    <i className={`${s.icon} text-blue-300 text-lg md:text-xl`}></i>
+                  </div>
+                  <div className="min-w-0">
+                    <h3 className="text-white text-base md:text-xl font-black serif-font group-hover:text-[#d4af37] transition-colors">
+                      {s.title}
+                    </h3>
+                    <p className="text-gray-500 text-xs md:text-sm font-bold mt-1">{s.desc}</p>
+                  </div>
+                  <i className="fas fa-external-link-alt text-gray-600 group-hover:text-[#d4af37] text-xs ml-auto flex-shrink-0 transition-colors"></i>
+                </a>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 線上影音課程 */}
+      <section className="py-10 md:py-20 px-4 md:px-6 bg-[#0a1228] border-t border-white/5">
+        <div className="max-w-6xl mx-auto">
+          <Reveal className="text-center mb-8 md:mb-14">
+            <h2 className="text-2xl md:text-5xl font-black serif-font italic text-gold-gradient mb-3">
+              線上影音課程
+            </h2>
+            <p className="text-gray-400 text-sm md:text-lg">從新手班到 VVIP 進階戰法,完整課程體系</p>
+          </Reveal>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+            {CMONEY_COURSES.map((c, i) => (
+              <Reveal key={c.title} delay={i * 80}>
+                <a
+                  href={c.url}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="block bg-[#0d1830] border border-[#2563eb]/25 rounded-[1.25rem] p-5 md:p-6 hover:border-[#d4af37] hover:-translate-y-1 transition-all group h-full"
+                >
+                  <span className="inline-block px-2.5 py-1 rounded-full bg-[#d4af37]/10 border border-[#d4af37]/40 text-[#d4af37] text-[10px] md:text-xs font-black tracking-widest mb-3">
+                    {c.tag}
+                  </span>
+                  <h3 className="text-white text-base md:text-lg font-black serif-font leading-snug mb-2 group-hover:text-[#d4af37] transition-colors">
+                    {c.title}
+                  </h3>
+                  <p className="text-gray-500 text-xs md:text-sm leading-relaxed">{c.desc}</p>
+                </a>
+              </Reveal>
             ))}
           </div>
         </div>
@@ -145,7 +214,7 @@ const MediaPage: React.FC = () => {
                   href={s.url}
                   target="_blank"
                   rel="noreferrer"
-                  className="flex items-center gap-4 bg-[#0b0f1a] border border-[#d4af37]/25 rounded-[1.25rem] p-5 md:p-6 hover:border-[#d4af37] hover:-translate-y-1 transition-all group h-full"
+                  className="flex items-center gap-4 bg-[#0d1830] border border-[#2563eb]/25 rounded-[1.25rem] p-5 md:p-6 hover:border-[#d4af37] hover:-translate-y-1 transition-all group h-full"
                 >
                   <div
                     className={`w-12 h-12 md:w-14 md:h-14 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-gray-300 ${s.hoverColor} group-hover:text-white transition-all flex-shrink-0`}

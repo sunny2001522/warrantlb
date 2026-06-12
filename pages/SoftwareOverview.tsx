@@ -14,12 +14,12 @@ const SoftwareOverview: React.FC = () => {
   });
 
   return (
-    <div className="min-h-screen bg-[#080c14] text-white selection:bg-[#d4af37] selection:text-black">
+    <div className="min-h-screen bg-[#0a1228] text-white selection:bg-[#d4af37] selection:text-black">
       <SiteHeader active="/software" />
 
       {/* Hero */}
-      <section className="relative pt-24 md:pt-40 pb-10 md:pb-16 px-4 md:px-6 overflow-hidden">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[80vw] h-[40vh] bg-[#d4af37]/5 blur-[120px] rounded-full pointer-events-none"></div>
+      <section className="relative pt-24 md:pt-40 pb-10 md:pb-16 px-4 md:px-6 overflow-hidden bg-gradient-to-b from-[#0d1d42] to-[#0a1228]">
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[80vw] h-[40vh] bg-[#2563eb]/15 blur-[120px] rounded-full pointer-events-none"></div>
         <div className="max-w-5xl mx-auto text-center relative z-10">
           <Reveal>
             <p className="text-[#d4af37] text-sm md:text-base font-black tracking-[0.3em] mb-3">
@@ -43,7 +43,7 @@ const SoftwareOverview: React.FC = () => {
           {TOOL_CARDS.map((tool, i) => (
             <Reveal key={tool.title} delay={i * 100}>
               <div
-                className={`relative bg-gradient-to-br ${tool.theme} border border-[#d4af37]/25 rounded-[1.5rem] md:rounded-[2rem] p-6 md:p-10 flex flex-col h-full overflow-hidden hover:border-[#d4af37] hover:-translate-y-1 hover:shadow-[0_8px_50px_rgba(212,175,55,0.12)] transition-all group`}
+                className={`relative bg-gradient-to-br ${tool.theme} border border-[#2563eb]/25 rounded-[1.5rem] md:rounded-[2rem] p-6 md:p-10 flex flex-col h-full overflow-hidden hover:border-[#d4af37] hover:-translate-y-1 hover:shadow-[0_8px_50px_rgba(212,175,55,0.12)] transition-all group`}
               >
                 {tool.badge && (
                   <span className="absolute top-4 right-4 md:top-6 md:right-6 px-3 py-1 rounded-full bg-[#d4af37] text-black text-[10px] md:text-xs font-black tracking-widest">
@@ -93,7 +93,7 @@ const SoftwareOverview: React.FC = () => {
 
         {/* 體驗課導流 */}
         <Reveal className="max-w-4xl mx-auto mt-12 md:mt-20">
-          <div className="bg-[#0b0f1a] border border-[#d4af37]/40 rounded-[1.5rem] md:rounded-[2rem] p-6 md:p-12 text-center">
+          <div className="bg-[#0d1830] border border-[#d4af37]/40 rounded-[1.5rem] md:rounded-[2rem] p-6 md:p-12 text-center">
             <h3 className="text-xl md:text-4xl font-black serif-font italic text-gold-gradient mb-3 md:mb-4">
               不知道從哪套工具開始?
             </h3>
@@ -101,7 +101,7 @@ const SoftwareOverview: React.FC = () => {
               先來免費的處置策略體驗課,聽小哥親自示範工具怎麼搭配策略使用
             </p>
             <a
-              href="/"
+              href="/course"
               className="inline-flex items-center gap-3 px-8 md:px-14 py-3 md:py-5 rounded-full bg-[#d4af37] text-black text-base md:text-xl font-black tracking-widest hover:scale-105 active:scale-95 transition-all shadow-[0_0_40px_rgba(212,175,55,0.3)]"
             >
               免費報名體驗課

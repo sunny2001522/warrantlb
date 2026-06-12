@@ -7,6 +7,8 @@ import { ChatPage } from './pages/ChatPage';
 import DispositionGodLanding from './pages/DispositionGodLanding';
 import AboutExpert from './pages/AboutExpert';
 import SoftwareOverview from './pages/SoftwareOverview';
+import OmniMonitorPage from './pages/OmniMonitorPage';
+import DayTradePage from './pages/DayTradePage';
 import MediaPage from './pages/MediaPage';
 import { AuthProvider } from './auth/AuthContext';
 import LoginCallback from './auth/callbacks/LoginCallback';
@@ -31,10 +33,13 @@ root.render(
     <BrowserRouter>
       <AuthProvider>
         <Routes>
-          <Route path="/" element={<App />} />
+          <Route path="/" element={<AboutExpert />} />
+          <Route path="/course" element={<App />} />
           <Route path="/about/DispositionGod" element={<DispositionGodLanding />} />
-          <Route path="/about" element={<AboutExpert />} />
+          <Route path="/about" element={<Navigate to="/" replace />} />
           <Route path="/software" element={<SoftwareOverview />} />
+          <Route path="/software/omni-monitor" element={<OmniMonitorPage />} />
+          <Route path="/software/day-trade" element={<DayTradePage />} />
           <Route path="/media" element={<MediaPage />} />
           <Route path="/admin-w7k3m9" element={<AdminPage />} />
           <Route path="/chat" element={<ChatPage />} />

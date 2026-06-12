@@ -1,6 +1,7 @@
 // 權證小哥官網 — 全站內容資料層
 // 結構仿照 enru 專案的 constants.tsx / softwareContent.ts
-// 資料來源: CMoney 達人頁、理財寶、App Store、YouTube、Facebook、媒體報導 (2026-06 整理)
+// 資料來源: CMoney 理財寶商品頁、App Store/Google Play、dispostock-web 專案資料、
+//          YouTube、Facebook、媒體報導 (2026-06 查證)
 
 /* ───────────────────────── 講師檔案 ───────────────────────── */
 
@@ -8,7 +9,7 @@ export const EXPERT_NAME = "權證小哥";
 export const EXPERT_TAGLINE = "破解主力籌碼 × 精通金融商品";
 
 export const EXPERT_INTRO =
-  "素人起家的專職交易人。國立大學科學教育系畢業、曾任學校老師，歷經三次本金歸零的挫敗後," +
+  "素人起家的專職交易人。國立大學科學教育系畢業、曾任學校老師,歷經三次本金歸零的挫敗後," +
   "在 2009 年台股多頭行情中,以僅存的 10 萬元本金搭配高槓桿的「權證」操作,滾出千萬資產、達成財務自由。" +
   "交易核心鎖定「籌碼流向」與「量價結構」,強項是破解主力大戶的交易手法,並以公開真實對帳單的方式教學。";
 
@@ -131,13 +132,39 @@ export const TOOL_CARDS: ToolCardData[] = [
     title: "處置神器",
     subtitle: "處置股預測・監控 APP",
     description:
-      "明日處置預測準確度高達 99%,不必懂計算、只要看答案。每日處置日報、八段燈號監控、獨家兩年大數據統計,把處置股風險化為獲利機會。",
-    features: ["明日必關股提前一日掌握", "漲跌機率・平均漲幅統計", "浪子回頭・深蹲蓄力智慧提醒", "App Store 4.9 ★ 評價"],
+      "明日處置預測準確度高達 99%,不必懂計算、只要看答案。每日處置日報、八段燈號監控、處置統計大數據與獨家「雙刀戰法」,把處置股風險化為獲利機會。",
+    features: ["明日必關股提前一日掌握", "處置統計三大樣本(全樣本/近20日/近5日)", "雙刀戰法完整資料", "App Store 4.9 ★ 評價"],
     href: "/about/DispositionGod",
     external: false,
     cta: "了解處置神器",
-    theme: "from-[#1a3a6a] via-[#10182a] to-[#080c14]",
+    theme: "from-[#1a3a6a] via-[#10182a] to-[#0a1228]",
     icon: "fas fa-gavel",
+    badge: "小哥團隊出品",
+  },
+  {
+    title: "全方位盤中監控 APP",
+    subtitle: "主力大戶下單監控",
+    description:
+      "全方位 APP 融合電腦版三大軟體,獨家「主力流水牆」幫助您一眼看出主力盤中多空方向,加權指數與台指期推播、國際股市資料一手掌握。",
+    features: ["獨家主力流水牆", "融合電腦版三大軟體", "加權指數・台指期即時推播", "國際股市資料"],
+    href: "/software/omni-monitor",
+    external: false,
+    cta: "了解全方位監控",
+    theme: "from-[#2d5a3d] via-[#0e1f15] to-[#0a1228]",
+    icon: "fas fa-desktop",
+    badge: "小哥團隊出品",
+  },
+  {
+    title: "當沖飆股神手",
+    subtitle: "你最實用的當沖工具",
+    description:
+      "協助判斷股價高低點的當沖軟體。獨家燈號亮起看出主力攻擊方向,16 種策略找出多空強弱勢股,14 項關鍵技術指標監控資金流向。",
+    features: ["獨家燈號看主力攻擊方向", "16 種多空強弱勢股策略", "14 項關鍵技術指標", "小哥免費教學影片"],
+    href: "/software/day-trade",
+    external: false,
+    cta: "了解當沖飆股神手",
+    theme: "from-[#7a2e1e] via-[#241008] to-[#0a1228]",
+    icon: "fas fa-bolt",
     badge: "小哥團隊出品",
   },
   {
@@ -149,20 +176,8 @@ export const TOOL_CARDS: ToolCardData[] = [
     href: "https://www.cmoney.tw/app/itemcontent.aspx?id=2244",
     external: true,
     cta: "前往理財寶",
-    theme: "from-[#7a5c1e] via-[#241c0a] to-[#080c14]",
+    theme: "from-[#7a5c1e] via-[#241c0a] to-[#0a1228]",
     icon: "fas fa-chart-line",
-  },
-  {
-    title: "全方位盤中監控 APP",
-    subtitle: "主力大戶下單監控",
-    description:
-      "幫你盤中即時監控主力大戶的下單動態,第一時間掌握大單異動、漲跌停板與關鍵價位,換你監控主力下單。",
-    features: ["盤中大單即時警示", "主力下單動態追蹤", "自訂監控條件", "電腦版+手機版雙平台"],
-    href: "https://www.cmoney.tw/app/itemcontent.aspx?id=2770",
-    external: true,
-    cta: "前往理財寶",
-    theme: "from-[#2d5a3d] via-[#0e1f15] to-[#080c14]",
-    icon: "fas fa-desktop",
   },
   {
     title: "從分點探索權證標的",
@@ -173,14 +188,109 @@ export const TOOL_CARDS: ToolCardData[] = [
     href: "https://www.cmoney.tw/app/itemcontent.aspx?id=1631",
     external: true,
     cta: "前往理財寶",
-    theme: "from-[#5a3d7a] via-[#170e1f] to-[#080c14]",
+    theme: "from-[#5a3d7a] via-[#170e1f] to-[#0a1228]",
     icon: "fas fa-search-dollar",
   },
 ];
 
+/* ─────────────── 工具獨立頁資料 (仿 enru ProductPageData) ─────────────── */
+
+export interface ToolPageData {
+  slug: string;
+  metaTitle: string;
+  metaDescription: string;
+  eyebrow: string;
+  title: string;
+  subtitle: string;
+  description: string;
+  icon: string;
+  heroTheme: string; // gradient classes
+  summaryCards: { label: string; value: string; detail: string }[];
+  features: { icon: string; title: string; desc: string }[];
+  pricing: { plan: string; price: string; original?: string; note?: string; highlight?: boolean }[];
+  purchaseHref: string;
+  storeLinks: { label: string; icon: string; url: string }[];
+  disclaimer?: string;
+}
+
+export const OMNI_MONITOR_PAGE: ToolPageData = {
+  slug: "omni-monitor",
+  metaTitle: "全方位盤中監控 APP|獨家主力流水牆 - 權證小哥官網",
+  metaDescription:
+    "權證小哥-全方位盤中監控APP:融合電腦版三大軟體,獨家主力流水牆幫你一眼看出主力盤中多空方向,加權指數與台指期即時推播、國際股市資料。季訂 NT$2,688 起。",
+  eyebrow: "OMNI INTRADAY MONITOR",
+  title: "全方位盤中監控 APP",
+  subtitle: "幫你監控主力大戶的好幫手",
+  description:
+    "全方位 APP 融合電腦版三大軟體,獨家「主力流水牆」幫助您一眼看出主力盤中多空方向。盤中即時監控主力大戶下單動態,第一時間掌握大單異動與關鍵價位。",
+  icon: "fas fa-desktop",
+  heroTheme: "from-[#15402a] via-[#0d2418] to-[#0a1228]",
+  summaryCards: [
+    { label: "獨家功能", value: "主力流水牆", detail: "一眼看出主力多空方向" },
+    { label: "整合", value: "3 套軟體", detail: "電腦版三大軟體融合" },
+    { label: "推播", value: "即時", detail: "加權指數・台指期" },
+  ],
+  features: [
+    { icon: "fas fa-stream", title: "獨家主力流水牆", desc: "主力大戶下單動態即時呈現,盤中多空方向一目了然。" },
+    { icon: "fas fa-layer-group", title: "融合三大軟體", desc: "電腦版三大監控軟體功能整合進一支手機 APP。" },
+    { icon: "fas fa-bell", title: "加權・台指期推播", desc: "大盤與台指期關鍵異動即時推播,不盯盤也不漏接。" },
+    { icon: "fas fa-globe-asia", title: "國際股市資料", desc: "國際股市行情整合(2023/06 新增),全球連動一手掌握。" },
+    { icon: "fas fa-bolt", title: "大單異動警示", desc: "盤中大單即時警示,跟上主力進出第一時間。" },
+    { icon: "fas fa-sliders-h", title: "自訂監控條件", desc: "依自己的交易邏輯設定監控條件,把策略變成自動化燈號。" },
+  ],
+  pricing: [
+    { plan: "季訂閱", price: "NT$2,688", original: "NT$3,888", highlight: true },
+    { plan: "年訂閱", price: "NT$8,888", original: "NT$16,888" },
+  ],
+  purchaseHref: "https://www.cmoney.tw/app/itemcontent.aspx?id=2770",
+  storeLinks: [
+    { label: "App Store / Google Play", icon: "fas fa-mobile-alt", url: "https://www.cmoney.tw/app/itemcontent.aspx?id=2770" },
+  ],
+  disclaimer: "App 商店搜尋「全方位獨門監控」。提供免費試用,試用期後自動續訂;本商品為行動版 APP,不含電腦版軟體。",
+};
+
+export const DAY_TRADE_PAGE: ToolPageData = {
+  slug: "day-trade",
+  metaTitle: "當沖飆股神手 APP|獨家燈號×16策略×14指標 - 權證小哥官網",
+  metaDescription:
+    "權證小哥-當沖飆股神手APP:你最實用的當沖工具。獨家燈號看出主力攻擊方向、16 種多空強弱勢股策略、14 項關鍵技術指標監控資金流向,搭配小哥免費教學影片。季訂 NT$3,688 起。",
+  eyebrow: "DAY TRADE MASTER",
+  title: "當沖飆股神手",
+  subtitle: "你最實用的當沖工具",
+  description:
+    "協助判斷股價高低點的當沖軟體。獨家燈號在走勢圖上亮起,看出主力攻擊方向與盤中轉折點;連次、連量分析搭配籌碼資金流向,支援多空雙向的當沖決策。",
+  icon: "fas fa-bolt",
+  heroTheme: "from-[#5a2418] via-[#2e1208] to-[#0a1228]",
+  summaryCards: [
+    { label: "獨家燈號", value: "主力攻擊", detail: "走勢圖亮燈看轉折" },
+    { label: "策略", value: "16 種", detail: "多空強弱勢股全覆蓋" },
+    { label: "技術指標", value: "14 項", detail: "籌碼與資金流監控" },
+  ],
+  features: [
+    { icon: "fas fa-traffic-light", title: "獨家燈號訊號", desc: "燈號亮起即看出主力攻擊方向,抓住盤中轉折點。" },
+    { icon: "fas fa-chess", title: "16 種當沖策略", desc: "多頭、空頭市場的強勢股與弱勢股策略全覆蓋。" },
+    { icon: "fas fa-tachometer-alt", title: "14 項關鍵指標", desc: "連次、連量、籌碼資金流向等核心指標即時監控。" },
+    { icon: "fas fa-arrows-alt-v", title: "高低點判斷", desc: "協助判斷股價高低點,支援做多做空雙向決策。" },
+    { icon: "fas fa-video", title: "小哥免費教學影片", desc: "內建小哥的免費教學影片,授人以漁學會方法。" },
+    { icon: "fas fa-search", title: "盤後選股", desc: "兼具盤中當沖工具與盤後選股功能,一支 APP 兩種用法。" },
+  ],
+  pricing: [
+    { plan: "季訂閱", price: "NT$3,688", original: "NT$6,000", note: "最熱門", highlight: true },
+    { plan: "年訂閱", price: "NT$8,888", original: "NT$13,600" },
+    { plan: "App 內月訂閱", price: "NT$1,490 / 月" },
+  ],
+  purchaseHref: "https://www.cmoney.tw/app/itemcontent.aspx?id=4776",
+  storeLinks: [
+    { label: "App Store", icon: "fab fa-apple", url: "https://apps.apple.com/tw/app/id1522218686" },
+    { label: "Google Play", icon: "fab fa-google-play", url: "https://play.google.com/store/apps/details?id=com.cmoney.mrwarrantpocketstocks" },
+  ],
+  disclaimer: "App Store 4.3★(166 則評價)。提供免費試用,試用期後自動續訂;本商品為行動版 APP。",
+};
+
 /* ───────────────────────── 影音與社群 ───────────────────────── */
 
 export const YOUTUBE_CHANNEL_URL = "https://www.youtube.com/@cng07151";
+export const EBC_SHOW_CHANNEL_URL = "https://www.youtube.com/@EBCmoneyshow";
 
 export interface VideoItem {
   title: string;
@@ -226,6 +336,64 @@ export const FEATURED_VIDEOS: VideoItem[] = [
     desc: "破解追高殺低的散戶宿命,用主力籌碼做短線操作。",
     videoId: "VcylpXubjVY",
     tag: "短線戰法",
+  },
+];
+
+/** 電視節目單元 (理財達人秀 EBCmoneyshow) */
+export interface ShowItem {
+  title: string;
+  desc: string;
+  url: string;
+  icon: string;
+}
+
+export const YOUTUBE_SHOWS: ShowItem[] = [
+  {
+    title: "理財達人秀|權證小哥",
+    desc: "東森《理財達人秀》常駐嘉賓,每集拆解盤面籌碼與處置股動態。",
+    url: EBC_SHOW_CHANNEL_URL,
+    icon: "fas fa-tv",
+  },
+  {
+    title: "哥有籌必報",
+    desc: "小哥的籌碼觀察固定單元,主力分點、大戶買賣超有籌必報。",
+    url: EBC_SHOW_CHANNEL_URL,
+    icon: "fas fa-bullhorn",
+  },
+];
+
+/** CMoney 線上影音課程 (來源: dispostock-web courses 資料) */
+export interface CourseItem {
+  title: string;
+  desc: string;
+  url: string;
+  tag: string;
+}
+
+export const CMONEY_COURSES: CourseItem[] = [
+  {
+    title: "處置神器 ✕ 進階雙刀處置策略",
+    desc: "VVIP 專屬:處置股進階雙刀戰法完整教學。",
+    url: "https://www.cmoney.tw/app/expert/warrantlb",
+    tag: "VVIP 專屬",
+  },
+  {
+    title: "權證小哥 ETF 套利 × 吃豆腐",
+    desc: "6 小時 × 5 戰術多空雙賺 ft. 葉芷娟。",
+    url: "https://www.cmoney.tw/app/expert/warrantlb",
+    tag: "線上課程",
+  },
+  {
+    title: "籌碼致勝!7 小時多空實戰新手班",
+    desc: "從籌碼出發的多空實戰入門,新手也能跟上。",
+    url: "https://www.cmoney.tw/app/expert/warrantlb",
+    tag: "線上課程",
+  },
+  {
+    title: "獲利為王!當沖新手全攻略",
+    desc: "當沖入門到實戰的完整攻略課。",
+    url: "https://www.cmoney.tw/app/expert/warrantlb",
+    tag: "線上課程",
   },
 ];
 
@@ -298,9 +466,9 @@ export interface NavItem {
 }
 
 export const SITE_NAV: NavItem[] = [
-  { label: "處置體驗課", shortLabel: "體驗課", href: "/" },
+  { label: "關於小哥", shortLabel: "首頁", href: "/" },
+  { label: "處置體驗課", shortLabel: "體驗課", href: "/course" },
   { label: "處置神器", href: "/about/DispositionGod" },
   { label: "軟體工具", href: "/software" },
   { label: "影音專區", href: "/media" },
-  { label: "關於小哥", href: "/about" },
 ];
