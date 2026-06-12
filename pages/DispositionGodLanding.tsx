@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from "react";
 import cmLogo from "../assets/同學會 (1).png";
-import { SoftwareDropdown } from "../components/SiteChrome";
+import { SiteHeader } from "../components/SiteChrome";
 import shop1 from "../assets/商店頁-1.png";
 import shop2 from "../assets/商店頁-2.png";
 import shop3 from "../assets/商店頁-3.png";
@@ -25,7 +25,6 @@ const DispositionGodLanding: React.FC = () => {
   const [dailySlide, setDailySlide] = useAutoSlide(3, 4500);
   const [statsSlide, setStatsSlide] = useAutoSlide(3, 4500);
   const [billSlide, setBillSlide] = useAutoSlide(4, 3500);
-  const [navSolid, setNavSolid] = useState(false);
   const [countdown, setCountdown] = useState({ h: 0, m: 0, s: 0 });
 
   useEffect(() => {
@@ -43,17 +42,6 @@ const DispositionGodLanding: React.FC = () => {
     tick();
     const timer = setInterval(tick, 1000);
     return () => clearInterval(timer);
-  }, []);
-
-  useEffect(() => {
-    const heroEl = document.getElementById("hero-section");
-    if (!heroEl) return;
-    const obs = new IntersectionObserver(
-      ([entry]) => setNavSolid(!entry.isIntersecting),
-      { threshold: 0 }
-    );
-    obs.observe(heroEl);
-    return () => obs.disconnect();
   }, []);
 
   useEffect(() => {
@@ -94,51 +82,20 @@ const DispositionGodLanding: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-[#080c14] text-white selection:bg-[#d4af37] selection:text-black">
-      {/* Navigation */}
-      <nav className={`fixed top-0 left-0 right-0 z-50 px-4 md:px-6 py-2 md:py-4 flex justify-between items-center transition-all duration-300 ${navSolid ? "bg-[#080c14]/90 backdrop-blur-md border-b border-[#d4af37]/20" : "bg-transparent"}`}>
-        <a href="/" className="flex items-center gap-2 md:gap-3">
-          <img src={cmLogo} alt="CMoney Logo" className="h-6 md:h-10" />
-          <div className="flex flex-col">
-            <span className="text-xs md:text-base font-black tracking-widest text-white leading-tight">
-              權證小哥
-            </span>
-            <span className="text-[8px] md:text-xs text-[#d4af37] font-bold tracking-[0.2em]">
-              CMoney
-            </span>
-          </div>
-        </a>
-
-        {/* Top-level page tabs */}
-        <div className="flex items-center gap-0.5 md:gap-1">
+      {/* Navigation — 全站共用 header */}
+      <SiteHeader
+        active="/about/DispositionGod"
+        rightSlot={
           <a
-            href="/"
-            className="px-2 md:px-4 py-1 md:py-1.5 text-[10px] md:text-sm font-bold tracking-wider md:tracking-widest text-gray-400 hover:text-white border-b-2 border-transparent hover:border-white/30 transition-all"
+            href={TARGET_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="blue-shimmer-btn inline-block px-4 md:px-6 py-1.5 md:py-2 text-[10px] md:text-sm font-black rounded-full text-white shadow-2xl transition-all transform active:scale-95 overflow-hidden cursor-pointer whitespace-nowrap"
           >
-            關於小哥
+            立即升級
           </a>
-          <a
-            href="/course"
-            className="px-2 md:px-4 py-1 md:py-1.5 text-[10px] md:text-sm font-bold tracking-wider md:tracking-widest text-gray-400 hover:text-white border-b-2 border-transparent hover:border-white/30 transition-all"
-          >
-            處置體驗課
-          </a>
-          <span className="px-2 md:px-4 py-1 md:py-1.5 text-[10px] md:text-sm font-black tracking-wider md:tracking-widest text-[#d4af37] border-b-2 border-[#d4af37]">
-            處置神器
-          </span>
-          <div className="hidden sm:block">
-            <SoftwareDropdown />
-          </div>
-        </div>
-
-        <a
-          href={TARGET_URL}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="blue-shimmer-btn inline-block px-4 md:px-6 py-1.5 md:py-2 text-[10px] md:text-sm font-black rounded-full text-white shadow-2xl transition-all transform active:scale-95 overflow-hidden cursor-pointer"
-        >
-          立即升級
-        </a>
-      </nav>
+        }
+      />
 
       {/* ========== HERO ========== */}
       <section id="hero-section" className="relative overflow-hidden">

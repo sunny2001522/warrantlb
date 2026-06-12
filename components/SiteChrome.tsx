@@ -49,26 +49,31 @@ export const SoftwareDropdown: React.FC<{ active?: boolean }> = ({ active }) => 
   </div>
 );
 
-/** 共用導覽列 — 供 /、/software、/media 等頁使用 */
-export const SiteHeader: React.FC<{ active: string }> = ({ active }) => {
+/** 共用導覽列 — 全站每頁一致;rightSlot 可放頁面專屬 CTA */
+export const SiteHeader: React.FC<{
+  active: string;
+  rightSlot?: React.ReactNode;
+  alwaysSolid?: boolean;
+}> = ({ active, rightSlot, alwaysSolid }) => {
   const [navSolid, setNavSolid] = useState(false);
 
   useEffect(() => {
+    if (alwaysSolid) return;
     const onScroll = () => setNavSolid(window.scrollY > 24);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+  }, [alwaysSolid]);
 
   return (
     <nav
       className={`fixed top-0 left-0 right-0 z-50 px-3 md:px-6 py-2 md:py-4 flex justify-between items-center gap-2 transition-all duration-300 ${
-        navSolid
+        alwaysSolid || navSolid
           ? "bg-[#0a1228]/90 backdrop-blur-md border-b border-[#d4af37]/20"
           : "bg-transparent"
       }`}
     >
-      <a href="/" className="flex items-center gap-1.5 md:gap-3 min-w-0">
+      <a href="/" className="flex items-center gap-1.5 md:gap-3 min-w-0 flex-shrink-0">
         <img src={cmLogo} alt="CMoney Logo" className="h-6 md:h-10 flex-shrink-0" />
         <div className="flex flex-col min-w-0">
           <span className="text-xs md:text-base font-black tracking-widest text-white leading-tight whitespace-nowrap">
@@ -80,7 +85,7 @@ export const SiteHeader: React.FC<{ active: string }> = ({ active }) => {
         </div>
       </a>
 
-      <div className="flex items-center gap-0.5 md:gap-1">
+      <div className="flex items-center gap-0.5 md:gap-1 flex-shrink min-w-0 overflow-x-auto">
         {SITE_NAV.map((item) =>
           item.href === "/software" ? (
             <SoftwareDropdown key={item.href} active={active.startsWith("/software")} />
@@ -106,6 +111,8 @@ export const SiteHeader: React.FC<{ active: string }> = ({ active }) => {
           ),
         )}
       </div>
+
+      {rightSlot && <div className="flex items-center gap-1.5 md:gap-3 flex-shrink-0">{rightSlot}</div>}
     </nav>
   );
 };

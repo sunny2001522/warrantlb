@@ -4,7 +4,7 @@ import { StackingCard } from "./components/StackingCard";
 import { db } from "./firebase";
 import { collection, getDocs } from "firebase/firestore";
 import LiveStreamSection from "./components/LiveStreamSection";
-import { SoftwareDropdown } from "./components/SiteChrome";
+import { SiteHeader } from "./components/SiteChrome";
 
 import { MarqueeCarousel } from "./components/MarqueeCarousel";
 import heroMobile from "./assets/限時動態（1080x1920）.jpg";
@@ -27,7 +27,6 @@ import {
 import {
   useScrollTracking,
   useSectionVisibility,
-  trackNavClick,
   trackRegistrationStart,
 } from "./analytics";
 
@@ -150,83 +149,11 @@ const App: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-[#080c14] text-white selection:bg-[#d4af37] selection:text-black">
-      {/* Navigation */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-[#080c14]/90 backdrop-blur-md border-b border-[#d4af37]/20 px-3 md:px-6 py-2 md:py-4 flex justify-between items-center gap-2">
-        <div className="flex items-center gap-1.5 md:gap-3 min-w-0">
-          <img src={cmLogo} alt="CMoney Logo" className="h-6 md:h-10 flex-shrink-0" />
-
-          <div className="flex flex-col min-w-0">
-            <span className="text-xs md:text-base font-black tracking-widest text-white leading-tight whitespace-nowrap">
-              權證小哥
-            </span>
-            <span className="text-[8px] md:text-xs text-[#d4af37] font-bold tracking-[0.2em]">
-              CMoney
-            </span>
-          </div>
-        </div>
-
-        {/* Top-level page tabs */}
-        <div className="flex items-center gap-0.5 md:gap-1 flex-shrink min-w-0 overflow-x-auto">
-          <a
-            href="/"
-            className="px-1.5 md:px-4 py-1 md:py-1.5 text-[10px] md:text-sm font-black tracking-wider md:tracking-widest text-gray-400 hover:text-[#d4af37] whitespace-nowrap transition-colors"
-          >
-            <span className="md:hidden">首頁</span>
-            <span className="hidden md:inline">關於小哥</span>
-          </a>
-          <span className="px-1.5 md:px-4 py-1 md:py-1.5 text-[10px] md:text-sm font-black tracking-wider md:tracking-widest text-[#d4af37] border-b-2 border-[#d4af37] whitespace-nowrap">
-            <span className="md:hidden">體驗課</span>
-            <span className="hidden md:inline">處置策略體驗課</span>
-          </span>
-          <a
-            href="/about/DispositionGod"
-            className="px-1.5 md:px-4 py-1 md:py-1.5 text-[10px] md:text-sm font-black tracking-wider md:tracking-widest text-gray-400 hover:text-[#d4af37] whitespace-nowrap transition-colors"
-          >
-            處置神器
-          </a>
-          <div className="hidden sm:block">
-            <SoftwareDropdown />
-          </div>
-          <a
-            href="/media"
-            className="hidden sm:inline-block px-1.5 md:px-4 py-1 md:py-1.5 text-[10px] md:text-sm font-black tracking-wider md:tracking-widest text-gray-400 hover:text-[#d4af37] whitespace-nowrap transition-colors"
-          >
-            影音專區
-          </a>
-        </div>
-
-        {/* Desktop Anchor Menu */}
-        <div className="hidden lg:flex items-center gap-8 mr-8">
-          {[
-            { label: "處置盲區", ref: problemRef },
-            { label: "獲利模型", ref: methodRef },
-            { label: "講師介紹", ref: lecturerRef },
-            { label: "課程大綱", ref: chaptersRef },
-            { label: "APP介紹", ref: appVipRef },
-          ].map((item, idx) => (
-            <button
-              key={idx}
-              onClick={() => {
-                trackNavClick(item.label);
-                scrollToSection(item.ref);
-              }}
-              className="text-gray-400 hover:text-[#d4af37] text-sm font-bold tracking-widest transition-colors"
-            >
-              {item.label}
-            </button>
-          ))}
-        </div>
-
-        <div className="flex items-center gap-1.5 md:gap-3 flex-shrink-0">
-          <a
-            href="http://cmy.tw/008I6c"
-            target="_blank"
-            aria-label="聯繫客服"
-            className="md:px-6 md:py-2 md:text-sm w-8 h-8 md:w-auto md:h-auto flex items-center justify-center text-[10px] font-black tracking-widest border border-[#d4af37] text-[#d4af37] rounded-full hover:bg-[#d4af37] hover:text-black transition-all"
-          >
-            <i className="fas fa-headset md:hidden text-sm"></i>
-            <span className="hidden md:inline">聯繫客服</span>
-          </a>
+      {/* Navigation — 全站共用 header */}
+      <SiteHeader
+        active="/course"
+        alwaysSolid
+        rightSlot={
           <CTAButton
             onClick={() => scrollToSection(registrationRef)}
             className="!px-3 md:!px-6 !py-1.5 md:!py-2 !text-[10px] md:!text-sm"
@@ -234,8 +161,8 @@ const App: React.FC = () => {
           >
             報名體驗課
           </CTAButton>
-        </div>
-      </nav>
+        }
+      />
 
       {/* Live Stream Section */}
       <LiveStreamSection onStatusChange={setHasLiveStream} />
