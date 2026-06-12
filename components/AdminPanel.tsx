@@ -10,7 +10,6 @@ import {
 } from "../firebase";
 import { collection, getDocs, doc, setDoc, deleteDoc } from "firebase/firestore";
 import {
-  REGISTRATION_EVENTS,
   sanitizeRegistrationEvents,
   type RegistrationInfo,
 } from "../constants";
@@ -98,6 +97,10 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ open, onClose }) => {
   const [source, setSource] = useState<"firestore" | "constants">("constants");
   const [editingEvent, setEditingEvent] = useState<RegistrationInfo | null>(null);
   const [memberImporting, setMemberImporting] = useState(false);
+  const [showAddForm, setShowAddForm] = useState(false);
+  const [newEvent, setNewEvent] = useState({ id: "", title: "", startTime: "", endTime: "" });
+  const newStartRef = useRef<HTMLInputElement | null>(null);
+  const newEndRef = useRef<HTMLInputElement | null>(null);
 
   // Live Stream state
   const [liveForm, setLiveForm] = useState<LiveStreamData>({
@@ -150,12 +153,12 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ open, onClose }) => {
         setEvents(data);
         setSource("firestore");
       } else {
-        setEvents(sanitizeRegistrationEvents(REGISTRATION_EVENTS));
-        setSource("constants");
+        setEvents([]);
+        setSource("firestore");
       }
     } catch {
-      setEvents(sanitizeRegistrationEvents(REGISTRATION_EVENTS));
-      setSource("constants");
+      setEvents([]);
+      setSource("firestore");
     }
     setLoading(false);
   }, []);
@@ -194,6 +197,46 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ open, onClose }) => {
       await loadFromFirestore();
     } catch (err) {
       alert("刪除失敗: " + (err as Error).message);
+    }
+    setSaving(false);
+  };
+
+  const handleAddManual = async () => {
+    const id = Number(newEvent.id);
+    if (!id || !newEvent.title || !newEvent.startTime || !newEvent.endTime) {
+      alert("請填寫 ID、名稱、開始時間、結束時間");
+      return;
+    }
+    const start = new Date(newEvent.startTime);
+    const end = new Date(newEvent.endTime);
+    const weekdayMap = ["日", "一", "二", "三", "四", "五", "六"];
+    const mm = String(start.getMonth() + 1).padStart(2, "0");
+    const dd = String(start.getDate()).padStart(2, "0");
+    const startHH = String(start.getHours()).padStart(2, "0");
+    const startMM = String(start.getMinutes()).padStart(2, "0");
+    const endHH = String(end.getHours()).padStart(2, "0");
+    const endMM = String(end.getMinutes()).padStart(2, "0");
+
+    const event: RegistrationInfo = {
+      id,
+      title: newEvent.title,
+      dateStr: `${Number(mm)}/${Number(dd)}`,
+      timeStr: `${startHH}:${startMM} - ${endHH}:${endMM}`,
+      targetDate: `${start.getFullYear()}-${mm}-${dd}T${startHH}:${startMM}:00`,
+      originalPrice: 0,
+      discountPrice: 0,
+      url: `https://www.cmoney.tw/classes/classdetail/${id}`,
+      productType: 777004,
+      functionId: id,
+    };
+    setSaving(true);
+    try {
+      await setDoc(doc(db, "registrationEvents", String(event.id)), event);
+      setNewEvent({ id: "", title: "", startTime: "", endTime: "" });
+      setShowAddForm(false);
+      await loadFromFirestore();
+    } catch (err) {
+      alert("新增失敗: " + (err as Error).message);
     }
     setSaving(false);
   };
@@ -259,17 +302,104 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ open, onClose }) => {
               <section className="space-y-4">
                 <div className="flex items-center justify-between gap-3">
                   <h2 className="text-2xl font-black text-white">講座</h2>
-                  <button
-                    onClick={handleImportByMemberId}
-                    disabled={memberImporting}
-                    className="px-4 py-2 bg-[#d4af37] hover:bg-[#c9a230] text-black text-sm font-bold rounded-lg transition-colors disabled:opacity-50"
-                  >
-                    {memberImporting ? "同步中..." : "同步講座"}
-                  </button>
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => setShowAddForm((v) => !v)}
+                      className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold rounded-lg transition-colors"
+                    >
+                      {showAddForm ? "取消新增" : "手動新增"}
+                    </button>
+                    <button
+                      onClick={handleImportByMemberId}
+                      disabled={memberImporting}
+                      className="px-4 py-2 bg-[#d4af37] hover:bg-[#c9a230] text-black text-sm font-bold rounded-lg transition-colors disabled:opacity-50"
+                    >
+                      {memberImporting ? "同步中..." : "同步講座"}
+                    </button>
+                  </div>
                 </div>
                 <p className="text-sm text-gray-400">
                   只會在你按下「同步講座」時，才用 CMoney 後台資料覆蓋 Firestore。
                 </p>
+
+                {showAddForm && (
+                  <div className="rounded-3xl border border-blue-500/30 bg-[#0f1a2e] p-4 shadow-xl md:p-6 space-y-3">
+                    <h4 className="text-blue-400 font-bold text-sm">手動新增講座</h4>
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                      <label className="flex flex-col gap-1">
+                        <span className="text-gray-400 text-xs font-bold">ID</span>
+                        <input
+                          type="number"
+                          value={newEvent.id}
+                          onChange={(e) => setNewEvent((p) => ({ ...p, id: e.target.value }))}
+                          placeholder="例如 3142"
+                          className="bg-white/10 border border-white/20 rounded-lg px-3 py-2 text-white text-sm outline-none focus:border-blue-400/60"
+                        />
+                      </label>
+                      <label className="flex flex-col gap-1 sm:col-span-2">
+                        <span className="text-gray-400 text-xs font-bold">名稱</span>
+                        <input
+                          type="text"
+                          value={newEvent.title}
+                          onChange={(e) => setNewEvent((p) => ({ ...p, title: e.target.value }))}
+                          placeholder="權證小哥-高勝率處置策略｜線上體驗課"
+                          className="bg-white/10 border border-white/20 rounded-lg px-3 py-2 text-white text-sm outline-none focus:border-blue-400/60"
+                        />
+                      </label>
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      <label className="flex flex-col gap-1">
+                        <span className="text-gray-400 text-xs font-bold">開始時間</span>
+                        <div className="relative">
+                          <input
+                            ref={newStartRef}
+                            type="datetime-local"
+                            value={newEvent.startTime}
+                            onClick={() => newStartRef.current?.showPicker?.()}
+                            onFocus={() => newStartRef.current?.showPicker?.()}
+                            onChange={(e) => setNewEvent((p) => ({ ...p, startTime: e.target.value }))}
+                            className="w-full bg-white/10 border border-white/20 rounded-lg px-3 py-2 pr-11 text-white text-sm outline-none focus:border-blue-400/60"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => newStartRef.current?.showPicker?.()}
+                            className="absolute inset-y-0 right-2 my-auto h-8 w-8 rounded-md bg-white/10 text-white text-sm"
+                          >
+                            📅
+                          </button>
+                        </div>
+                      </label>
+                      <label className="flex flex-col gap-1">
+                        <span className="text-gray-400 text-xs font-bold">結束時間</span>
+                        <div className="relative">
+                          <input
+                            ref={newEndRef}
+                            type="datetime-local"
+                            value={newEvent.endTime}
+                            onClick={() => newEndRef.current?.showPicker?.()}
+                            onFocus={() => newEndRef.current?.showPicker?.()}
+                            onChange={(e) => setNewEvent((p) => ({ ...p, endTime: e.target.value }))}
+                            className="w-full bg-white/10 border border-white/20 rounded-lg px-3 py-2 pr-11 text-white text-sm outline-none focus:border-blue-400/60"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => newEndRef.current?.showPicker?.()}
+                            className="absolute inset-y-0 right-2 my-auto h-8 w-8 rounded-md bg-white/10 text-white text-sm"
+                          >
+                            📅
+                          </button>
+                        </div>
+                      </label>
+                    </div>
+                    <button
+                      onClick={handleAddManual}
+                      disabled={saving}
+                      className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold rounded-lg transition-colors disabled:opacity-50"
+                    >
+                      {saving ? "新增中..." : "新增講座"}
+                    </button>
+                  </div>
+                )}
 
                 <div className="rounded-3xl border border-white/10 bg-[#0f1a2e] p-4 shadow-xl md:p-6">
                   {editingEvent && (

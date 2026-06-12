@@ -6,7 +6,7 @@ import shop3 from "../assets/商店頁-3.png";
 import shop4 from "../assets/商店頁-4.png";
 import shop5 from "../assets/商店頁-5.png";
 import shop6 from "../assets/商店頁-6.png";
-import heroDesktop from "/直播封面圖（1920x1080）體驗.jpg";
+import heroDesktop from "/hero-livestream.jpg";
 
 const TARGET_URL = "https://warrantlb8888.cmoney.tw/DispositionGod/";
 
@@ -25,6 +25,24 @@ const DispositionGodLanding: React.FC = () => {
   const [statsSlide, setStatsSlide] = useAutoSlide(3, 4500);
   const [billSlide, setBillSlide] = useAutoSlide(4, 3500);
   const [navSolid, setNavSolid] = useState(false);
+  const [countdown, setCountdown] = useState({ h: 0, m: 0, s: 0 });
+
+  useEffect(() => {
+    const tick = () => {
+      const now = new Date();
+      const midnight = new Date(now);
+      midnight.setHours(24, 0, 0, 0);
+      const diff = Math.max(0, midnight.getTime() - now.getTime());
+      setCountdown({
+        h: Math.floor(diff / 3600000),
+        m: Math.floor((diff % 3600000) / 60000),
+        s: Math.floor((diff % 60000) / 1000),
+      });
+    };
+    tick();
+    const timer = setInterval(tick, 1000);
+    return () => clearInterval(timer);
+  }, []);
 
   useEffect(() => {
     const heroEl = document.getElementById("hero-section");
@@ -51,10 +69,10 @@ const DispositionGodLanding: React.FC = () => {
       el.content = content;
     };
 
-    setMeta("description", "處置神器 - 明日預測準確度高達99%，不必傻計算只要看答案。即時監控注意股與處置股、精準預測處置時機、規避流動性風險。權證小哥團隊出品。");
+    setMeta("description", "處置神器 - 明日預測準確度高達99%，不必懂計算只要看答案。即時監控注意股與處置股、精準預測處置時機、規避流動性風險。權證小哥團隊出品。");
     setMeta("keywords", "處置神器,處置股,處置日報,處置股查詢,處置股預測,注意股,權證小哥,CMoney,處置股工具,處置股監控,台股處置");
     setMeta("og:title", "處置神器 - 高達99%預測準確度｜權證小哥", true);
-    setMeta("og:description", "不必傻計算，只要看答案。即時監控注意股與處置股動態，精準預測處置時機，把處置股的風險化為獲利機會。", true);
+    setMeta("og:description", "不必懂計算，只要看答案。即時監控注意股與處置股動態，精準預測處置時機，把處置股的風險化為獲利機會。", true);
     setMeta("og:url", "https://warrantlb8888.cmoney.tw/disposition-god", true);
 
     const jsonLd = document.createElement("script");
@@ -95,7 +113,7 @@ const DispositionGodLanding: React.FC = () => {
             href="/"
             className="px-2 md:px-4 py-1 md:py-1.5 text-[10px] md:text-sm font-bold tracking-wider md:tracking-widest text-gray-400 hover:text-white border-b-2 border-transparent hover:border-white/30 transition-all"
           >
-            處置策略體驗課
+            處置體驗課
           </a>
           <span className="px-2 md:px-4 py-1 md:py-1.5 text-[10px] md:text-sm font-black tracking-wider md:tracking-widest text-[#d4af37] border-b-2 border-[#d4af37]">
             處置神器
@@ -122,9 +140,11 @@ const DispositionGodLanding: React.FC = () => {
           />
           {/* 立即體驗全新網頁版 button — 中間偏下 */}
           <div className="absolute bottom-[18%] left-1/2 -translate-x-1/2 z-10">
-            <button
-              onClick={() => document.getElementById("download-section")?.scrollIntoView({ behavior: "smooth" })}
-              className="px-6 md:px-12 py-2.5 md:py-4 rounded-full border-[3px] border-[#d7b072] cursor-pointer transition-all hover:scale-105 active:scale-95 shadow-[0_0_20px_rgba(215,176,114,0.3)]"
+            <a
+              href={TARGET_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block px-6 md:px-12 py-2.5 md:py-4 rounded-full border-[3px] border-[#d7b072] cursor-pointer transition-all hover:scale-105 active:scale-95 shadow-[0_0_20px_rgba(215,176,114,0.3)]"
               style={{ background: "linear-gradient(148deg, #2d2d2d 10%, #000 68%)" }}
             >
               <span
@@ -137,55 +157,151 @@ const DispositionGodLanding: React.FC = () => {
               >
                 立即體驗全新網頁版
               </span>
-            </button>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* ========== 網頁版 vs 手機版 對比 ========== */}
+      <section className="py-16 md:py-24 px-4 md:px-6 bg-gradient-to-b from-[#080c14] to-[#0a1528] overflow-hidden">
+        <div className="max-w-6xl mx-auto">
+          <div className="flex flex-col md:flex-row items-center md:items-start gap-8 md:gap-12">
+            {/* 網頁版 — 左側大圖 */}
+            <div className="flex-1 flex flex-col items-center">
+              <div className="relative rounded-2xl border-2 border-[#d4af37]/40 overflow-hidden shadow-[0_0_60px_rgba(212,175,55,0.3),0_0_120px_rgba(212,175,55,0.15)] mb-6">
+                <div className="absolute top-3 right-3 bg-black/60 border border-[#d4af37]/50 rounded-full px-3 py-1 text-[10px] text-[#d4af37] font-bold tracking-wider z-10">
+                  ★ 推薦
+                </div>
+                <img src="/img_1-1.png" alt="處置神器 網頁版" className="w-full h-auto" />
+              </div>
+              <div className="text-center">
+                <h3 className="text-2xl md:text-3xl font-black text-gold-gradient serif-font mb-2">
+                  <i className="fas fa-desktop mr-2 text-lg md:text-xl"></i>網頁版
+                </h3>
+                <p className="text-white text-base md:text-lg font-black mb-1">更大畫面 ・ 完整功能</p>
+                <p className="text-gray-400 text-sm md:text-base font-bold leading-relaxed">
+                  多視窗監控、表格細節一覽無遺<br />盤中操作更專業、不受裝置限制
+                </p>
+              </div>
+            </div>
+
+            {/* 手機版 — 右側小圖（手機寬度隱藏） */}
+            <div className="hidden md:flex w-[220px] md:w-[280px] flex-col items-center flex-shrink-0">
+              <div className="relative rounded-2xl border-2 border-white/10 overflow-hidden shadow-[0_0_30px_rgba(0,0,0,0.5)] mb-6 bg-[#0a1528]">
+                <div className="absolute top-2 left-1/2 -translate-x-1/2 bg-[#d4af37] text-black px-3 py-0.5 rounded-full text-[10px] font-black z-10">
+                  處置日報
+                </div>
+                <img src={shop1} alt="處置神器 手機版" className="w-full h-auto" />
+              </div>
+              <div className="text-center">
+                <h3 className="text-2xl md:text-3xl font-black text-white serif-font mb-2">
+                  <i className="fas fa-mobile-alt mr-2 text-lg md:text-xl"></i>手機版
+                </h3>
+                <p className="text-white text-base md:text-lg font-black mb-1">隨時隨地查看</p>
+                <p className="text-gray-400 text-sm md:text-base font-bold leading-relaxed">
+                  出門在外<br />一指掌握行情
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* CTA */}
+          <div className="text-center mt-10 md:mt-14">
+            <a
+              href={TARGET_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 text-[#d4af37] text-lg md:text-xl font-black tracking-wider hover:underline underline-offset-4 transition-all"
+            >
+              立即體驗網頁版 <span className="text-xl">→</span>
+            </a>
           </div>
         </div>
       </section>
 
       {/* ========== 處置日報 (輪播) ========== */}
-      <section className="h-screen flex flex-col px-4 md:px-6 relative overflow-hidden" style={{ background: "url('/1920X1080_VIP.jpg') center/cover no-repeat" }}>
-        <div className="absolute inset-0 bg-black/40"></div>
-        <div className="absolute top-0 left-0 right-0 z-10">
+      <section className="h-[80vh] md:h-screen flex flex-col relative overflow-hidden bg-black">
+        {/* 手機背景圖 */}
+        <div className="absolute inset-0">
+          <img src="/1920X1080_VIP.jpg" alt="" className="w-full h-full object-cover" />
+          <div className="absolute inset-0 bg-black/5"></div>
+        </div>
+        <div className="absolute top-0 left-0 right-0 z-10 hidden md:block">
           <div className="flex justify-between text-[10px] text-gray-600 tracking-[0.3em] uppercase px-6 py-2">
             <span>ACCURACY</span><span>LIMIT</span><span>DISPOSITION</span>
           </div>
         </div>
 
-        <div className="max-w-[1600px] mx-auto w-full flex flex-col md:flex-row h-full pt-10 md:pt-14 pb-4 md:pb-6 px-6 md:px-16 gap-4 md:gap-8 relative z-10">
-          {/* 左側：標題 + 文字 */}
-          <div className="md:w-[22%] flex-shrink-0 flex flex-col justify-center scroll-reveal">
-            <h2 className="text-3xl md:text-6xl font-black serif-font mb-3 md:mb-5">
+        {/* 手機版：標題在上 → 圖片 → 說明 */}
+        <div className="flex flex-col items-center text-center px-4 pt-6 pb-2 relative z-10 md:hidden">
+          <h2 className="text-2xl font-black serif-font mb-1">
+            <span className="text-gold-gradient">處置日報</span>
+          </h2>
+          <p className="text-base font-black text-white">
+            明日預測 <span className="bg-[#d4af37] text-black px-2 py-0.5 rounded text-sm font-black">準確度</span> 高達 <span className="text-[#d4af37] text-2xl">99%</span>
+          </p>
+          <p className="text-gray-400 text-xs font-bold">那1%是規則的上限，不是我們的極限</p>
+        </div>
+
+        {/* 手機版：圖片 */}
+        <div className="flex-1 flex items-center justify-center px-4 py-2 relative z-10 md:hidden">
+          <div className="max-h-full rounded-2xl border-2 border-[#d4af37]/40 overflow-hidden shadow-[0_0_60px_rgba(212,175,55,0.3),0_0_120px_rgba(212,175,55,0.15)]">
+            <img src="/img_1-1.png" alt="處置日報 電腦版" className="max-h-[45vh] w-auto block" />
+          </div>
+        </div>
+
+        {/* 手機版：說明文字 */}
+        <div className="px-4 pb-6 pt-2 relative z-10 md:hidden text-center">
+          {(() => {
+            const slides = [
+              { title: "必 關 股", desc: "無需研究價格、成交量", highlight: "明天一定進處置" },
+              { title: "量價門檻", desc: "價格門檻、價量門檻其中一個達到", highlight: "明天就會進處置" },
+              { title: "出關追蹤", desc: "處置結束後的關鍵觀察期", highlight: "不必懂計算，只要看答案" },
+            ];
+            return (
+              <>
+                <div className="inline-block border border-[#d4af37] px-4 py-1 mb-2">
+                  <h3 className="text-sm font-black text-white tracking-widest">{slides[dailySlide].title}</h3>
+                </div>
+                <p className="text-gray-300 text-xs font-bold">{slides[dailySlide].desc}</p>
+                <p className="text-[#d4af37] text-sm font-black mt-1">{slides[dailySlide].highlight}</p>
+                <div className="flex gap-2 mt-3 justify-center">
+                  {[0, 1, 2].map((i) => (
+                    <button key={i} onClick={() => setDailySlide(i)}
+                      className={`h-1.5 rounded-full transition-all duration-300 ${i === dailySlide ? "w-8 bg-[#d4af37]" : "w-4 bg-white/20 hover:bg-white/40"}`}
+                    />
+                  ))}
+                </div>
+              </>
+            );
+          })()}
+        </div>
+
+        {/* 桌面版：左右佈局 */}
+        <div className="hidden md:flex max-w-[1600px] mx-auto w-full flex-row h-full px-16 gap-8 relative z-10">
+          <div className="w-[22%] flex-shrink-0 flex flex-col justify-center scroll-reveal">
+            <h2 className="text-6xl font-black serif-font mb-5">
               <span className="text-gold-gradient">處置日報</span>
             </h2>
-            <p className="text-xl md:text-2xl font-black text-white mb-1">
-              明日預測 <span className="bg-[#d4af37] text-black px-2 md:px-3 py-0.5 md:py-1 rounded text-lg md:text-xl font-black">準確度</span> 高達 <span className="text-[#d4af37] text-3xl md:text-5xl">99%</span>
+            <p className="text-2xl font-black text-white mb-1">
+              明日預測 <span className="bg-[#d4af37] text-black px-3 py-1 rounded text-xl font-black">準確度</span> 高達 <span className="text-[#d4af37] text-5xl">99%</span>
             </p>
-            <p className="text-gray-400 text-sm md:text-lg font-bold mb-6 md:mb-8">
-              那1%是規則的上限，不是我們的極限
-            </p>
-
+            <p className="text-gray-400 text-lg font-bold mb-8">那1%是規則的上限，不是我們的極限</p>
             {(() => {
               const slides = [
-                { img: shop1, label: "處置日報", title: "必 關 股", desc: "無需研究價格、成交量", highlight: "明天一定進處置" },
-                { img: shop6, label: "處置坐牢中", title: "量價門檻", desc: "價格門檻、價量門檻其中一個達到", highlight: "明天就會進處置" },
-                { img: shop4, label: "今天出關", title: "出關追蹤", desc: "處置結束後的關鍵觀察期", highlight: "不必傻計算，只要看答案" },
+                { title: "必 關 股", desc: "無需研究價格、成交量", highlight: "明天一定進處置" },
+                { title: "量價門檻", desc: "價格門檻、價量門檻其中一個達到", highlight: "明天就會進處置" },
+                { title: "出關追蹤", desc: "處置結束後的關鍵觀察期", highlight: "不必懂計算，只要看答案" },
               ];
               return (
                 <>
-                  <div className="p-4 md:p-6 rounded-2xl border border-[#d4af37]/60 shadow-[0_0_20px_rgba(212,175,55,0.15)] transition-all duration-500 backdrop-blur-sm" style={{ background: "linear-gradient(145deg, rgba(10,21,40,0.85) 0%, rgba(6,10,20,0.9) 100%)" }}>
-                    <div className="inline-block border border-[#d4af37] px-4 py-1 mb-2 md:mb-3">
-                      <h3 className="text-base md:text-xl font-black text-white tracking-widest">{slides[dailySlide].title}</h3>
+                  <div className="p-6 rounded-2xl border border-[#d4af37]/60 shadow-[0_0_20px_rgba(212,175,55,0.15)] transition-all duration-500 backdrop-blur-sm" style={{ background: "linear-gradient(145deg, rgba(10,21,40,0.85) 0%, rgba(6,10,20,0.9) 100%)" }}>
+                    <div className="inline-block border border-[#d4af37] px-4 py-1 mb-3">
+                      <h3 className="text-xl font-black text-white tracking-widest">{slides[dailySlide].title}</h3>
                     </div>
-                    <p className="text-gray-300 text-sm md:text-base font-bold leading-relaxed">{slides[dailySlide].desc}</p>
-                    <p className="text-[#d4af37] text-base md:text-lg font-black mt-2">{slides[dailySlide].highlight}</p>
+                    <p className="text-gray-300 text-base font-bold leading-relaxed">{slides[dailySlide].desc}</p>
+                    <p className="text-[#d4af37] text-lg font-black mt-2">{slides[dailySlide].highlight}</p>
                   </div>
-
-                  <div className="text-center p-3 md:p-4 rounded-2xl border border-white/10 mt-4 backdrop-blur-sm" style={{ background: "linear-gradient(145deg, rgba(10,21,40,0.85) 0%, rgba(6,10,20,0.9) 100%)" }}>
-                    <p className="text-base md:text-xl font-black serif-font italic text-white">
-                      「 不必傻計算，只要看<span className="text-[#d4af37]">答案</span> 」
-                    </p>
-                  </div>
-
                   <div className="flex gap-2 mt-4">
                     {[0, 1, 2].map((i) => (
                       <button key={i} onClick={() => setDailySlide(i)}
@@ -197,29 +313,12 @@ const DispositionGodLanding: React.FC = () => {
               );
             })()}
           </div>
-
-          {/* 右側：電腦置中 + 手機右下角重疊 */}
           <div className="flex-1 min-h-0 h-full flex items-center justify-center scroll-reveal relative">
             <div className="absolute inset-0 pointer-events-none" style={{ filter: "blur(60px)", background: "radial-gradient(ellipse at center, rgba(212,175,55,0.2) 0%, transparent 70%)" }}></div>
-            <div className="relative z-10" style={{ height: "75vh" }}>
-              {/* 電腦 */}
-              <div className="desktop-screenshot h-full flex items-center justify-center">
-                <img src="/image (8).png" alt="處置日報 電腦版" className="h-full object-contain rounded-[1rem]" />
-              </div>
-              {/* 手機 — 右下角，重疊電腦1/4 */}
-              <div className="hidden md:block absolute bottom-0 z-20" style={{ right: "-12%", width: "22.5%", transform: "translateX(25%)" }}>
-                {[
-                  { img: shop1, label: "處置日報" },
-                  { img: shop6, label: "處置坐牢中" },
-                  { img: shop4, label: "今天出關" },
-                ].map((s, i) => (
-                  <img key={i} src={s.img} alt={s.label}
-                    className="w-full h-auto block rounded-[1.2rem] transition-opacity duration-700"
-                    style={{ display: i === dailySlide ? "block" : "none" }}
-                  />
-                ))}
-                <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 bg-[#d4af37] text-black px-3 py-1 rounded-full text-[10px] md:text-xs font-black shadow-lg whitespace-nowrap">
-                  {["處置日報", "處置坐牢中", "今天出關"][dailySlide]}
+            <div className="relative z-10 h-full">
+              <div className="h-full flex items-center justify-center">
+                <div className="max-h-full rounded-2xl border-2 border-[#d4af37]/40 overflow-hidden shadow-[0_0_60px_rgba(212,175,55,0.3),0_0_120px_rgba(212,175,55,0.15)]">
+                  <img src="/img_1-1.png" alt="處置日報 電腦版" className="max-h-full w-auto block" />
                 </div>
               </div>
             </div>
@@ -228,94 +327,188 @@ const DispositionGodLanding: React.FC = () => {
       </section>
 
       {/* ========== 處置股監控 ========== */}
-      <section className="h-screen flex flex-col px-4 md:px-6 relative overflow-hidden" style={{ background: "url('/1920X1080_VIP.jpg') center/cover no-repeat" }}>
-        <div className="absolute inset-0 bg-black/50"></div>
-        <div className="max-w-[1600px] mx-auto w-full flex flex-col md:flex-row h-full pt-10 md:pt-14 pb-4 md:pb-6 px-6 md:px-16 gap-4 md:gap-8 relative z-10">
-          {/* 左側：標題 + 說明 */}
-          <div className="md:w-[22%] flex-shrink-0 flex flex-col justify-center scroll-reveal">
-            <h2 className="text-3xl md:text-6xl font-black serif-font mb-3 md:mb-5">
+      <section className="h-[80vh] md:h-screen flex flex-col relative overflow-hidden bg-black">
+        <div className="absolute inset-0">
+          <img src="/1920X1080_VIP.jpg" alt="" className="w-full h-full object-cover" />
+          <div className="absolute inset-0 bg-black/5"></div>
+        </div>
+
+        {/* 手機版 */}
+        <div className="flex flex-col items-center text-center px-4 pt-6 pb-2 relative z-10 md:hidden">
+          <h2 className="text-2xl font-black serif-font mb-1">
+            <span className="text-gold-gradient">處置股監控</span>
+          </h2>
+          <p className="text-sm text-gray-300 font-bold">
+            不錯過 <span className="bg-[#d4af37] text-black px-2 py-0.5 rounded font-black">關鍵變動</span> 提前看見市場風險
+          </p>
+        </div>
+        <div className="flex-1 flex items-center justify-center px-4 py-2 relative z-10 md:hidden">
+          <div className="max-h-full grid place-items-center" style={{ gridTemplate: "1fr / 1fr" }}>
+            {["/img_2-1.png", "/img_2-2.png"].map((src, i) => (
+              <div key={i} className="max-h-full rounded-2xl border-2 border-[#d4af37]/40 overflow-hidden shadow-[0_0_60px_rgba(212,175,55,0.3),0_0_120px_rgba(212,175,55,0.15)] transition-opacity duration-700"
+                style={{ gridArea: "1/1", opacity: i === (dailySlide % 2) ? 1 : 0 }}>
+                <img src={src} alt={`處置股監控 ${i + 1}`} className="max-h-[45vh] w-auto block" />
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="px-4 pb-6 pt-2 relative z-10 md:hidden text-center">
+          {(() => {
+            const monitorFeatures = [
+              { title: "注意股監控", desc: "量化監控觸發進度", highlight: "八大門檻 精確掌握" },
+              { title: "即時整合公告資訊", desc: "證交所處置名單 即時比對", highlight: "驗證預測是否精準命中" },
+            ];
+            const activeIdx = dailySlide % 2;
+            return (
+              <>
+                <div className="inline-block border border-[#d4af37] px-4 py-1 mb-2">
+                  <h3 className="text-sm font-black text-white tracking-widest">{monitorFeatures[activeIdx].title}</h3>
+                </div>
+                <p className="text-gray-300 text-xs font-bold">{monitorFeatures[activeIdx].desc}</p>
+                <p className="text-[#d4af37] text-sm font-black mt-1">{monitorFeatures[activeIdx].highlight}</p>
+                <div className="flex gap-2 mt-3 justify-center">
+                  {[0, 1].map((i) => (
+                    <button key={i} onClick={() => setDailySlide(i)}
+                      className={`h-1.5 rounded-full transition-all duration-300 ${i === activeIdx ? "w-8 bg-[#d4af37]" : "w-4 bg-white/20 hover:bg-white/40"}`}
+                    />
+                  ))}
+                </div>
+              </>
+            );
+          })()}
+        </div>
+
+        {/* 桌面版 */}
+        <div className="hidden md:flex max-w-[1600px] mx-auto w-full flex-row h-full px-16 gap-8 relative z-10">
+          <div className="w-[22%] flex-shrink-0 flex flex-col justify-center scroll-reveal">
+            <h2 className="text-6xl font-black serif-font mb-5">
               <span className="text-gold-gradient">處置股監控</span>
             </h2>
-            <p className="text-base md:text-xl text-gray-300 font-bold mb-6 md:mb-8">
+            <p className="text-xl text-gray-300 font-bold mb-8">
               不錯過 <span className="bg-[#d4af37] text-black px-2 py-0.5 rounded font-black">關鍵變動</span> 提前看見市場風險
             </p>
-            <div className="space-y-3">
-              <div className="flex items-center gap-3">
-                <span className="text-[#d4af37] text-lg">&#x25C9;</span>
-                <span className="text-gray-300 text-sm md:text-base font-bold">量化監控觸發進度</span>
-              </div>
-              <div className="flex items-center gap-3">
-                <span className="text-[#d4af37] text-lg">&#x25C9;</span>
-                <span className="text-gray-300 text-sm md:text-base font-bold">六大門整合公告資訊</span>
-              </div>
-              <div className="flex items-center gap-3">
-                <span className="text-[#d4af37] text-lg">&#x25C9;</span>
-                <span className="text-gray-300 text-sm md:text-base font-bold">證交所處置名單</span>
-              </div>
-            </div>
+            {(() => {
+              const monitorFeatures = [
+                { title: "注意股監控", desc: "量化監控觸發進度", highlight: "八大門檻 精確掌握" },
+                { title: "即時整合公告資訊", desc: "證交所處置名單 即時比對", highlight: "驗證預測是否精準命中" },
+              ];
+              const activeIdx = dailySlide % 2;
+              return (
+                <>
+                  <div className="p-6 rounded-2xl border border-[#d4af37]/60 shadow-[0_0_20px_rgba(212,175,55,0.15)] transition-all duration-500 backdrop-blur-sm" style={{ background: "linear-gradient(145deg, rgba(10,21,40,0.85) 0%, rgba(6,10,20,0.9) 100%)" }}>
+                    <div className="inline-block border border-[#d4af37] px-4 py-1 mb-3">
+                      <h3 className="text-xl font-black text-white tracking-widest">{monitorFeatures[activeIdx].title}</h3>
+                    </div>
+                    <p className="text-gray-300 text-base font-bold leading-relaxed">{monitorFeatures[activeIdx].desc}</p>
+                    <p className="text-[#d4af37] text-lg font-black mt-2">{monitorFeatures[activeIdx].highlight}</p>
+                  </div>
+                  <div className="flex gap-2 mt-4">
+                    {[0, 1].map((i) => (
+                      <button key={i} onClick={() => setDailySlide(i)}
+                        className={`h-1.5 rounded-full transition-all duration-300 ${i === activeIdx ? "w-8 bg-[#d4af37]" : "w-4 bg-white/20 hover:bg-white/40"}`}
+                      />
+                    ))}
+                  </div>
+                </>
+              );
+            })()}
           </div>
-
-          {/* 右側：手機 + 電腦，置中，重疊12px */}
           <div className="flex-1 min-h-0 h-full flex items-center justify-center scroll-reveal relative">
             <div className="absolute inset-0 pointer-events-none" style={{ filter: "blur(60px)", background: "radial-gradient(ellipse at center, rgba(212,175,55,0.2) 0%, transparent 70%)" }}></div>
-            <div className="relative z-10" style={{ height: "75vh" }}>
-              {/* 電腦 */}
-              <div className="desktop-screenshot h-full flex items-center justify-center">
-                <img src="/image (9).png" alt="處置股監控" className="h-full object-contain rounded-[1rem]" />
-              </div>
-              {/* 手機 — 右下角，重疊電腦1/4 */}
-              <div className="hidden md:block absolute bottom-0 z-20" style={{ right: "-12%", width: "22.5%", transform: "translateX(25%)" }}>
-                <img src={shop1} alt="處置股監控 手機版" className="w-full h-auto block rounded-[1.2rem]" />
+            <div className="relative z-10 h-full">
+              <div className="h-full grid place-items-center" style={{ gridTemplate: "1fr / 1fr" }}>
+                {["/img_2-1.png", "/img_2-2.png"].map((src, i) => (
+                  <div key={i} className="max-h-full rounded-2xl border-2 border-[#d4af37]/40 overflow-hidden shadow-[0_0_60px_rgba(212,175,55,0.3),0_0_120px_rgba(212,175,55,0.15)] transition-opacity duration-700"
+                    style={{ gridArea: "1/1", opacity: i === (dailySlide % 2) ? 1 : 0 }}>
+                    <img src={src} alt={`處置股監控 ${i + 1}`} className="max-h-full w-auto block" />
+                  </div>
+                ))}
               </div>
             </div>
           </div>
         </div>
       </section>
 
-
       {/* ========== 獨家統計功能 (輪播) ========== */}
-      <section className="h-screen flex flex-col relative overflow-hidden" style={{ background: "url('/1920X1080_VIP.jpg') center/cover no-repeat" }}>
-        <div className="absolute inset-0 bg-black/50"></div>
-        <div className="absolute top-0 left-0 right-0 z-10">
+      <section className="h-[80vh] md:h-screen flex flex-col relative overflow-hidden bg-black">
+        <div className="absolute inset-0">
+          <img src="/1920X1080_VIP.jpg" alt="" className="w-full h-full object-cover" />
+          <div className="absolute inset-0 bg-black/5"></div>
+        </div>
+        <div className="absolute top-0 left-0 right-0 z-10 hidden md:block">
           <div className="flex justify-between text-[10px] text-gray-600 tracking-[0.3em] uppercase px-6 py-2">
             <span>EXCLUSIVE</span><span>STATISTICS</span><span>DATA</span>
           </div>
         </div>
 
-        <div className="max-w-[1600px] mx-auto w-full flex flex-col md:flex-row h-full pt-10 md:pt-14 pb-4 md:pb-6 px-6 md:px-16 gap-4 md:gap-8 relative z-10">
-          {/* 左側：標題 + 功能切換文字 */}
-          <div className="md:w-[22%] flex-shrink-0 flex flex-col justify-center scroll-reveal">
-            <h2 className="text-3xl md:text-6xl font-black serif-font mb-3 md:mb-5">
+        {/* 手機版 */}
+        <div className="flex flex-col items-center text-center px-4 pt-6 pb-2 relative z-10 md:hidden">
+          <h2 className="text-2xl font-black serif-font mb-1">
+            <span className="text-gold-gradient">獨家統計功能</span>
+          </h2>
+          <p className="text-sm text-gray-300 font-bold">
+            用 <span className="bg-[#d4af37] text-black px-2 py-0.5 rounded font-black">數據</span> 看穿處置股真實行情力道
+          </p>
+        </div>
+        <div className="flex-1 flex items-center justify-center px-4 py-2 relative z-10 md:hidden">
+          <div className="max-h-full grid place-items-center" style={{ gridTemplate: "1fr / 1fr" }}>
+            {["/img_3-1.png", "/img_3-2.png", "/img_3-3.png"].map((src, i) => (
+              <div key={i} className="max-h-full rounded-2xl border-2 border-[#d4af37]/40 overflow-hidden shadow-[0_0_60px_rgba(212,175,55,0.3),0_0_120px_rgba(212,175,55,0.15)] transition-opacity duration-700"
+                style={{ gridArea: "1/1", opacity: i === statsSlide ? 1 : 0 }}>
+                <img src={src} alt={["平均漲跌幅", "紅黑機率", "開收差幅"][i]} className="max-h-[45vh] w-auto block" />
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="px-4 pb-6 pt-2 relative z-10 md:hidden text-center">
+          {(() => {
+            const features = [
+              { title: "平均漲跌幅", desc: "彙整歷年處置股大數據", highlight: "預判行情天花板" },
+              { title: "紅黑機率", desc: "一眼看穿受限交易下", highlight: "多空傾向" },
+              { title: "開收差幅", desc: "代表當天盤中的", highlight: "實質力道" },
+            ];
+            return (
+              <>
+                <div className="inline-block border border-[#d4af37] px-4 py-1 mb-2">
+                  <h3 className="text-sm font-black text-white tracking-widest">{features[statsSlide].title}</h3>
+                </div>
+                <p className="text-gray-300 text-xs font-bold">{features[statsSlide].desc}</p>
+                <p className="text-[#d4af37] text-sm font-black mt-1">{features[statsSlide].highlight}</p>
+                <div className="flex gap-2 mt-3 justify-center">
+                  {[0, 1, 2].map((i) => (
+                    <button key={i} onClick={() => setStatsSlide(i)}
+                      className={`h-1.5 rounded-full transition-all duration-300 ${i === statsSlide ? "w-8 bg-[#d4af37]" : "w-4 bg-white/20 hover:bg-white/40"}`}
+                    />
+                  ))}
+                </div>
+              </>
+            );
+          })()}
+        </div>
+
+        {/* 桌面版 */}
+        <div className="hidden md:flex max-w-[1600px] mx-auto w-full flex-row h-full px-16 gap-8 relative z-10">
+          <div className="w-[22%] flex-shrink-0 flex flex-col justify-center scroll-reveal">
+            <h2 className="text-6xl font-black serif-font mb-5">
               <span className="text-gold-gradient">獨家統計功能</span>
             </h2>
-            <p className="text-base md:text-xl text-gray-300 font-bold mb-6 md:mb-8">
+            <p className="text-xl text-gray-300 font-bold mb-8">
               用 <span className="bg-[#d4af37] text-black px-2 py-0.5 rounded font-black">數據</span> 看穿處置股真實行情力道
             </p>
-
             {(() => {
               const features = [
-                { title: "平均漲跌幅", desc: "彙整歷年處置股大數據，預判行情天花板" },
-                { title: "紅黑機率", desc: "一眼看穿受限交易下的多空傾向" },
-                { title: "開收差幅", desc: "代表當天盤中的實質力道" },
+                { title: "平均漲跌幅", desc: "彙整歷年處置股大數據", highlight: "預判行情天花板" },
+                { title: "紅黑機率", desc: "一眼看穿受限交易下", highlight: "多空傾向" },
+                { title: "開收差幅", desc: "代表當天盤中的", highlight: "實質力道" },
               ];
               return (
                 <>
-                  <div className="space-y-3">
-                    {features.map((f, i) => (
-                      <button
-                        key={i}
-                        onClick={() => setStatsSlide(i)}
-                        className={`w-full text-left p-3 md:p-4 rounded-xl border transition-all duration-500 backdrop-blur-sm ${
-                          i === statsSlide
-                            ? "border-[#d4af37]/60 shadow-[0_0_20px_rgba(212,175,55,0.15)]"
-                            : "border-white/10 opacity-60 hover:opacity-80"
-                        }`}
-                        style={{ background: i === statsSlide ? "linear-gradient(145deg, rgba(10,21,40,0.85) 0%, rgba(6,10,20,0.9) 100%)" : "rgba(0,0,0,0.3)" }}
-                      >
-                        <h3 className={`text-sm md:text-base font-black mb-1 ${i === statsSlide ? "text-[#d4af37]" : "text-gray-400"}`}>{f.title}</h3>
-                        <p className="text-gray-400 text-xs md:text-sm font-bold">{f.desc}</p>
-                      </button>
-                    ))}
+                  <div className="p-6 rounded-2xl border border-[#d4af37]/60 shadow-[0_0_20px_rgba(212,175,55,0.15)] transition-all duration-500 backdrop-blur-sm" style={{ background: "linear-gradient(145deg, rgba(10,21,40,0.85) 0%, rgba(6,10,20,0.9) 100%)" }}>
+                    <div className="inline-block border border-[#d4af37] px-4 py-1 mb-3">
+                      <h3 className="text-xl font-black text-white tracking-widest">{features[statsSlide].title}</h3>
+                    </div>
+                    <p className="text-gray-300 text-base font-bold leading-relaxed">{features[statsSlide].desc}</p>
+                    <p className="text-[#d4af37] text-lg font-black mt-2">{features[statsSlide].highlight}</p>
                   </div>
                   <div className="flex gap-2 mt-4">
                     {[0, 1, 2].map((i) => (
@@ -328,22 +521,15 @@ const DispositionGodLanding: React.FC = () => {
               );
             })()}
           </div>
-
-          {/* 右側：手機 + 電腦，置中，重疊12px */}
           <div className="flex-1 min-h-0 h-full flex items-center justify-center scroll-reveal relative">
             <div className="absolute inset-0 pointer-events-none" style={{ filter: "blur(60px)", background: "radial-gradient(ellipse at center, rgba(212,175,55,0.2) 0%, transparent 70%)" }}></div>
-            <div className="relative z-10" style={{ height: "75vh" }}>
-              {/* 電腦 */}
-              <div className="desktop-screenshot h-full flex items-center justify-center">
-                <img src="/image (8).png" alt="獨家統計功能 電腦版" className="h-full object-contain rounded-[1rem]" />
-              </div>
-              {/* 手機 — 右下角，重疊電腦1/4 */}
-              <div className="hidden md:block absolute bottom-0 z-20" style={{ right: "-12%", width: "22.5%", transform: "translateX(25%)" }}>
-                {[shop2, shop5, shop3].map((img, i) => (
-                  <img key={i} src={img} alt={["平均漲跌幅", "紅黑機率", "開收差幅"][i]}
-                    className="w-full h-auto block rounded-[1.2rem] transition-opacity duration-700"
-                    style={{ display: i === statsSlide ? "block" : "none" }}
-                  />
+            <div className="relative z-10 h-full">
+              <div className="h-full grid place-items-center" style={{ gridTemplate: "1fr / 1fr" }}>
+                {["/img_3-1.png", "/img_3-2.png", "/img_3-3.png"].map((src, i) => (
+                  <div key={i} className="max-h-full rounded-2xl border-2 border-[#d4af37]/40 overflow-hidden shadow-[0_0_60px_rgba(212,175,55,0.3),0_0_120px_rgba(212,175,55,0.15)] transition-opacity duration-700"
+                    style={{ gridArea: "1/1", opacity: i === statsSlide ? 1 : 0 }}>
+                    <img src={src} alt={["平均漲跌幅", "紅黑機率", "開收差幅"][i]} className="max-h-full w-auto block" />
+                  </div>
                 ))}
               </div>
             </div>
@@ -351,45 +537,6 @@ const DispositionGodLanding: React.FC = () => {
         </div>
       </section>
 
-      {/* ========== 獨家數據 ========== */}
-      <section className="py-16 md:py-24 px-4 md:px-6 bg-gradient-to-b from-[#0a1528] to-black border-t border-white/5 relative overflow-hidden">
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-1/3 right-0 w-[400px] h-[400px] bg-[#2563eb]/5 blur-[120px] rounded-full"></div>
-        </div>
-
-        <div className="max-w-5xl mx-auto relative z-10">
-
-          <div className="scroll-reveal max-w-3xl mx-auto p-6 md:p-10 rounded-2xl border border-blue-500/20" style={{ background: "linear-gradient(145deg, #0a1528 0%, #060a14 100%)" }}>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 items-center">
-              <div className="text-center md:text-left">
-                <p className="text-lg md:text-2xl font-black text-white mb-4 serif-font">
-                  揭露 5分 / 20分<br />處置盤背後的
-                </p>
-                <div className="flex items-center justify-center md:justify-start gap-2 mb-4">
-                  <span className="bg-red-600 text-white px-3 py-1 rounded font-black text-sm">上漲</span>
-                  <span className="text-white font-bold">與</span>
-                  <span className="bg-green-600 text-white px-3 py-1 rounded font-black text-sm">下跌</span>
-                  <span className="text-white font-bold">機率</span>
-                </div>
-                <p className="text-gray-300 text-base md:text-lg font-bold">
-                  掌握<span className="text-[#d4af37] font-black">回測數據</span><br />
-                  優化進出場決策
-                </p>
-              </div>
-              <div className="flex justify-center">
-                <a
-                  href={TARGET_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-block border-2 border-[#d4af37] text-[#d4af37] px-8 py-3 rounded-lg text-lg font-black hover:bg-[#d4af37] hover:text-black transition-all"
-                >
-                  立即查看
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* ========== 處置神器可以幫助你 ========== */}
       <section className="py-16 md:py-24 px-4 md:px-6 bg-black border-t border-[#d4af37]/10 relative overflow-hidden">
@@ -743,11 +890,30 @@ const DispositionGodLanding: React.FC = () => {
             <h2 className="text-3xl md:text-6xl font-black serif-font text-gold-gradient mb-4 md:mb-6">
               立即體驗處置神器
             </h2>
+
+            <a
+              href="https://www.cmoney.tw/app/itemcontent.aspx?id=8761"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block mb-6 md:mb-8 cursor-pointer group"
+            >
+              <div className="flex flex-col items-center gap-3 md:gap-4 px-8 py-4 md:px-12 md:py-6 rounded-2xl bg-gradient-to-r from-[#d4af37] to-[#f5d76e] group-hover:from-[#f5d76e] group-hover:to-[#d4af37] shadow-[0_0_40px_rgba(212,175,55,0.4)] group-hover:shadow-[0_0_60px_rgba(212,175,55,0.6)] transition-all transform group-active:scale-95">
+                <span className="text-black text-xl md:text-3xl font-black tracking-wide">🔥 限時 35 折 立即搶購</span>
+                <div className="flex items-center gap-1.5 md:gap-2 font-black">
+                  <span className="bg-black/20 rounded-lg px-2.5 py-1.5 md:px-3 md:py-2 text-lg md:text-2xl tabular-nums text-black">{String(countdown.h).padStart(2, "0")}</span>
+                  <span className="text-black/60 text-lg md:text-2xl">:</span>
+                  <span className="bg-black/20 rounded-lg px-2.5 py-1.5 md:px-3 md:py-2 text-lg md:text-2xl tabular-nums text-black">{String(countdown.m).padStart(2, "0")}</span>
+                  <span className="text-black/60 text-lg md:text-2xl">:</span>
+                  <span className="bg-black/20 rounded-lg px-2.5 py-1.5 md:px-3 md:py-2 text-lg md:text-2xl tabular-nums text-black">{String(countdown.s).padStart(2, "0")}</span>
+                </div>
+              </div>
+            </a>
+
             <p className="text-xl md:text-3xl font-black text-white mb-2">
               高達 <span className="text-[#d4af37]">99%</span> 預測準確度
             </p>
             <p className="text-gray-400 text-base md:text-xl font-bold mb-10 md:mb-14 leading-relaxed">
-              不必傻計算，只要看答案<br />
+              不必懂計算，只要看答案<br />
               精準規避流動性陷阱
             </p>
           </div>
@@ -770,34 +936,6 @@ const DispositionGodLanding: React.FC = () => {
               </a>
             </div>
 
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 md:gap-6 mt-6">
-              {/* iOS */}
-              <a
-                href="https://apps.apple.com/tw/app/id6670425075"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-3 px-6 md:px-8 py-3 md:py-4 rounded-xl border border-white/20 bg-white/5 hover:bg-white/10 hover:border-[#d4af37]/40 transition-all text-white font-bold text-sm md:text-base"
-              >
-                <i className="fab fa-apple text-2xl md:text-3xl"></i>
-                <div className="text-left">
-                  <span className="block text-[10px] md:text-xs text-gray-400 leading-tight">Download on the</span>
-                  <span className="block text-sm md:text-base font-black leading-tight">App Store</span>
-                </div>
-              </a>
-              {/* Android */}
-              <a
-                href="https://play.google.com/store/apps/details?id=com.cmoney.dispositiongod"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-3 px-6 md:px-8 py-3 md:py-4 rounded-xl border border-white/20 bg-white/5 hover:bg-white/10 hover:border-[#d4af37]/40 transition-all text-white font-bold text-sm md:text-base"
-              >
-                <i className="fab fa-google-play text-xl md:text-2xl"></i>
-                <div className="text-left">
-                  <span className="block text-[10px] md:text-xs text-gray-400 leading-tight">GET IT ON</span>
-                  <span className="block text-sm md:text-base font-black leading-tight">Google Play</span>
-                </div>
-              </a>
-            </div>
           </div>
 
           <p className="text-gray-500 text-xs md:text-sm font-bold tracking-widest mt-8 md:mt-10">

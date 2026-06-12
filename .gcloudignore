@@ -1,24 +1,11 @@
-# This file specifies files intentionally ignored by gcloud when uploading sources.
-# We DO want to upload dist/ (pre-built artifact) and Dockerfile.
-
-# Version control
+node_modules
 .git
 .gitignore
-
-# Node
-node_modules
-npm-debug.log*
-
-# Local environments
 .env
 .env.local
 .env.*.local
-
-# Editors
+npm-debug.log*
 .vscode
 .idea
 .claude
-
-# Docs / misc
 *.md
-.pen

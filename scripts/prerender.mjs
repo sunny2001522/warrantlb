@@ -1,10 +1,10 @@
 import { launch } from 'puppeteer';
 import { createServer } from 'http';
-import { readFileSync, writeFileSync, existsSync } from 'fs';
-import { resolve, join, extname } from 'path';
+import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'fs';
+import { resolve, join, extname, dirname } from 'path';
 
 const DIST = resolve('dist');
-const ROUTES = ['/', '/disposition-god'];
+const ROUTES = ['/', '/about/DispositionGod'];
 const PORT = 45678;
 
 // Simple static file server for dist/
@@ -30,19 +30,20 @@ server.listen(PORT, async () => {
     await page.setRequestInterception(true);
     page.on('request', (req) => {
       const u = req.url();
-      if (u.includes('googletagmanager') || u.includes('facebook.com/tr') || u.includes('google-analytics')) {
+      if (u.includes('googletagmanager') || u.includes('facebook.com/tr') || u.includes('google-analytics') || u.includes('firestore.googleapis.com')) {
         req.abort();
       } else {
         req.continue();
       }
     });
-    await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 30000 });
+    await page.goto(url, { waitUntil: 'networkidle0', timeout: 30000 });
 
     // Wait a bit for any async rendering
     await new Promise(r => setTimeout(r, 2000));
 
     const html = await page.content();
     const outFile = join(DIST, route === '/' ? 'index.html' : `${route}/index.html`);
+    mkdirSync(dirname(outFile), { recursive: true });
     writeFileSync(outFile, html, 'utf-8');
     console.log(`[prerender] Wrote ${outFile} (${(html.length / 1024).toFixed(1)} KB)`);
     await page.close();

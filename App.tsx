@@ -6,7 +6,6 @@ import { collection, getDocs } from "firebase/firestore";
 import LiveStreamSection from "./components/LiveStreamSection";
 
 import { MarqueeCarousel } from "./components/MarqueeCarousel";
-import { FeatureCarousel } from "./components/FeatureCarousel";
 import heroMobile from "./assets/限時動態（1080x1920）.jpg";
 import heroTablet from "./assets/1200X900(沒有日期&CTA).png";
 import heroDesktop from "./assets/內廣A (1200x500)_0402.jpg";
@@ -42,7 +41,7 @@ const App: React.FC = () => {
 
   const [hasLiveStream, setHasLiveStream] = useState(false);
 
-  // 從 Firestore 載入講座資料，失敗則 fallback 到 constants
+  // 從 Firestore 載入講座資料，不做任何 fallback
   const [events, setEvents] = useState<RegistrationInfo[]>([]);
 
   useEffect(() => {
@@ -53,15 +52,20 @@ const App: React.FC = () => {
           const allEvents = sanitizeRegistrationEvents(
             snapshot.docs.map((d) => ({ id: Number(d.id), ...d.data() } as RegistrationInfo)),
           );
+
           const now = new Date();
-          setEvents(allEvents.filter((event) => {
+          const active: RegistrationInfo[] = [];
+
+          for (const event of allEvents) {
             const startTime = new Date(event.targetDate);
-            return Number.isNaN(startTime.getTime()) || now < startTime;
-          }));
+            if (Number.isNaN(startTime.getTime()) || now < startTime) {
+              active.push(event);
+            }
+          }
+          setEvents(active);
         }
-        // Firestore 空的就保持 events = []，不 fallback
       } catch {
-        // Firestore 失敗也不 fallback，保持空陣列
+        // Firestore 失敗，不 fallback，保持空陣列
       }
     })();
   }, []);
@@ -89,9 +93,6 @@ const App: React.FC = () => {
         scrollToSection(chaptersRef);
         break;
       case 2:
-        scrollToSection(appVipRef);
-        break;
-      case 3:
         scrollToSection(registrationRef);
         break;
       default:
@@ -163,39 +164,20 @@ const App: React.FC = () => {
           </div>
         </div>
 
-        {/* Top-level page tabs */}
-        <div className="flex items-center gap-0.5 md:gap-1 mr-2 md:mr-4">
-          <span className="px-2 md:px-4 py-1 md:py-1.5 text-[10px] md:text-sm font-black tracking-wider md:tracking-widest text-[#d4af37] border-b-2 border-[#d4af37]">
-            處置策略體驗課
-          </span>
+        {/* Desktop Anchor Menu */}
+        <div className="hidden lg:flex items-center gap-8 mr-8">
           <a
-            href="/disposition-god"
-            className="px-2 md:px-4 py-1 md:py-1.5 text-[10px] md:text-sm font-bold tracking-wider md:tracking-widest text-gray-400 hover:text-white border-b-2 border-transparent hover:border-white/30 transition-all"
+            href="/"
+            className="text-[#d4af37] text-sm font-bold tracking-widest transition-colors"
+          >
+            處置體驗課
+          </a>
+          <a
+            href="/about/DispositionGod"
+            className="text-gray-400 hover:text-[#d4af37] text-sm font-bold tracking-widest transition-colors"
           >
             處置神器
           </a>
-        </div>
-
-        {/* Desktop Anchor Menu */}
-        <div className="hidden lg:flex items-center gap-8 mr-8">
-          {[
-            { label: "處置盲區", ref: problemRef },
-            { label: "獲利模型", ref: methodRef },
-            { label: "講師介紹", ref: lecturerRef },
-            { label: "課程大綱", ref: chaptersRef },
-            { label: "APP介紹", ref: appVipRef },
-          ].map((item, idx) => (
-            <button
-              key={idx}
-              onClick={() => {
-                trackNavClick(item.label);
-                scrollToSection(item.ref);
-              }}
-              className="text-gray-400 hover:text-[#d4af37] text-sm font-bold tracking-widest transition-colors"
-            >
-              {item.label}
-            </button>
-          ))}
         </div>
 
         <div className="flex items-center gap-2 md:gap-3">
@@ -284,10 +266,6 @@ const App: React.FC = () => {
             >
               免費體驗處置神器
             </CTAButton>
-          </div>
-
-          <div className="scroll-reveal w-full max-w-3xl mx-auto mb-8 md:mb-16">
-            <FeatureCarousel />
           </div>
 
           <div className="flex items-start md:grid md:grid-cols-3 md:items-start gap-4 md:gap-6 xl:gap-8 overflow-x-auto md:overflow-visible no-scrollbar snap-x snap-mandatory px-2 md:px-0 mb-8 md:mb-32">
@@ -642,11 +620,14 @@ const App: React.FC = () => {
             <div className="w-16 md:w-24 h-1 bg-[#d4af37] mx-auto rounded-full"></div>
           </div>
           <div className="flex flex-wrap justify-center gap-4 md:gap-6 xl:gap-8 max-w-7xl mx-auto">
-            {events.length === 0 ? (
+            {events.length === 0 && (
               <div className="w-full text-center py-12 md:py-20">
-                <p className="text-2xl md:text-4xl font-black text-gray-500 serif-font">尚未開放報名</p>
+                <p className="text-gray-400 text-lg md:text-2xl font-bold serif-font tracking-widest">
+                  暫無相關場次，敬請期待
+                </p>
               </div>
-            ) : events.map((event) => (
+            )}
+            {events.map((event) => (
               <div
                 key={event.id}
                 className="scroll-reveal w-full lg:w-[calc((100%-1.5rem)/2)] xl:w-[calc((100%-5rem)/3)] max-w-[32rem] bg-[#0b0f1a] border border-[#d4af37]/30 rounded-[1.5rem] md:rounded-[2.5rem] overflow-hidden flex flex-col shadow-2xl transition-all hover:border-[#d4af37] hover:-translate-y-1 group h-full"
@@ -782,21 +763,17 @@ const App: React.FC = () => {
               </h4>
               <div className="grid grid-cols-2 gap-x-4 gap-y-2">
                 {[
-                  { label: "處置盲區", ref: problemRef },
-                  { label: "獲利模型", ref: methodRef },
-                  { label: "講師介紹", ref: lecturerRef },
-                  { label: "課程內容", ref: chaptersRef },
-                  { label: "APP介紹", ref: appVipRef },
-                  { label: "報名場次", ref: registrationRef },
+                  { label: "處置體驗課", href: "/" },
+                  { label: "處置神器", href: "/about/DispositionGod" },
                 ].map((item, idx) => (
-                  <button
+                  <a
                     key={idx}
-                    onClick={() => scrollToSection(item.ref)}
+                    href={item.href}
                     className="text-gray-500 hover:text-[#d4af37] text-xs font-bold text-left transition-colors flex items-center gap-2 group"
                   >
                     <i className="fas fa-chevron-right text-[6px] opacity-0 group-hover:opacity-100 transition-opacity"></i>
                     {item.label}
-                  </button>
+                  </a>
                 ))}
               </div>
             </div>
