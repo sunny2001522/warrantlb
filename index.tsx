@@ -5,6 +5,9 @@ import App from './App';
 import { AdminPage } from './components/AdminPage';
 import { ChatPage } from './pages/ChatPage';
 import DispositionGodLanding from './pages/DispositionGodLanding';
+import AboutExpert from './pages/AboutExpert';
+import SoftwareOverview from './pages/SoftwareOverview';
+import MediaPage from './pages/MediaPage';
 import { AuthProvider } from './auth/AuthContext';
 import LoginCallback from './auth/callbacks/LoginCallback';
 import LogoutCallback from './auth/callbacks/LogoutCallback';
@@ -30,6 +33,9 @@ root.render(
         <Routes>
           <Route path="/" element={<App />} />
           <Route path="/about/DispositionGod" element={<DispositionGodLanding />} />
+          <Route path="/about" element={<AboutExpert />} />
+          <Route path="/software" element={<SoftwareOverview />} />
+          <Route path="/media" element={<MediaPage />} />
           <Route path="/admin-w7k3m9" element={<AdminPage />} />
           <Route path="/chat" element={<ChatPage />} />
           <Route path="/disposition-god" element={<Navigate to="/about/DispositionGod" replace />} />

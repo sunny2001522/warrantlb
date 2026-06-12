@@ -13,16 +13,6 @@ export default defineConfig(({ mode }) => {
       : {};
 
     return {
-      build: {
-        // 強制 ASCII 檔名 (避免 CJK 檔名在 Cloud Run container import 時失敗)
-        rollupOptions: {
-          output: {
-            assetFileNames: 'assets/[hash][extname]',
-            chunkFileNames: 'assets/[hash].js',
-            entryFileNames: 'assets/[hash].js',
-          },
-        },
-      },
       server: {
         port: 3003,
         host: '0.0.0.0',
@@ -45,6 +35,7 @@ export default defineConfig(({ mode }) => {
         }
       },
       build: {
+        // 強制 ASCII 檔名 (避免 CJK 檔名在 Cloud Run container import 時失敗)
         rollupOptions: {
           output: {
             assetFileNames: 'assets/[hash][extname]',
