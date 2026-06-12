@@ -329,24 +329,6 @@ export interface VideoItem {
   tag: string;
 }
 
-export const TUTORIAL_SERIES: VideoItem[] = [
-  {
-    title: "新手教學 第一集|賺到第一桶金",
-    desc: "小哥的起家故事:如何從 10 萬元本金,靠權證在多頭行情滾出第一桶金。",
-    tag: "新手教學",
-  },
-  {
-    title: "新手教學 第二集|如何分辨主力",
-    desc: "用分點籌碼分辨主力與散戶,看懂大戶進出貨的足跡。",
-    tag: "新手教學",
-  },
-  {
-    title: "新手教學 第三集|強勢股為何也賠錢",
-    desc: "追強勢股卻賠錢的原因解析:量價結構與進場時機的眉角。",
-    tag: "新手教學",
-  },
-];
-
 export const FEATURED_VIDEOS: VideoItem[] = [
   {
     title: "找出關鍵分點重押股,提升投資勝率!",
