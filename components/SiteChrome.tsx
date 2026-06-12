@@ -85,7 +85,7 @@ export const SiteHeader: React.FC<{
         </div>
       </a>
 
-      <div className="flex items-center gap-0.5 md:gap-1 flex-shrink min-w-0 overflow-x-auto">
+      <div className="flex items-center gap-0.5 md:gap-1">
         {SITE_NAV.map((item) =>
           item.href === "/software" ? (
             <SoftwareDropdown key={item.href} active={active.startsWith("/software")} />
