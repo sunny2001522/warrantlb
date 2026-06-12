@@ -85,10 +85,13 @@ export const SiteHeader: React.FC<{
         </div>
       </a>
 
-      <div className="flex items-center gap-0.5 md:gap-1">
+      <div className="flex items-center gap-0.5 md:gap-1 md:absolute md:left-1/2 md:top-1/2 md:-translate-x-1/2 md:-translate-y-1/2">
         {SITE_NAV.map((item) =>
           item.href === "/software" ? (
-            <SoftwareDropdown key={item.href} active={active.startsWith("/software")} />
+            <SoftwareDropdown
+              key={item.href}
+              active={active.startsWith("/software") || active === "/about/DispositionGod"}
+            />
           ) : (
             <a
               key={item.href}
@@ -157,7 +160,7 @@ export const SiteFooter: React.FC = () => (
                 {item.label}
               </a>
             ))}
-            {TOOL_CARDS.filter((t) => t.href !== "/about/DispositionGod").map((t) => (
+            {TOOL_CARDS.map((t) => (
               <a
                 key={t.href}
                 href={t.href}

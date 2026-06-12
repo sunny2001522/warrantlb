@@ -370,23 +370,33 @@ const AboutExpert: React.FC = () => {
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-8">
             {EXPERT_BOOKS.map((book, i) => (
               <Reveal key={book.title} delay={i * 80}>
-                <div
-                  className={`relative bg-gradient-to-br ${book.accent} border border-[#d4af37]/30 rounded-xl aspect-[3/4] p-4 md:p-8 flex flex-col justify-between hover:border-[#d4af37] hover:-translate-y-1 hover:shadow-[0_8px_40px_rgba(212,175,55,0.15)] transition-all`}
+                <a
+                  href={book.url}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="block bg-[#0d1830] border border-[#d4af37]/30 rounded-xl overflow-hidden hover:border-[#d4af37] hover:-translate-y-1 hover:shadow-[0_8px_40px_rgba(212,175,55,0.2)] transition-all group h-full"
                 >
-                  <div className="absolute top-0 left-3 md:left-5 bottom-0 w-[2px] bg-[#d4af37]/30"></div>
-                  <i className="fas fa-book-open text-[#d4af37]/60 text-lg md:text-2xl self-end"></i>
-                  <div className="pl-3 md:pl-4">
-                    <h3 className="text-white text-sm md:text-xl font-black serif-font leading-snug">
+                  <div className="relative aspect-square bg-white flex items-center justify-center overflow-hidden">
+                    <img
+                      src={book.cover}
+                      alt={book.title}
+                      loading="lazy"
+                      className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500"
+                    />
+                  </div>
+                  <div className="p-3 md:p-5">
+                    <h3 className="text-white text-sm md:text-lg font-black serif-font leading-snug group-hover:text-[#d4af37] transition-colors">
                       {book.title}
                     </h3>
                     {book.subtitle && (
-                      <p className="text-[#d4af37] text-[10px] md:text-sm font-bold mt-2">{book.subtitle}</p>
+                      <p className="text-[#d4af37] text-[10px] md:text-sm font-bold mt-1">{book.subtitle}</p>
                     )}
+                    <p className="text-gray-500 text-[10px] md:text-xs font-bold mt-2 flex items-center gap-1.5">
+                      前往博客來
+                      <i className="fas fa-external-link-alt text-[8px]"></i>
+                    </p>
                   </div>
-                  <p className="pl-3 md:pl-4 text-gray-400 text-[9px] md:text-xs font-black tracking-[0.2em]">
-                    權證小哥 著
-                  </p>
-                </div>
+                </a>
               </Reveal>
             ))}
           </div>

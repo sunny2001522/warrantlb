@@ -75,22 +75,52 @@ export const EXPERT_EXPERIENCES: string[] = [
   "【理財達人秀】常駐嘉賓,節目累積千萬觀看",
 ];
 
+import book100k from "./assets/books/book-100k.jpg";
+import bookBible from "./assets/books/book-bible.jpg";
+import bookWisdom from "./assets/books/book-wisdom.jpg";
+import bookAdvanced from "./assets/books/book-advanced.jpg";
+import bookNotes from "./assets/books/book-notes.jpg";
+import bookUltimate from "./assets/books/book-ultimate.jpg";
+
 export interface BookItem {
   title: string;
   subtitle?: string;
-  accent: string; // tailwind gradient classes for the cover card
+  cover: string; // 實際書封 (博客來)
+  url: string; // 博客來購書連結
 }
 
 export const EXPERT_BOOKS: BookItem[] = [
-  { title: "權證小哥教你十萬元變千萬", accent: "from-[#7a5c1e] to-[#2a1f08]" },
-  { title: "權證小哥完全公開權證暴賺勝經", accent: "from-[#8b0000] to-[#2a0808]" },
-  { title: "權證小哥贏家的智計", accent: "from-[#1a3a6a] to-[#080c14]" },
-  { title: "權證小哥 權證進階交易技巧", accent: "from-[#2d5a3d] to-[#0a1f12]" },
-  { title: "權證小哥:股市致勝交易筆記", accent: "from-[#5a3d7a] to-[#150a1f]" },
+  {
+    title: "權證小哥教你十萬元變千萬",
+    subtitle: "全新增修版",
+    cover: book100k,
+    url: "https://www.books.com.tw/products/0010833820",
+  },
+  {
+    title: "權證小哥完全公開權證暴賺勝經",
+    cover: bookBible,
+    url: "https://www.books.com.tw/products/0010619530",
+  },
+  {
+    title: "權證小哥:贏家的智計",
+    cover: bookWisdom,
+    url: "https://www.books.com.tw/products/0010721771",
+  },
+  {
+    title: "權證小哥 權證進階交易技巧",
+    cover: bookAdvanced,
+    url: "https://www.books.com.tw/products/0010789869",
+  },
+  {
+    title: "權證小哥:股市致勝交易筆記",
+    cover: bookNotes,
+    url: "https://www.books.com.tw/products/0010954992",
+  },
   {
     title: "權證小哥短線終極戰法",
     subtitle: "4 大策略 × 6 種工具 × 68 個實戰案例",
-    accent: "from-[#a06010] to-[#1f1205]",
+    cover: bookUltimate,
+    url: "https://www.books.com.tw/products/0011014572",
   },
 ];
 
@@ -467,7 +497,6 @@ export interface NavItem {
 export const SITE_NAV: NavItem[] = [
   { label: "關於小哥", shortLabel: "首頁", href: "/" },
   { label: "處置體驗課", shortLabel: "體驗課", href: "/course" },
-  { label: "處置神器", href: "/about/DispositionGod" },
   { label: "軟體工具", href: "/software" },
   { label: "影音專區", href: "/media" },
 ];
