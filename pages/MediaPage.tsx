@@ -3,13 +3,49 @@ import { Reveal } from "../components/Reveal";
 import { SiteHeader, SiteFooter, usePageMeta } from "../components/SiteChrome";
 import {
   YOUTUBE_CHANNEL_URL,
+  EBC_SHOW_CHANNEL_URL,
   TUTORIAL_SERIES,
   FEATURED_VIDEOS,
-  YOUTUBE_SHOWS,
   CMONEY_COURSES,
   SOCIAL_LINKS,
   type VideoItem,
 } from "../siteContent";
+import { DAREN_SHOW_VIDEOS, CHIP_REPORT_VIDEOS, type PlaylistVideo } from "../mediaVideos";
+
+/** 播放清單影片卡 — 縮圖 + 時長 + 日期 */
+const PlaylistCard: React.FC<{ video: PlaylistVideo; index: number }> = ({ video, index }) => (
+  <Reveal delay={(index % 3) * 100}>
+    <a
+      href={`https://www.youtube.com/watch?v=${video.videoId}`}
+      target="_blank"
+      rel="noreferrer"
+      className="block bg-[#0d1830] border border-[#2563eb]/25 rounded-[1.25rem] overflow-hidden hover:border-[#d4af37] hover:-translate-y-1 transition-all group h-full"
+    >
+      <div className="relative aspect-video bg-black overflow-hidden">
+        <img
+          src={`https://img.youtube.com/vi/${video.videoId}/hqdefault.jpg`}
+          alt={video.title}
+          loading="lazy"
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+        />
+        <div className="absolute inset-0 bg-black/25 group-hover:bg-black/5 transition-colors flex items-center justify-center">
+          <div className="w-11 h-11 rounded-full bg-red-600/90 flex items-center justify-center group-hover:scale-110 transition-transform">
+            <i className="fas fa-play text-white text-sm ml-0.5"></i>
+          </div>
+        </div>
+        <span className="absolute bottom-2 right-2 px-2 py-0.5 rounded bg-black/80 text-white text-[10px] md:text-xs font-black">
+          {video.duration}
+        </span>
+      </div>
+      <div className="p-3 md:p-4">
+        <h3 className="text-white text-sm md:text-base font-bold leading-snug line-clamp-2 group-hover:text-[#d4af37] transition-colors">
+          {video.title}
+        </h3>
+        <p className="text-gray-600 text-[10px] md:text-xs font-bold mt-2">{video.date}</p>
+      </div>
+    </a>
+  </Reveal>
+);
 
 const VideoCard: React.FC<{ video: VideoItem; index: number }> = ({ video, index }) => {
   const href = video.videoId
@@ -131,43 +167,68 @@ const MediaPage: React.FC = () => {
         </div>
       </section>
 
-      {/* 電視節目單元 */}
+      {/* 理財達人秀|權證小哥 */}
       <section className="py-10 md:py-20 px-4 md:px-6 bg-gradient-to-b from-[#091022] to-[#0a1228] border-t border-white/5">
         <div className="max-w-6xl mx-auto">
           <Reveal className="text-center mb-8 md:mb-14">
             <h2 className="text-2xl md:text-5xl font-black serif-font italic text-gold-gradient mb-3">
-              節目單元
+              理財達人秀|權證小哥
             </h2>
-            <p className="text-gray-400 text-sm md:text-lg">東森《理財達人秀》常駐嘉賓,節目累積千萬觀看</p>
+            <p className="text-gray-400 text-sm md:text-lg">
+              東森《理財達人秀》常駐嘉賓,每集拆解盤面籌碼與處置股動態
+            </p>
           </Reveal>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-            {YOUTUBE_SHOWS.map((s, i) => (
-              <Reveal key={s.title} delay={i * 100}>
-                <a
-                  href={s.url}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="flex items-center gap-4 bg-[#0d1830] border border-[#2563eb]/25 rounded-[1.25rem] p-5 md:p-7 hover:border-[#d4af37] hover:-translate-y-1 transition-all group h-full"
-                >
-                  <div className="w-12 h-12 md:w-16 md:h-16 rounded-full bg-[#2563eb]/15 border border-[#2563eb]/40 flex items-center justify-center flex-shrink-0">
-                    <i className={`${s.icon} text-blue-300 text-lg md:text-xl`}></i>
-                  </div>
-                  <div className="min-w-0">
-                    <h3 className="text-white text-base md:text-xl font-black serif-font group-hover:text-[#d4af37] transition-colors">
-                      {s.title}
-                    </h3>
-                    <p className="text-gray-500 text-xs md:text-sm font-bold mt-1">{s.desc}</p>
-                  </div>
-                  <i className="fas fa-external-link-alt text-gray-600 group-hover:text-[#d4af37] text-xs ml-auto flex-shrink-0 transition-colors"></i>
-                </a>
-              </Reveal>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+            {DAREN_SHOW_VIDEOS.map((v, i) => (
+              <PlaylistCard key={v.videoId} video={v} index={i} />
             ))}
           </div>
+          <Reveal className="text-center mt-8">
+            <a
+              href={EBC_SHOW_CHANNEL_URL}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-2 px-8 py-3 rounded-full border border-[#d4af37] text-[#d4af37] text-sm md:text-base font-black tracking-widest hover:bg-[#d4af37] hover:text-black transition-all"
+            >
+              更多理財達人秀
+              <i className="fab fa-youtube"></i>
+            </a>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* 哥有籌必爆 */}
+      <section className="py-10 md:py-20 px-4 md:px-6 bg-[#0a1228] border-t border-white/5">
+        <div className="max-w-6xl mx-auto">
+          <Reveal className="text-center mb-8 md:mb-14">
+            <h2 className="text-2xl md:text-5xl font-black serif-font italic text-gold-gradient mb-3">
+              哥有籌必爆
+            </h2>
+            <p className="text-gray-400 text-sm md:text-lg">
+              小哥的籌碼觀察固定單元,主力分點、大戶買賣超有籌必報
+            </p>
+          </Reveal>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+            {CHIP_REPORT_VIDEOS.map((v, i) => (
+              <PlaylistCard key={v.videoId} video={v} index={i} />
+            ))}
+          </div>
+          <Reveal className="text-center mt-8">
+            <a
+              href={EBC_SHOW_CHANNEL_URL}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-2 px-8 py-3 rounded-full border border-[#d4af37] text-[#d4af37] text-sm md:text-base font-black tracking-widest hover:bg-[#d4af37] hover:text-black transition-all"
+            >
+              更多哥有籌必爆
+              <i className="fab fa-youtube"></i>
+            </a>
+          </Reveal>
         </div>
       </section>
 
       {/* 線上影音課程 */}
-      <section className="py-10 md:py-20 px-4 md:px-6 bg-[#0a1228] border-t border-white/5">
+      <section className="py-10 md:py-20 px-4 md:px-6 bg-gradient-to-b from-[#0a1228] to-[#091022] border-t border-white/5">
         <div className="max-w-6xl mx-auto">
           <Reveal className="text-center mb-8 md:mb-14">
             <h2 className="text-2xl md:text-5xl font-black serif-font italic text-gold-gradient mb-3">
@@ -182,15 +243,25 @@ const MediaPage: React.FC = () => {
                   href={c.url}
                   target="_blank"
                   rel="noreferrer"
-                  className="block bg-[#0d1830] border border-[#2563eb]/25 rounded-[1.25rem] p-5 md:p-6 hover:border-[#d4af37] hover:-translate-y-1 transition-all group h-full"
+                  className="block bg-[#0d1830] border border-[#2563eb]/25 rounded-[1.25rem] overflow-hidden hover:border-[#d4af37] hover:-translate-y-1 transition-all group h-full"
                 >
-                  <span className="inline-block px-2.5 py-1 rounded-full bg-[#d4af37]/10 border border-[#d4af37]/40 text-[#d4af37] text-[10px] md:text-xs font-black tracking-widest mb-3">
-                    {c.tag}
-                  </span>
-                  <h3 className="text-white text-base md:text-lg font-black serif-font leading-snug mb-2 group-hover:text-[#d4af37] transition-colors">
-                    {c.title}
-                  </h3>
-                  <p className="text-gray-500 text-xs md:text-sm leading-relaxed">{c.desc}</p>
+                  <div className="relative aspect-video bg-black overflow-hidden">
+                    <img
+                      src={c.thumbnail}
+                      alt={c.title}
+                      loading="lazy"
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                    <span className="absolute top-2 left-2 px-2.5 py-1 rounded-full bg-black/75 border border-[#d4af37]/40 text-[#d4af37] text-[10px] md:text-xs font-black tracking-widest">
+                      {c.tag}
+                    </span>
+                  </div>
+                  <div className="p-4 md:p-5">
+                    <h3 className="text-white text-sm md:text-base font-black serif-font leading-snug mb-2 group-hover:text-[#d4af37] transition-colors">
+                      {c.title}
+                    </h3>
+                    <p className="text-gray-500 text-xs md:text-sm leading-relaxed">{c.desc}</p>
+                  </div>
                 </a>
               </Reveal>
             ))}

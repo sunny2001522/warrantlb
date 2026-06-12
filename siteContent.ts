@@ -391,38 +391,43 @@ export const YOUTUBE_SHOWS: ShowItem[] = [
   },
 ];
 
-/** CMoney 線上影音課程 (來源: dispostock-web courses 資料) */
+/** CMoney 線上影音課程 (來源: 處置神器 web ProductDataProvider 課程池, mobileAppId 268) */
 export interface CourseItem {
   title: string;
   desc: string;
   url: string;
   tag: string;
+  thumbnail: string;
 }
 
 export const CMONEY_COURSES: CourseItem[] = [
   {
     title: "處置神器 ✕ 進階雙刀處置策略",
     desc: "VVIP 專屬:處置股進階雙刀戰法完整教學。",
-    url: "https://www.cmoney.tw/app/expert/warrantlb",
+    url: "https://mobile.cmoney.tw/course-media/16150/chapters",
     tag: "VVIP 專屬",
+    thumbnail: "https://image.cmoney.tw/official/promotion/1773244800/462e8965-0269-428f-a319-d426fea0babe.jpg",
   },
   {
     title: "權證小哥 ETF 套利 × 吃豆腐",
     desc: "6 小時 × 5 戰術多空雙賺 ft. 葉芷娟。",
-    url: "https://www.cmoney.tw/app/expert/warrantlb",
+    url: "https://mobile.cmoney.tw/course-media/13079/chapters",
     tag: "線上課程",
+    thumbnail: "https://fsv.cmoney.tw/cmstatic/app/media/preview/6388110257048730281463733266.jpg",
   },
   {
     title: "籌碼致勝!7 小時多空實戰新手班",
     desc: "從籌碼出發的多空實戰入門,新手也能跟上。",
-    url: "https://www.cmoney.tw/app/expert/warrantlb",
+    url: "https://mobile.cmoney.tw/course-media/10465/chapters",
     tag: "線上課程",
+    thumbnail: "https://fsv.cmoney.tw/cmstatic/app/media/preview/63855709719477478062558666.png",
   },
   {
     title: "獲利為王!當沖新手全攻略",
     desc: "當沖入門到實戰的完整攻略課。",
-    url: "https://www.cmoney.tw/app/expert/warrantlb",
+    url: "https://mobile.cmoney.tw/course-media/10130/chapters",
     tag: "線上課程",
+    thumbnail: "https://fsv.cmoney.tw/cmstatic/app/media/preview/638557129242314725893950883.jpg",
   },
 ];
 
