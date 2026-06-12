@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 
-import slide01 from "../assets/features/daily-report-01.png";
-import slide02 from "../assets/features/daily-report-02.png";
-import slide03 from "../assets/features/daily-report-03.png";
+import slide01 from "../assets/features/daily-report-01.webp";
+import slide02 from "../assets/features/daily-report-02.webp";
+import slide03 from "../assets/features/daily-report-03.webp";
 
 const SLIDES = [slide01, slide02, slide03];
 

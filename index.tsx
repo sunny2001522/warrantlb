@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import App from './App';
 import { AdminPage } from './components/AdminPage';
 import { ChatPage } from './pages/ChatPage';
@@ -33,7 +33,8 @@ root.render(
           <Route path="/about/DispositionGod" element={<DispositionGodLanding />} />
           <Route path="/admin-w7k3m9" element={<AdminPage />} />
           <Route path="/chat" element={<ChatPage />} />
-          <Route path="/disposition-god" element={<DispositionGodLanding />} />
+          <Route path="/about/DispositionGod" element={<DispositionGodLanding />} />
+          <Route path="/disposition-god" element={<Navigate to="/about/DispositionGod" replace />} />
           <Route path="/login" element={<LoginCallback />} />
           <Route path="/logout" element={<LogoutCallback />} />
           <Route path="/refresh" element={<SilentRefresh />} />
