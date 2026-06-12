@@ -8,9 +8,10 @@ export default defineConfig(({ mode }) => {
 
     const certPath = path.resolve(__dirname, '.certs/localhost.pem');
     const keyPath = path.resolve(__dirname, '.certs/localhost-key.pem');
+    // 憑證存在才啟用 https;空物件 {} 會讓 vite 啟用「無憑證 TLS」導致握手失敗
     const httpsConfig = fs.existsSync(certPath) && fs.existsSync(keyPath)
       ? { cert: fs.readFileSync(certPath), key: fs.readFileSync(keyPath) }
-      : {};
+      : undefined;
 
     return {
       server: {
