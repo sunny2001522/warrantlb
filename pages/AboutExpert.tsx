@@ -213,13 +213,26 @@ const AboutExpert: React.FC = () => {
                   className={`block bg-gradient-to-br ${tool.theme} border border-[#2563eb]/25 rounded-[1.25rem] p-5 md:p-7 hover:border-[#d4af37] hover:-translate-y-1 transition-all group h-full`}
                 >
                   <div className="flex items-center gap-3 mb-3">
-                    <div className="w-11 h-11 rounded-xl bg-[#d4af37]/10 border border-[#d4af37]/40 flex items-center justify-center flex-shrink-0">
-                      <i className={`${tool.icon} text-[#d4af37]`}></i>
-                    </div>
+                    <img
+                      src={tool.iconImg}
+                      alt={tool.title}
+                      className="w-11 h-11 rounded-xl border border-white/15 flex-shrink-0"
+                    />
                     <h3 className="text-white text-lg md:text-xl font-black serif-font group-hover:text-[#d4af37] transition-colors">
                       {tool.title}
                     </h3>
                   </div>
+                  {tool.screenshot && (
+                    <div className="relative mb-3 rounded-lg overflow-hidden border border-white/10">
+                      <img
+                        src={tool.screenshot}
+                        alt={`${tool.title} APP 畫面`}
+                        loading="lazy"
+                        className="w-full h-32 object-cover object-top"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent pointer-events-none"></div>
+                    </div>
+                  )}
                   <p className="text-gray-400 text-sm leading-relaxed line-clamp-3">{tool.description}</p>
                   <p className="text-[#d4af37] text-sm font-black mt-4 flex items-center gap-2">
                     {tool.cta}

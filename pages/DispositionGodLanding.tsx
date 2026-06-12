@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useCallback } from "react";
 import cmLogo from "../assets/同學會 (1).png";
+import { SoftwareDropdown } from "../components/SiteChrome";
 import shop1 from "../assets/商店頁-1.png";
 import shop2 from "../assets/商店頁-2.png";
 import shop3 from "../assets/商店頁-3.png";
@@ -124,12 +125,9 @@ const DispositionGodLanding: React.FC = () => {
           <span className="px-2 md:px-4 py-1 md:py-1.5 text-[10px] md:text-sm font-black tracking-wider md:tracking-widest text-[#d4af37] border-b-2 border-[#d4af37]">
             處置神器
           </span>
-          <a
-            href="/software"
-            className="hidden sm:inline-block px-2 md:px-4 py-1 md:py-1.5 text-[10px] md:text-sm font-bold tracking-wider md:tracking-widest text-gray-400 hover:text-white border-b-2 border-transparent hover:border-white/30 transition-all"
-          >
-            軟體工具
-          </a>
+          <div className="hidden sm:block">
+            <SoftwareDropdown />
+          </div>
         </div>
 
         <a

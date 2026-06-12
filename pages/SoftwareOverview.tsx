@@ -39,7 +39,7 @@ const SoftwareOverview: React.FC = () => {
 
       {/* 工具卡片 */}
       <section className="pb-16 md:pb-28 px-4 md:px-6">
-        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-8">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-8">
           {TOOL_CARDS.map((tool, i) => (
             <Reveal key={tool.title} delay={i * 100}>
               <div
@@ -52,11 +52,13 @@ const SoftwareOverview: React.FC = () => {
                 )}
 
                 <div className="flex items-center gap-4 mb-4 md:mb-6">
-                  <div className="w-12 h-12 md:w-16 md:h-16 rounded-2xl bg-[#d4af37]/10 border border-[#d4af37]/40 flex items-center justify-center flex-shrink-0">
-                    <i className={`${tool.icon} text-[#d4af37] text-xl md:text-2xl`}></i>
-                  </div>
+                  <img
+                    src={tool.iconImg}
+                    alt={tool.title}
+                    className="w-14 h-14 md:w-16 md:h-16 rounded-2xl border border-white/15 shadow-lg flex-shrink-0"
+                  />
                   <div>
-                    <h2 className="text-xl md:text-3xl font-black text-white serif-font group-hover:text-[#d4af37] transition-colors">
+                    <h2 className="text-xl md:text-2xl font-black text-white serif-font group-hover:text-[#d4af37] transition-colors">
                       {tool.title}
                     </h2>
                     <p className="text-[#d4af37] text-xs md:text-sm font-bold tracking-widest mt-1">
@@ -64,6 +66,18 @@ const SoftwareOverview: React.FC = () => {
                     </p>
                   </div>
                 </div>
+
+                {tool.screenshot && (
+                  <div className="relative mb-5 md:mb-6 rounded-xl overflow-hidden border border-white/10 bg-black/30">
+                    <img
+                      src={tool.screenshot}
+                      alt={`${tool.title} APP 畫面`}
+                      loading="lazy"
+                      className="w-full h-44 md:h-52 object-cover object-top group-hover:scale-[1.03] transition-transform duration-500"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent pointer-events-none"></div>
+                  </div>
+                )}
 
                 <p className="text-gray-300 text-sm md:text-base leading-relaxed mb-5 md:mb-8">
                   {tool.description}

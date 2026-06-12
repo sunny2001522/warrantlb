@@ -20,9 +20,11 @@ export const ToolProductPage: React.FC<{ data: ToolPageData }> = ({ data }) => {
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[80vw] h-[40vh] bg-[#2563eb]/10 blur-[120px] rounded-full pointer-events-none"></div>
         <div className="max-w-5xl mx-auto text-center relative z-10">
           <Reveal>
-            <div className="w-16 h-16 md:w-24 md:h-24 mx-auto rounded-3xl bg-[#d4af37]/10 border border-[#d4af37]/40 flex items-center justify-center mb-5 md:mb-8">
-              <i className={`${data.icon} text-[#d4af37] text-2xl md:text-4xl`}></i>
-            </div>
+            <img
+              src={data.iconImg}
+              alt={data.title}
+              className="w-20 h-20 md:w-28 md:h-28 mx-auto rounded-3xl border border-white/20 shadow-[0_8px_40px_rgba(0,0,0,0.5)] mb-5 md:mb-8"
+            />
             <p className="text-[#d4af37] text-xs md:text-base font-black tracking-[0.3em] mb-3">
               {data.eyebrow}
             </p>
@@ -58,6 +60,34 @@ export const ToolProductPage: React.FC<{ data: ToolPageData }> = ({ data }) => {
           ))}
         </div>
       </section>
+
+      {/* APP 畫面 */}
+      {data.screenshots.length > 0 && (
+        <section className="py-12 md:py-20 px-4 md:px-6 bg-[#0a1228]">
+          <div className="max-w-5xl mx-auto">
+            <Reveal className="text-center mb-8 md:mb-12">
+              <h2 className="text-2xl md:text-5xl font-black serif-font italic text-gold-gradient mb-3">
+                APP 實際畫面
+              </h2>
+              <div className="w-16 md:w-24 h-1 bg-[#d4af37] mx-auto rounded-full"></div>
+            </Reveal>
+            <div className="flex justify-center gap-4 md:gap-10">
+              {data.screenshots.map((shot, i) => (
+                <Reveal key={i} delay={i * 120}>
+                  <div className="w-44 md:w-72 rounded-[1.5rem] md:rounded-[2rem] overflow-hidden border-2 border-[#2563eb]/40 shadow-[0_12px_60px_rgba(37,99,235,0.25)] bg-black">
+                    <img
+                      src={shot}
+                      alt={`${data.title} 畫面 ${i + 1}`}
+                      loading="lazy"
+                      className="w-full h-auto"
+                    />
+                  </div>
+                </Reveal>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* 功能特色 */}
       <section className="py-12 md:py-24 px-4 md:px-6 bg-gradient-to-b from-[#0a1228] to-[#080e1e]">

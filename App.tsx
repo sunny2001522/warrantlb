@@ -4,6 +4,7 @@ import { StackingCard } from "./components/StackingCard";
 import { db } from "./firebase";
 import { collection, getDocs } from "firebase/firestore";
 import LiveStreamSection from "./components/LiveStreamSection";
+import { SoftwareDropdown } from "./components/SiteChrome";
 
 import { MarqueeCarousel } from "./components/MarqueeCarousel";
 import heroMobile from "./assets/限時動態（1080x1920）.jpg";
@@ -183,12 +184,9 @@ const App: React.FC = () => {
           >
             處置神器
           </a>
-          <a
-            href="/software"
-            className="hidden sm:inline-block px-1.5 md:px-4 py-1 md:py-1.5 text-[10px] md:text-sm font-black tracking-wider md:tracking-widest text-gray-400 hover:text-[#d4af37] whitespace-nowrap transition-colors"
-          >
-            軟體工具
-          </a>
+          <div className="hidden sm:block">
+            <SoftwareDropdown />
+          </div>
           <a
             href="/media"
             className="hidden sm:inline-block px-1.5 md:px-4 py-1 md:py-1.5 text-[10px] md:text-sm font-black tracking-wider md:tracking-widest text-gray-400 hover:text-[#d4af37] whitespace-nowrap transition-colors"

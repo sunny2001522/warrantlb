@@ -112,7 +112,16 @@ export const PHILOSOPHY_PILLARS = [
   },
 ] as const;
 
-/* ───────────────────────── 軟體工具 ───────────────────────── */
+/* ───────────────────────── 軟體工具 (三大產品線) ───────────────────────── */
+
+import dispoIcon from "./assets/tools/dispo-icon.jpg";
+import dispoShot from "./assets/disposition/mobile/1-1.png";
+import omniIcon from "./assets/tools/omni-icon.jpg";
+import omniShot1 from "./assets/tools/omni-shot1.jpg";
+import omniShot2 from "./assets/tools/omni-shot2.jpg";
+import daytradeIcon from "./assets/tools/daytrade-icon.jpg";
+import daytradeShot1 from "./assets/tools/daytrade-shot1.jpg";
+import daytradeShot2 from "./assets/tools/daytrade-shot2.jpg";
 
 export interface ToolCardData {
   title: string;
@@ -124,6 +133,8 @@ export interface ToolCardData {
   cta: string;
   theme: string; // tailwind gradient
   icon: string;
+  iconImg: string; // APP 官方圖示
+  screenshot?: string; // APP 截圖
   badge?: string;
 }
 
@@ -139,6 +150,8 @@ export const TOOL_CARDS: ToolCardData[] = [
     cta: "了解處置神器",
     theme: "from-[#1a3a6a] via-[#10182a] to-[#0a1228]",
     icon: "fas fa-gavel",
+    iconImg: dispoIcon,
+    screenshot: dispoShot,
     badge: "小哥團隊出品",
   },
   {
@@ -152,6 +165,8 @@ export const TOOL_CARDS: ToolCardData[] = [
     cta: "了解全方位監控",
     theme: "from-[#2d5a3d] via-[#0e1f15] to-[#0a1228]",
     icon: "fas fa-desktop",
+    iconImg: omniIcon,
+    screenshot: omniShot1,
     badge: "小哥團隊出品",
   },
   {
@@ -165,31 +180,9 @@ export const TOOL_CARDS: ToolCardData[] = [
     cta: "了解當沖飆股神手",
     theme: "from-[#7a2e1e] via-[#241008] to-[#0a1228]",
     icon: "fas fa-bolt",
+    iconImg: daytradeIcon,
+    screenshot: daytradeShot1,
     badge: "小哥團隊出品",
-  },
-  {
-    title: "籌碼K線",
-    subtitle: "主力籌碼追蹤 APP",
-    description:
-      "小哥每天研究籌碼的核心武器。追蹤關鍵分點籌碼變化、看懂主力進出貨,搭配 K 線型態快速判斷多空方向。",
-    features: ["關鍵分點進出追蹤", "主力大戶買賣超分析", "個股籌碼集中度", "多空戰法直播教學"],
-    href: "https://www.cmoney.tw/app/itemcontent.aspx?id=2244",
-    external: true,
-    cta: "前往理財寶",
-    theme: "from-[#7a5c1e] via-[#241c0a] to-[#0a1228]",
-    icon: "fas fa-chart-line",
-  },
-  {
-    title: "從分點探索權證標的",
-    subtitle: "權證標的篩選工具",
-    description:
-      "從關鍵分點的籌碼動向回推適合操作的權證標的,搭配主力收購股評估表,跟著大戶腳步挑對權證。",
-    features: ["分點籌碼回推選股", "主力收購股評估表", "權證標的快速篩選", "搭配權證進階戰法"],
-    href: "https://www.cmoney.tw/app/itemcontent.aspx?id=1631",
-    external: true,
-    cta: "前往理財寶",
-    theme: "from-[#5a3d7a] via-[#170e1f] to-[#0a1228]",
-    icon: "fas fa-search-dollar",
   },
 ];
 
@@ -204,6 +197,8 @@ export interface ToolPageData {
   subtitle: string;
   description: string;
   icon: string;
+  iconImg: string; // APP 官方圖示
+  screenshots: string[]; // APP 截圖
   heroTheme: string; // gradient classes
   summaryCards: { label: string; value: string; detail: string }[];
   features: { icon: string; title: string; desc: string }[];
@@ -224,6 +219,8 @@ export const OMNI_MONITOR_PAGE: ToolPageData = {
   description:
     "全方位 APP 融合電腦版三大軟體,獨家「主力流水牆」幫助您一眼看出主力盤中多空方向。盤中即時監控主力大戶下單動態,第一時間掌握大單異動與關鍵價位。",
   icon: "fas fa-desktop",
+  iconImg: omniIcon,
+  screenshots: [omniShot1, omniShot2],
   heroTheme: "from-[#15402a] via-[#0d2418] to-[#0a1228]",
   summaryCards: [
     { label: "獨家功能", value: "主力流水牆", detail: "一眼看出主力多空方向" },
@@ -260,6 +257,8 @@ export const DAY_TRADE_PAGE: ToolPageData = {
   description:
     "協助判斷股價高低點的當沖軟體。獨家燈號在走勢圖上亮起,看出主力攻擊方向與盤中轉折點;連次、連量分析搭配籌碼資金流向,支援多空雙向的當沖決策。",
   icon: "fas fa-bolt",
+  iconImg: daytradeIcon,
+  screenshots: [daytradeShot1, daytradeShot2],
   heroTheme: "from-[#5a2418] via-[#2e1208] to-[#0a1228]",
   summaryCards: [
     { label: "獨家燈號", value: "主力攻擊", detail: "走勢圖亮燈看轉折" },
