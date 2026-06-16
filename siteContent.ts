@@ -218,6 +218,27 @@ export const TOOL_CARDS: ToolCardData[] = [
 
 /* ─────────────── 工具獨立頁資料 (仿 enru ProductPageData) ─────────────── */
 
+/** 產品教學影片 (來源: 權證小哥 YouTube 官方頻道,均經 oembed 驗證) */
+export interface TutorialVideo {
+  title: string;
+  videoId: string;
+  desc: string;
+}
+
+/** 處置神器教學 (處置神器頁用,該頁不走 ToolPageData) */
+export const DISPOSITION_TUTORIALS: TutorialVideo[] = [
+  {
+    title: "處置下的獲利機會:如何用軟體抓出處置股的好買點",
+    videoId: "hxzknku_tMo",
+    desc: "小哥示範用處置神器在處置股裡找出黃金買點,把風險變獲利機會。",
+  },
+  {
+    title: "關稅大跌是送分題?從籌碼面找出被錯殺的潛力飆股",
+    videoId: "1X9TpHDY2CU",
+    desc: "恐慌下殺時如何用籌碼結構辨識被錯殺的標的,對應處置股「人棄我取」進場術。",
+  },
+];
+
 export interface ToolPageData {
   slug: string;
   metaTitle: string;
@@ -229,6 +250,7 @@ export interface ToolPageData {
   icon: string;
   iconImg: string; // APP 官方圖示
   screenshots: string[]; // APP 截圖
+  tutorials: TutorialVideo[]; // 教學影片
   heroTheme: string; // gradient classes
   summaryCards: { label: string; value: string; detail: string }[];
   features: { icon: string; title: string; desc: string }[];
@@ -251,6 +273,18 @@ export const OMNI_MONITOR_PAGE: ToolPageData = {
   icon: "fas fa-desktop",
   iconImg: omniIcon,
   screenshots: [omniShot1, omniShot2],
+  tutorials: [
+    {
+      title: "小哥的看盤日常|全方位獨門監控、盤中當沖神器實戰",
+      videoId: "9a0afUU_8QM",
+      desc: "跟著小哥看盤日常,示範全方位獨門監控如何用主力流水牆判斷盤中多空。",
+    },
+    {
+      title: "小哥的看盤日常|全方位獨門監控操作示範",
+      videoId: "Y7dw2oiJ5XY",
+      desc: "另一場看盤實況,連次連量訊號搭配主力流水牆抓盤中轉折。",
+    },
+  ],
   heroTheme: "from-[#15402a] via-[#0d2418] to-[#0a1228]",
   summaryCards: [
     { label: "獨家功能", value: "主力流水牆", detail: "一眼看出主力多空方向" },
@@ -289,6 +323,18 @@ export const DAY_TRADE_PAGE: ToolPageData = {
   icon: "fas fa-bolt",
   iconImg: daytradeIcon,
   screenshots: [daytradeShot1, daytradeShot2],
+  tutorials: [
+    {
+      title: "新手當沖的五個小技巧,跟單隔日沖放空必勝?",
+      videoId: "eBvOt3sP3qY",
+      desc: "當沖新手必看:五個實用小技巧,搭配當沖飆股神手的燈號訊號操作。",
+    },
+    {
+      title: "10 個當沖 9 個輸?訓練當沖變強的最大關鍵",
+      videoId: "CSDS8TjeTWw",
+      desc: "小哥分享當沖能否獲利的關鍵心法,配合 16 種策略練出穩定當沖。",
+    },
+  ],
   heroTheme: "from-[#5a2418] via-[#2e1208] to-[#0a1228]",
   summaryCards: [
     { label: "獨家燈號", value: "主力攻擊", detail: "走勢圖亮燈看轉折" },

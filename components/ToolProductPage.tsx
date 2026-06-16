@@ -89,8 +89,57 @@ export const ToolProductPage: React.FC<{ data: ToolPageData }> = ({ data }) => {
         </section>
       )}
 
+      {/* 教學影片 */}
+      {data.tutorials.length > 0 && (
+        <section className="py-12 md:py-20 px-4 md:px-6 bg-gradient-to-b from-[#0a1228] to-[#091022] border-t border-white/5">
+          <div className="max-w-6xl mx-auto">
+            <Reveal className="text-center mb-8 md:mb-12">
+              <p className="text-[#d4af37] text-xs md:text-sm font-black tracking-[0.3em] mb-2">
+                TUTORIALS
+              </p>
+              <h2 className="text-2xl md:text-5xl font-black serif-font italic text-gold-gradient mb-3">
+                小哥教你怎麼用
+              </h2>
+              <p className="text-gray-400 text-sm md:text-lg">官方教學影片,跟著小哥一步步上手</p>
+            </Reveal>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
+              {data.tutorials.map((t, i) => (
+                <Reveal key={t.videoId} delay={i * 100}>
+                  <a
+                    href={`https://www.youtube.com/watch?v=${t.videoId}`}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="block bg-[#0d1830] border border-[#2563eb]/25 rounded-[1.25rem] overflow-hidden hover:border-[#d4af37] hover:-translate-y-1 transition-all group h-full"
+                  >
+                    <div className="relative aspect-video bg-black overflow-hidden">
+                      <img
+                        src={`https://img.youtube.com/vi/${t.videoId}/hqdefault.jpg`}
+                        alt={t.title}
+                        loading="lazy"
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      />
+                      <div className="absolute inset-0 bg-black/25 group-hover:bg-black/5 transition-colors flex items-center justify-center">
+                        <div className="w-14 h-14 rounded-full bg-red-600/90 flex items-center justify-center group-hover:scale-110 transition-transform">
+                          <i className="fas fa-play text-white text-lg ml-0.5"></i>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="p-4 md:p-6">
+                      <h3 className="text-white text-base md:text-lg font-black serif-font leading-snug mb-2 group-hover:text-[#d4af37] transition-colors">
+                        {t.title}
+                      </h3>
+                      <p className="text-gray-500 text-sm leading-relaxed">{t.desc}</p>
+                    </div>
+                  </a>
+                </Reveal>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* 功能特色 */}
-      <section className="py-12 md:py-24 px-4 md:px-6 bg-gradient-to-b from-[#0a1228] to-[#080e1e]">
+      <section className="py-12 md:py-24 px-4 md:px-6 bg-gradient-to-b from-[#091022] to-[#080e1e]">
         <div className="max-w-6xl mx-auto">
           <Reveal className="text-center mb-10 md:mb-16">
             <h2 className="text-2xl md:text-5xl font-black serif-font italic text-gold-gradient mb-3">

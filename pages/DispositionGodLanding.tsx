@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useCallback } from "react";
 import cmLogo from "../assets/同學會 (1).png";
 import { SiteHeader } from "../components/SiteChrome";
+import { DISPOSITION_TUTORIALS } from "../siteContent";
 import shop1 from "../assets/商店頁-1.png";
 import shop2 from "../assets/商店頁-2.png";
 import shop3 from "../assets/商店頁-3.png";
@@ -908,6 +909,52 @@ const DispositionGodLanding: React.FC = () => {
           <p className="text-gray-500 text-xs md:text-sm font-bold tracking-widest mt-8 md:mt-10">
             首購限時優惠 ・ 立即升級
           </p>
+        </div>
+      </section>
+
+      {/* 教學影片 */}
+      <section className="py-12 md:py-20 px-4 md:px-6 bg-gradient-to-b from-[#080c14] to-[#0a1528] border-t border-[#d4af37]/10">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-8 md:mb-12 scroll-reveal">
+            <p className="text-[#d4af37] text-xs md:text-sm font-black tracking-[0.3em] mb-2">
+              TUTORIALS
+            </p>
+            <h2 className="text-2xl md:text-5xl font-black serif-font italic text-gold-gradient mb-3">
+              小哥教你抓處置股買點
+            </h2>
+            <p className="text-gray-400 text-sm md:text-lg">官方教學影片,看懂處置股怎麼變成獲利機會</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
+            {DISPOSITION_TUTORIALS.map((t) => (
+              <a
+                key={t.videoId}
+                href={`https://www.youtube.com/watch?v=${t.videoId}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="scroll-reveal block bg-[#0b1220] border border-[#d4af37]/25 rounded-[1.25rem] overflow-hidden hover:border-[#d4af37] hover:-translate-y-1 transition-all group"
+              >
+                <div className="relative aspect-video bg-black overflow-hidden">
+                  <img
+                    src={`https://img.youtube.com/vi/${t.videoId}/hqdefault.jpg`}
+                    alt={t.title}
+                    loading="lazy"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                  <div className="absolute inset-0 bg-black/25 group-hover:bg-black/5 transition-colors flex items-center justify-center">
+                    <div className="w-14 h-14 rounded-full bg-red-600/90 flex items-center justify-center group-hover:scale-110 transition-transform">
+                      <i className="fas fa-play text-white text-lg ml-0.5"></i>
+                    </div>
+                  </div>
+                </div>
+                <div className="p-4 md:p-6">
+                  <h3 className="text-white text-base md:text-lg font-black serif-font leading-snug mb-2 group-hover:text-[#d4af37] transition-colors">
+                    {t.title}
+                  </h3>
+                  <p className="text-gray-500 text-sm leading-relaxed">{t.desc}</p>
+                </div>
+              </a>
+            ))}
+          </div>
         </div>
       </section>
 
