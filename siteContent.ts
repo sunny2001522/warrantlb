@@ -255,6 +255,7 @@ export interface ToolPageData {
   icon: string;
   iconImg: string; // APP 官方圖示
   screenshots: string[]; // APP 截圖
+  screenshotNotes: { title: string; desc: string }[]; // 對應每張截圖的文字說明
   tutorials: TutorialVideo[]; // 教學影片
   heroTheme: string; // gradient classes
   summaryCards: { label: string; value: string; detail: string }[];
@@ -278,6 +279,16 @@ export const OMNI_MONITOR_PAGE: ToolPageData = {
   icon: "fas fa-desktop",
   iconImg: omniIcon,
   screenshots: [omniShot1, omniShot2],
+  screenshotNotes: [
+    {
+      title: "主力流水牆,8 秒看出多空",
+      desc: "盤中即時呈現主力大戶下單動態,用顏色判別大盤多空方向,不必盯滿整個盤面,8 秒就能看出主力今天往哪邊打。",
+    },
+    {
+      title: "三大軟體整合・即時推播",
+      desc: "電腦版三大監控軟體功能整合進一支手機 APP,加權指數與台指期的關鍵異動即時推播,國際股市行情也一手掌握。",
+    },
+  ],
   tutorials: [
     {
       title: "小哥的看盤日常|全方位獨門監控、盤中當沖神器實戰",
@@ -328,6 +339,16 @@ export const DAY_TRADE_PAGE: ToolPageData = {
   icon: "fas fa-bolt",
   iconImg: daytradeIcon,
   screenshots: [daytradeShot1, daytradeShot2],
+  screenshotNotes: [
+    {
+      title: "獨家燈號看主力攻擊方向",
+      desc: "走勢圖上燈號亮起,即看出主力的攻擊方向;燈號熄滅時,往往就是盤中轉折的關鍵時刻,新手也能直覺判讀。",
+    },
+    {
+      title: "16 策略 × 14 指標一鍵選股",
+      desc: "16 種策略一鍵篩出多空強弱勢股,搭配 14 項關鍵技術指標監控籌碼與資金流向,當沖、盤後選股一支搞定。",
+    },
+  ],
   tutorials: [
     {
       title: "新手當沖的五個小技巧,跟單隔日沖放空必勝?",
