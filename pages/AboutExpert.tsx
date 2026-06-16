@@ -210,33 +210,44 @@ const AboutExpert: React.FC = () => {
               <Reveal key={tool.title} delay={i * 100}>
                 <a
                   href={tool.href}
-                  className={`block bg-gradient-to-br ${tool.theme} border border-[#2563eb]/25 rounded-[1.25rem] p-5 md:p-7 hover:border-[#d4af37] hover:-translate-y-1 transition-all group h-full`}
+                  className={`relative flex flex-col bg-gradient-to-br ${tool.theme} border border-[#2563eb]/25 rounded-[1.5rem] p-6 md:p-8 hover:border-[#d4af37] hover:-translate-y-1 hover:shadow-[0_12px_50px_rgba(212,175,55,0.12)] transition-all group h-full overflow-hidden`}
                 >
-                  <div className="flex items-center gap-3 mb-3">
+                  {/* 角落光暈 */}
+                  <div className="absolute -top-10 -right-10 w-32 h-32 bg-[#d4af37]/10 blur-[50px] rounded-full pointer-events-none group-hover:bg-[#d4af37]/20 transition-all"></div>
+
+                  {/* APP 圖示 */}
+                  <div className="relative mb-5">
                     <img
                       src={tool.iconImg}
                       alt={tool.title}
-                      className="w-11 h-11 rounded-xl border border-white/15 flex-shrink-0"
+                      className="w-20 h-20 md:w-24 md:h-24 rounded-[1.25rem] border border-white/20 shadow-[0_8px_30px_rgba(0,0,0,0.5)] group-hover:scale-105 transition-transform"
                     />
-                    <h3 className="text-white text-lg md:text-xl font-black serif-font group-hover:text-[#d4af37] transition-colors">
-                      {tool.title}
-                    </h3>
+                    {tool.badge && (
+                      <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 px-2.5 py-0.5 rounded-full bg-[#d4af37] text-black text-[9px] md:text-[10px] font-black tracking-wide whitespace-nowrap shadow-lg">
+                        {tool.badge}
+                      </span>
+                    )}
                   </div>
-                  {tool.screenshot && (
-                    <div className="relative mb-3 rounded-lg overflow-hidden border border-white/10">
-                      <img
-                        src={tool.screenshot}
-                        alt={`${tool.title} APP 畫面`}
-                        loading="lazy"
-                        className="w-full h-32 object-cover object-top"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent pointer-events-none"></div>
-                    </div>
-                  )}
-                  <p className="text-gray-400 text-sm leading-relaxed line-clamp-3">{tool.description}</p>
-                  <p className="text-[#d4af37] text-sm font-black mt-4 flex items-center gap-2">
+
+                  <h3 className="text-white text-xl md:text-2xl font-black serif-font group-hover:text-[#d4af37] transition-colors">
+                    {tool.title}
+                  </h3>
+                  <p className="text-[#d4af37] text-xs md:text-sm font-bold tracking-widest mt-1 mb-4">
+                    {tool.subtitle}
+                  </p>
+
+                  <ul className="space-y-2 mb-6">
+                    {tool.features.slice(0, 3).map((f) => (
+                      <li key={f} className="flex items-start gap-2 text-gray-300 text-xs md:text-sm font-bold">
+                        <i className="fas fa-check text-[#d4af37] mt-0.5 text-[10px] flex-shrink-0"></i>
+                        {f}
+                      </li>
+                    ))}
+                  </ul>
+
+                  <p className="text-[#d4af37] text-sm font-black mt-auto flex items-center gap-2">
                     {tool.cta}
-                    <i className="fas fa-arrow-right text-[10px]"></i>
+                    <i className="fas fa-arrow-right text-[10px] group-hover:translate-x-1 transition-transform"></i>
                   </p>
                 </a>
               </Reveal>

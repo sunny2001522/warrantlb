@@ -53,6 +53,11 @@ export const EXPERT_TIMELINE: TimelineItem[] = [
     title: "全職交易人・財經講師・暢銷作家",
     desc: "出版六本著作、開發多套籌碼工具,於財訊、Smart 智富撰寫專欄,受邀至台大、清大與各大券商、證交所、CME 授課。",
   },
+  {
+    period: "巔峰",
+    title: "一個月靠處置策略賺 1 億",
+    desc: "將處置股「人棄我取」的籌碼洞察發揮到極致,單月以處置策略創下獲利 1 億的紀錄,把市場最恐慌的時刻變成黃金買點。",
+  },
 ];
 
 export const EXPERT_AWARDS: string[] = [
