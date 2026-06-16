@@ -388,11 +388,22 @@ const AboutExpert: React.FC = () => {
                   className="block bg-[#0d1830] border border-[#d4af37]/30 rounded-xl overflow-hidden hover:border-[#d4af37] hover:-translate-y-1 hover:shadow-[0_8px_40px_rgba(212,175,55,0.2)] transition-all group h-full"
                 >
                   <div className="relative aspect-square bg-white flex items-center justify-center overflow-hidden">
+                    {/* 載入失敗退路:顯示書名卡(預設藏在圖片底下) */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-[#1a3a6a] to-[#0a1228] flex flex-col items-center justify-center text-center p-4">
+                      <i className="fas fa-book text-[#d4af37] text-2xl md:text-4xl mb-3"></i>
+                      <span className="text-white text-xs md:text-base font-black serif-font leading-snug">
+                        {book.title}
+                      </span>
+                      <span className="text-[#d4af37] text-[9px] md:text-xs font-black tracking-[0.2em] mt-2">
+                        權證小哥 著
+                      </span>
+                    </div>
                     <img
                       src={book.cover}
                       alt={book.title}
                       loading="lazy"
-                      className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500"
+                      onError={(e) => { e.currentTarget.style.display = "none"; }}
+                      className="relative w-full h-full object-contain group-hover:scale-105 transition-transform duration-500"
                     />
                   </div>
                   <div className="p-3 md:p-5">
