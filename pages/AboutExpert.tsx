@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Reveal } from "../components/Reveal";
 import { SiteHeader, SiteFooter, usePageMeta } from "../components/SiteChrome";
 import lecturerImg from "../assets/man look.png";
@@ -11,7 +11,12 @@ import {
   EXPERT_AWARDS,
   EXPERT_EXPERIENCES,
   EXPERT_BOOKS,
-  PHILOSOPHY_PILLARS,
+  POSITIONING,
+  METHOD_STEPS,
+  METHOD_RISK_NOTE,
+  ENTRY_CARDS,
+  TRUST_BADGES,
+  FAQ_ITEMS,
   SOCIAL_LINKS,
   TOOL_CARDS,
   FEATURED_VIDEOS,
@@ -21,6 +26,7 @@ import {
 
 /** 首頁 — 關於權證小哥 (仿 enru 首頁:講師 hub + 影音 + 工具導流) */
 const AboutExpert: React.FC = () => {
+  const [openFaq, setOpenFaq] = useState<number>(0);
   usePageMeta({
     title: "權證小哥官網|破解主力籌碼 × 精通金融商品",
     description:
@@ -114,8 +120,42 @@ const AboutExpert: React.FC = () => {
         </div>
       </section>
 
+      {/* 內容入口分流 — 第一次認識小哥從這裡開始 */}
+      <section className="py-12 md:py-20 px-4 md:px-6 bg-gradient-to-b from-[#0a1228] to-[#091022] border-t border-white/5">
+        <div className="max-w-6xl mx-auto">
+          <Reveal className="text-center mb-8 md:mb-12">
+            <p className="text-[#d4af37] text-xs md:text-sm font-black tracking-[0.3em] mb-2">START HERE</p>
+            <h2 className="text-2xl md:text-5xl font-black serif-font italic text-gold-gradient mb-3">
+              第一次認識小哥,從這裡開始
+            </h2>
+            <p className="text-gray-400 text-sm md:text-lg">依照目前的需求,選擇最適合你的入口</p>
+          </Reveal>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+            {ENTRY_CARDS.map((c, i) => (
+              <Reveal key={c.title} delay={i * 80}>
+                <div className="flex flex-col h-full bg-[#0d1830] border border-[#2563eb]/25 rounded-[1.25rem] p-5 md:p-7 hover:border-[#d4af37] hover:-translate-y-1 transition-all group">
+                  <div className="w-11 h-11 rounded-xl bg-[#2563eb]/15 border border-[#2563eb]/40 flex items-center justify-center mb-4">
+                    <i className={`${c.icon} text-blue-300`}></i>
+                  </div>
+                  <span className="text-[#d4af37] text-[11px] md:text-xs font-black tracking-widest mb-1">{c.small}</span>
+                  <h3 className="text-white text-lg md:text-xl font-black serif-font mb-2">{c.title}</h3>
+                  <p className="text-gray-500 text-xs md:text-sm leading-relaxed mb-5 flex-1">{c.desc}</p>
+                  <a
+                    href={c.href}
+                    className="inline-flex items-center justify-center gap-2 py-2.5 rounded-xl border border-[#d4af37] text-[#d4af37] text-xs md:text-sm font-black tracking-widest hover:bg-[#d4af37] hover:text-black transition-all"
+                  >
+                    {c.btn}
+                    <i className="fas fa-arrow-right text-[10px]"></i>
+                  </a>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* 影音精選 (串接 dispostock-web 影音資料) */}
-      <section className="py-12 md:py-24 px-4 md:px-6 bg-gradient-to-b from-[#0a1228] to-[#091022]">
+      <section className="py-12 md:py-24 px-4 md:px-6 bg-gradient-to-b from-[#091022] to-[#0a1228]">
         <div className="max-w-6xl mx-auto">
           <Reveal className="text-center mb-8 md:mb-14">
             <h2 className="text-2xl md:text-5xl font-black serif-font italic text-gold-gradient mb-3">
@@ -306,24 +346,95 @@ const AboutExpert: React.FC = () => {
         </div>
       </section>
 
-      {/* 投資哲學 */}
+      {/* 專業定位 — 小哥專注的三個核心 */}
       <section className="py-12 md:py-24 px-4 md:px-6 bg-[#091022] border-t border-white/5">
         <div className="max-w-6xl mx-auto">
           <Reveal className="text-center mb-10 md:mb-16">
+            <p className="text-[#d4af37] text-xs md:text-sm font-black tracking-[0.3em] mb-2">POSITIONING</p>
             <h2 className="text-2xl md:text-5xl font-black serif-font italic text-gold-gradient mb-3">
-              小哥的交易哲學
+              小哥專注的三個核心
             </h2>
-            <p className="text-gray-400 text-sm md:text-lg">不看新聞做股票,只跟著籌碼走</p>
+            <p className="text-gray-400 text-sm md:text-lg max-w-2xl mx-auto">
+              不只是看個股漲跌,而是從籌碼、量價與金融商品規則中,整理出可觀察、可複盤的交易流程。
+            </p>
           </Reveal>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-8">
-            {PHILOSOPHY_PILLARS.map((p, i) => (
+            {POSITIONING.map((p, i) => (
               <Reveal key={p.title} delay={i * 120}>
                 <div className="bg-[#0d1830] border border-[#2563eb]/25 rounded-[1.5rem] p-6 md:p-10 text-center hover:border-[#d4af37] hover:-translate-y-1 transition-all h-full">
-                  <div className="w-14 h-14 md:w-20 md:h-20 mx-auto rounded-full bg-[#d4af37]/10 border border-[#d4af37]/40 flex items-center justify-center mb-4 md:mb-6">
-                    <i className={`${p.icon} text-[#d4af37] text-xl md:text-3xl`}></i>
+                  <span className="inline-block px-3 py-1 rounded-full bg-[#d4af37]/10 border border-[#d4af37]/40 text-[#d4af37] text-xs font-black tracking-widest mb-4">
+                    {p.tag}
+                  </span>
+                  <div className="w-14 h-14 md:w-20 md:h-20 mx-auto rounded-full bg-[#2563eb]/10 border border-[#2563eb]/40 flex items-center justify-center mb-4 md:mb-6">
+                    <i className={`${p.icon} text-blue-300 text-xl md:text-3xl`}></i>
                   </div>
                   <h3 className="text-xl md:text-2xl font-black text-white serif-font mb-3">{p.title}</h3>
                   <p className="text-gray-400 text-sm md:text-base leading-relaxed">{p.desc}</p>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 方法論 — 不是只看漲跌,而是拆解背後的籌碼與規則 */}
+      <section className="py-12 md:py-24 px-4 md:px-6 bg-gradient-to-b from-[#091022] to-[#0a1228] border-t border-white/5">
+        <div className="max-w-6xl mx-auto">
+          <Reveal className="text-center mb-10 md:mb-16">
+            <p className="text-[#d4af37] text-xs md:text-sm font-black tracking-[0.3em] mb-2">METHOD</p>
+            <h2 className="text-2xl md:text-5xl font-black serif-font italic text-gold-gradient mb-3">
+              不是只看漲跌,而是拆解背後的籌碼與規則
+            </h2>
+            <p className="text-gray-400 text-sm md:text-lg max-w-2xl mx-auto">
+              重點不是提供明牌,而是建立觀察流程與判斷依據——讓每一次判斷都更有理由,也更容易回頭檢討。
+            </p>
+          </Reveal>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-8">
+            {METHOD_STEPS.map((s, i) => (
+              <Reveal key={s.title} delay={i * 120}>
+                <div className="relative bg-[#0d1830] border border-[#2563eb]/25 rounded-[1.5rem] p-6 md:p-8 hover:border-[#d4af37] hover:-translate-y-1 transition-all h-full">
+                  <span className="absolute top-5 right-6 text-[#2563eb]/30 text-4xl md:text-5xl font-black serif-font select-none">
+                    {i + 1}
+                  </span>
+                  <span className="inline-block px-3 py-1 rounded-full bg-[#2563eb]/15 border border-[#2563eb]/40 text-blue-300 text-xs font-black tracking-widest mb-4">
+                    {s.tag}
+                  </span>
+                  <h3 className="text-xl md:text-2xl font-black text-white serif-font mb-2">{s.title}</h3>
+                  <p className="text-gray-400 text-sm md:text-base leading-relaxed">{s.desc}</p>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+          <Reveal className="mt-8 md:mt-10">
+            <div className="bg-white/5 border border-white/10 rounded-2xl px-5 md:px-8 py-4 md:py-5 max-w-4xl mx-auto">
+              <p className="text-gray-400 text-xs md:text-sm leading-relaxed flex items-start gap-3">
+                <i className="fas fa-circle-info text-[#d4af37] mt-0.5 flex-shrink-0"></i>
+                {METHOD_RISK_NOTE}
+              </p>
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* 信任背書 */}
+      <section className="py-12 md:py-24 px-4 md:px-6 bg-[#091022] border-t border-white/5">
+        <div className="max-w-6xl mx-auto">
+          <Reveal className="text-center mb-10 md:mb-14">
+            <p className="text-[#d4af37] text-xs md:text-sm font-black tracking-[0.3em] mb-2">TRUST</p>
+            <h2 className="text-2xl md:text-5xl font-black serif-font italic text-gold-gradient mb-3">
+              長期累積的內容、教學與實戰紀錄
+            </h2>
+            <p className="text-gray-400 text-sm md:text-lg max-w-2xl mx-auto">
+              這些紀錄不是獲利承諾,而是幫助你理解小哥的專業背景、內容累積與教學方向。
+            </p>
+          </Reveal>
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+            {TRUST_BADGES.map((b, i) => (
+              <Reveal key={b.title} delay={i * 80}>
+                <div className="bg-[#0d1830] border border-[#2563eb]/25 rounded-[1.25rem] p-5 md:p-7 hover:border-[#d4af37] hover:-translate-y-1 transition-all h-full">
+                  <p className="text-2xl md:text-4xl font-black text-gold-gradient serif-font mb-2 md:mb-3">{b.label}</p>
+                  <h3 className="text-white text-base md:text-lg font-black serif-font mb-2">{b.title}</h3>
+                  <p className="text-gray-500 text-xs md:text-sm leading-relaxed">{b.desc}</p>
                 </div>
               </Reveal>
             ))}
@@ -427,8 +538,50 @@ const AboutExpert: React.FC = () => {
         </div>
       </section>
 
+      {/* FAQ */}
+      <section className="py-12 md:py-24 px-4 md:px-6 bg-[#0a1a3a] border-t border-white/5">
+        <div className="max-w-3xl mx-auto">
+          <Reveal className="text-center mb-8 md:mb-12">
+            <p className="text-[#d4af37] text-xs md:text-sm font-black tracking-[0.3em] mb-2">FAQ</p>
+            <h2 className="text-2xl md:text-5xl font-black serif-font italic text-gold-gradient mb-3">
+              常見問題
+            </h2>
+            <p className="text-gray-400 text-sm md:text-lg">第一次認識權證小哥,最常見的幾個問題</p>
+          </Reveal>
+          <div className="space-y-3 md:space-y-4">
+            {FAQ_ITEMS.map((f, i) => {
+              const open = openFaq === i;
+              return (
+                <Reveal key={f.q} delay={i * 50}>
+                  <div className="bg-[#0d1830] border border-[#2563eb]/25 rounded-2xl overflow-hidden">
+                    <button
+                      onClick={() => setOpenFaq(open ? -1 : i)}
+                      className="w-full flex items-center justify-between gap-4 px-5 md:px-7 py-4 md:py-5 text-left hover:bg-white/5 transition-colors"
+                    >
+                      <span className="text-white text-sm md:text-lg font-black serif-font">{f.q}</span>
+                      <i
+                        className={`fas fa-chevron-down text-[#d4af37] text-sm flex-shrink-0 transition-transform ${
+                          open ? "rotate-180" : ""
+                        }`}
+                      ></i>
+                    </button>
+                    {open && (
+                      <div className="px-5 md:px-7 pb-5 md:pb-6 -mt-1">
+                        <p className="text-gray-400 text-sm md:text-base leading-relaxed border-l-2 border-[#d4af37]/30 pl-4">
+                          {f.a}
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                </Reveal>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
       {/* 社群 CTA */}
-      <section className="py-12 md:py-24 px-4 md:px-6 bg-gradient-to-b from-[#0a1a3a] to-black border-t border-white/5">
+      <section id="social" className="scroll-mt-20 py-12 md:py-24 px-4 md:px-6 bg-gradient-to-b from-[#0a1a3a] to-black border-t border-white/5">
         <div className="max-w-4xl mx-auto text-center">
           <Reveal>
             <h2 className="text-2xl md:text-5xl font-black serif-font italic text-gold-gradient mb-4">

@@ -147,6 +147,150 @@ export const PHILOSOPHY_PILLARS = [
   },
 ] as const;
 
+/* ─────────────── 專業定位 / 方法論 / 信任 / 入口 / FAQ ─────────────── */
+
+export interface CoreItem {
+  tag: string;
+  icon: string;
+  title: string;
+  desc: string;
+}
+
+/** 專業定位 — 小哥專注的三個核心 */
+export const POSITIONING: CoreItem[] = [
+  {
+    tag: "核心一",
+    icon: "fas fa-water",
+    title: "籌碼流向",
+    desc: "觀察主力、大戶與關鍵分點的進出變化,從買賣行為中理解市場資金可能的方向。",
+  },
+  {
+    tag: "核心二",
+    icon: "fas fa-chart-bar",
+    title: "量價結構",
+    desc: "從成交量、價格位置與盤中力道,判斷短線行情是否延續,避免只看漲跌做決策。",
+  },
+  {
+    tag: "核心三",
+    icon: "fas fa-coins",
+    title: "金融商品",
+    desc: "理解權證、處置股、當沖等商品規則、交易限制與風險,讓操作判斷更有依據。",
+  },
+];
+
+/** 方法論 — 三步驟觀察流程 */
+export const METHOD_STEPS: CoreItem[] = [
+  {
+    tag: "STEP 1",
+    icon: "fas fa-magnifying-glass-chart",
+    title: "先看籌碼",
+    desc: "觀察誰在買、誰在賣,是否有關鍵分點或特定資金持續進出。",
+  },
+  {
+    tag: "STEP 2",
+    icon: "fas fa-chart-line",
+    title: "再看量價",
+    desc: "確認成交量是否支持價格變化,盤中力道是否延續,價格位置是否合理。",
+  },
+  {
+    tag: "STEP 3",
+    icon: "fas fa-scale-balanced",
+    title: "最後看規則",
+    desc: "把商品制度、處置規則、交易成本與風險納入判斷,避免只看訊號就進場。",
+  },
+];
+
+export const METHOD_RISK_NOTE =
+  "風險提醒:任何教學與工具都只能作為輔助判斷,投資人仍需依照自身資金狀況、風險承受度與交易紀律做決策。";
+
+/** 內容入口分流 — 第一次認識小哥從這裡開始 */
+export interface EntryCard {
+  small: string;
+  title: string;
+  desc: string;
+  btn: string;
+  href: string;
+  icon: string;
+}
+
+export const ENTRY_CARDS: EntryCard[] = [
+  {
+    small: "第一次認識",
+    icon: "fas fa-play",
+    title: "免費影音",
+    desc: "適合想先了解小哥教學方式與籌碼觀察邏輯的人。",
+    btn: "觀看影音精選",
+    href: "/media",
+  },
+  {
+    small: "想系統學習",
+    icon: "fas fa-graduation-cap",
+    title: "免費體驗課",
+    desc: "適合想了解處置股、籌碼與短線交易流程的人。",
+    btn: "報名免費體驗課",
+    href: "/course",
+  },
+  {
+    small: "想輔助觀察",
+    icon: "fas fa-toolbox",
+    title: "實戰工具",
+    desc: "適合已有交易經驗,想用工具整理資訊與追蹤盤面的人。",
+    btn: "查看實戰工具",
+    href: "/software",
+  },
+  {
+    small: "長期追蹤",
+    icon: "fas fa-bell",
+    title: "社群追蹤",
+    desc: "適合想追蹤每日籌碼觀察、直播與活動資訊的人。",
+    btn: "追蹤社群",
+    href: "#social",
+  },
+];
+
+/** 信任背書 */
+export interface TrustBadge {
+  label: string;
+  title: string;
+  desc: string;
+}
+
+export const TRUST_BADGES: TrustBadge[] = [
+  { label: "社群", title: "社群影響力", desc: "持續於 Facebook、YouTube、Instagram、Telegram 分享籌碼觀察與活動資訊。" },
+  { label: "6 本", title: "出版著作", desc: "內容涵蓋權證、短線交易、交易策略與實戰案例。" },
+  { label: "授課", title: "媒體與講座", desc: "包含 CMoney 理財寶、財經媒體、學校、券商與相關活動分享。" },
+  { label: "實戰", title: "交易紀錄", desc: "交易經歷、比賽紀錄與真實對帳單可作為教學案例,但不代表未來績效。" },
+];
+
+/** FAQ */
+export interface FaqItem {
+  q: string;
+  a: string;
+}
+
+export const FAQ_ITEMS: FaqItem[] = [
+  {
+    q: "權證小哥主要教什麼?",
+    a: "主要分享籌碼流向、量價結構、權證、處置股與短線交易相關內容。核心不是單純看漲跌,而是透過市場資金、價格位置與交易規則,建立更有系統的觀察流程。",
+  },
+  {
+    q: "新手適合看小哥的內容嗎?",
+    a: "可以,但建議從免費影音或入門課程開始。若完全沒有交易經驗,建議先理解基本名詞、商品規則與風險,再進一步接觸權證、處置股或短線工具。",
+  },
+  {
+    q: "小哥是提供明牌嗎?",
+    a: "不是。教學重點是建立觀察框架與判斷依據,不是提供保證獲利的買賣建議。任何投資決策都應依照自己的資金狀況、風險承受度與交易紀律判斷。",
+  },
+  {
+    q: "免費影音、體驗課、工具差在哪?",
+    a: "免費影音適合先了解小哥的教學方式與常見觀察邏輯;體驗課適合想更系統理解特定主題的人;工具則適合已有基本交易經驗,想提升資訊整理與盤中觀察效率的人。",
+  },
+  {
+    q: "課程與工具是否保證獲利?",
+    a: "不保證。課程與工具都只能作為學習與輔助判斷,不能取代個人風控與獨立判斷。市場存在不確定性,投資人仍需自行承擔投資風險。",
+  },
+];
+
 /* ───────────────────────── 軟體工具 (三大產品線) ───────────────────────── */
 
 import dispoIcon from "./assets/tools/dispo-icon.jpg";
