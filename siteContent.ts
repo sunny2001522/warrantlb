@@ -527,22 +527,6 @@ export const SOCIAL_LINKS: SocialLink[] = [
     icon: "fab fa-telegram-plane",
     hoverColor: "hover:bg-[#229ed9]",
   },
-  {
-    platform: "PressPlay",
-    handle: "權證小哥的交易筆記本",
-    stat: "籌碼分析訂閱專欄",
-    url: "https://www.pressplay.cc/project/ED4E52D5B7157BF2E7BE3267FCE16238/about",
-    icon: "fas fa-pen-nib",
-    hoverColor: "hover:bg-[#d4af37]",
-  },
-  {
-    platform: "CMoney 達人頁",
-    handle: "warrantlb",
-    stat: "理財寶專欄・工具",
-    url: "https://www.cmoney.tw/app/expert/warrantlb",
-    icon: "fas fa-user-tie",
-    hoverColor: "hover:bg-[#d4af37]",
-  },
 ];
 
 /* ───────────────────────── 導覽列 ───────────────────────── */

@@ -53,6 +53,8 @@ const AboutExpert: React.FC = () => {
 
       {/* Hero */}
       <section className="relative pt-24 md:pt-40 pb-12 md:pb-20 px-4 md:px-6 overflow-hidden bg-gradient-to-b from-[#0d1d42] via-[#0a1530] to-[#0a1228]">
+        {/* 財經感網格紋理 */}
+        <div className="absolute inset-0 opacity-[0.06] pointer-events-none" style={{ backgroundImage: "linear-gradient(#2563eb 1px, transparent 1px), linear-gradient(90deg, #2563eb 1px, transparent 1px)", backgroundSize: "44px 44px" }}></div>
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[80vw] h-[50vh] bg-[#2563eb]/15 blur-[120px] rounded-full pointer-events-none"></div>
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-8 md:gap-16 relative z-10">
           <Reveal className="flex-shrink-0">
@@ -436,18 +438,20 @@ const AboutExpert: React.FC = () => {
               追蹤社群頻道,掌握第一手的籌碼動態與處置股情報
             </p>
           </Reveal>
-          <div className="flex flex-wrap justify-center gap-3 md:gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-5 max-w-3xl mx-auto">
             {SOCIAL_LINKS.map((s, i) => (
               <Reveal key={s.platform} delay={i * 60}>
                 <a
                   href={s.url}
                   target="_blank"
                   rel="noreferrer"
-                  className={`flex items-center gap-3 px-5 py-3 rounded-full bg-white/5 border border-white/10 text-gray-300 ${s.hoverColor} hover:text-white hover:border-transparent transition-all`}
+                  className={`flex flex-col items-center gap-3 py-6 md:py-8 rounded-[1.25rem] bg-white/5 border border-white/10 text-gray-300 ${s.hoverColor} hover:text-white hover:border-transparent hover:-translate-y-1 transition-all group h-full`}
                 >
-                  <i className={`${s.icon} text-lg`}></i>
-                  <span className="text-sm font-black">{s.platform}</span>
-                  <span className="text-xs text-gray-500 font-bold">{s.stat}</span>
+                  <i className={`${s.icon} text-3xl md:text-5xl`}></i>
+                  <div className="flex flex-col">
+                    <span className="text-sm md:text-base font-black">{s.platform}</span>
+                    <span className="text-[11px] md:text-xs text-gray-500 group-hover:text-white/70 font-bold">{s.stat}</span>
+                  </div>
                 </a>
               </Reveal>
             ))}
