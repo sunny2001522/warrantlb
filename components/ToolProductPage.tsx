@@ -1,5 +1,6 @@
 import React from "react";
 import { Reveal } from "./Reveal";
+import { FinancialBg } from "./FinancialBg";
 import { SiteHeader, SiteFooter, usePageMeta } from "./SiteChrome";
 import { TOOL_CARDS, type ToolPageData } from "../siteContent";
 
@@ -20,6 +21,7 @@ export const ToolProductPage: React.FC<{ data: ToolPageData }> = ({ data }) => {
 
       {/* Hero */}
       <section className={`relative pt-24 md:pt-40 pb-12 md:pb-20 px-4 md:px-6 overflow-hidden bg-gradient-to-b ${data.heroTheme}`}>
+        <FinancialBg variant="hero" accent="#2563eb" gold="#d4af37" />
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[80vw] h-[40vh] bg-[#2563eb]/10 blur-[120px] rounded-full pointer-events-none"></div>
         <div className="max-w-5xl mx-auto text-center relative z-10">
           <Reveal>

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Reveal } from "../components/Reveal";
+import { FinancialBg } from "../components/FinancialBg";
 import { SiteHeader, SiteFooter, usePageMeta } from "../components/SiteChrome";
 import lecturerImg from "../assets/man look.png";
 import {
@@ -59,8 +60,7 @@ const AboutExpert: React.FC = () => {
 
       {/* Hero */}
       <section className="relative pt-24 md:pt-40 pb-12 md:pb-20 px-4 md:px-6 overflow-hidden bg-gradient-to-b from-[#0d1d42] via-[#0a1530] to-[#0a1228]">
-        {/* 財經感網格紋理 */}
-        <div className="absolute inset-0 opacity-[0.06] pointer-events-none" style={{ backgroundImage: "linear-gradient(#2563eb 1px, transparent 1px), linear-gradient(90deg, #2563eb 1px, transparent 1px)", backgroundSize: "44px 44px" }}></div>
+        <FinancialBg variant="hero" accent="#2563eb" gold="#d4af37" />
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[80vw] h-[50vh] bg-[#2563eb]/15 blur-[120px] rounded-full pointer-events-none"></div>
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-8 md:gap-16 relative z-10">
           <Reveal className="flex-shrink-0">
@@ -347,8 +347,9 @@ const AboutExpert: React.FC = () => {
       </section>
 
       {/* 專業定位 — 小哥專注的三個核心 */}
-      <section className="py-12 md:py-24 px-4 md:px-6 bg-[#091022] border-t border-white/5">
-        <div className="max-w-6xl mx-auto">
+      <section className="relative overflow-hidden py-12 md:py-24 px-4 md:px-6 bg-[#091022] border-t border-white/5">
+        <FinancialBg variant="band" accent="#2563eb" gold="#d4af37" />
+        <div className="max-w-6xl mx-auto relative z-10">
           <Reveal className="text-center mb-10 md:mb-16">
             <p className="text-[#d4af37] text-xs md:text-sm font-black tracking-[0.3em] mb-2">POSITIONING</p>
             <h2 className="text-2xl md:text-5xl font-black serif-font italic text-gold-gradient mb-3">
@@ -417,8 +418,9 @@ const AboutExpert: React.FC = () => {
       </section>
 
       {/* 信任背書 */}
-      <section className="py-12 md:py-24 px-4 md:px-6 bg-[#091022] border-t border-white/5">
-        <div className="max-w-6xl mx-auto">
+      <section className="relative overflow-hidden py-12 md:py-24 px-4 md:px-6 bg-[#091022] border-t border-white/5">
+        <FinancialBg variant="band" accent="#2563eb" gold="#d4af37" />
+        <div className="max-w-6xl mx-auto relative z-10">
           <Reveal className="text-center mb-10 md:mb-14">
             <p className="text-[#d4af37] text-xs md:text-sm font-black tracking-[0.3em] mb-2">TRUST</p>
             <h2 className="text-2xl md:text-5xl font-black serif-font italic text-gold-gradient mb-3">

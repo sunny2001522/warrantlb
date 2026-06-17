@@ -1,5 +1,6 @@
 import React from "react";
 import { Reveal } from "../components/Reveal";
+import { FinancialBg } from "../components/FinancialBg";
 import { SiteHeader, SiteFooter, usePageMeta } from "../components/SiteChrome";
 import { TOOL_CARDS } from "../siteContent";
 
@@ -19,6 +20,7 @@ const SoftwareOverview: React.FC = () => {
 
       {/* Hero */}
       <section className="relative pt-24 md:pt-40 pb-10 md:pb-16 px-4 md:px-6 overflow-hidden bg-gradient-to-b from-[#0d1d42] to-[#0a1228]">
+        <FinancialBg variant="hero" accent="#2563eb" gold="#d4af37" />
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[80vw] h-[40vh] bg-[#2563eb]/15 blur-[120px] rounded-full pointer-events-none"></div>
         <div className="max-w-5xl mx-auto text-center relative z-10">
           <Reveal>

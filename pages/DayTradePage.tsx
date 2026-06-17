@@ -1,5 +1,6 @@
 import React from "react";
 import { Reveal } from "../components/Reveal";
+import { FinancialBg } from "../components/FinancialBg";
 import { SiteHeader, SiteFooter, usePageMeta } from "../components/SiteChrome";
 import { TOOL_CARDS } from "../siteContent";
 import daytradeIcon from "../assets/tools/daytrade-icon.jpg";
@@ -47,7 +48,7 @@ const DayTradePage: React.FC = () => {
 
       {/* Hero */}
       <section className="relative pt-24 md:pt-36 pb-8 md:pb-12 px-4 md:px-6 overflow-hidden bg-gradient-to-b from-[#0a1a3a] via-[#08152e] to-[#060d1a]">
-        <div className="absolute inset-0 opacity-[0.07] pointer-events-none" style={{ backgroundImage: "linear-gradient(#27e0ff 1px, transparent 1px), linear-gradient(90deg, #27e0ff 1px, transparent 1px)", backgroundSize: "40px 40px" }}></div>
+        <FinancialBg variant="hero" accent="#27e0ff" gold="#27e0ff" />
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[80vw] h-[40vh] bg-[#27e0ff]/10 blur-[120px] rounded-full pointer-events-none"></div>
         <div className="max-w-3xl mx-auto text-center relative z-10">
           <Reveal>
