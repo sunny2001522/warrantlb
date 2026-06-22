@@ -315,6 +315,8 @@ export interface ToolCardData {
   iconImg: string; // APP 官方圖示
   screenshot?: string; // APP 截圖
   badge?: string;
+  category?: string; // 3 大產品分列用:類別小標
+  tagline?: string; // 3 大產品分列用:一句話標語
 }
 
 export const TOOL_CARDS: ToolCardData[] = [
@@ -332,6 +334,8 @@ export const TOOL_CARDS: ToolCardData[] = [
     iconImg: dispoIcon,
     screenshot: dispoShot,
     badge: "小哥團隊出品",
+    category: "處置股・雙刀戰法",
+    tagline: "明日處置預測 99% 準確,把處置股風險化為獲利機會",
   },
   {
     title: "全方位盤中監控 APP",
@@ -347,6 +351,8 @@ export const TOOL_CARDS: ToolCardData[] = [
     iconImg: omniIcon,
     screenshot: omniShot1,
     badge: "小哥團隊出品",
+    category: "盤中監控",
+    tagline: "監控主力大單,一眼掌握主力攻擊標的",
   },
   {
     title: "當沖飆股神手",
@@ -362,6 +368,8 @@ export const TOOL_CARDS: ToolCardData[] = [
     iconImg: daytradeIcon,
     screenshot: daytradeShot1,
     badge: "小哥團隊出品",
+    category: "當沖・極短線",
+    tagline: "判斷盤中股價位階,從此不再追高殺低",
   },
 ];
 
