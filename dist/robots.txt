@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://warrantlb8888.cmoney.tw/sitemap.xml

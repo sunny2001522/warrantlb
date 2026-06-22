@@ -1,0 +1,17 @@
+{
+  "type": "single",
+  "basename": "landingpage",
+  "last_deployed_with_skill_version": "1.5.0",
+  "services": [
+    {
+      "name": "mrwarrant-lp",
+      "path": ".",
+      "dockerfile": "Dockerfile",
+      "expose": 8080,
+      "lang": "frontend",
+      "environments": [
+        { "name": "development", "is_public": true }
+      ]
+    }
+  ]
+}
