@@ -56,7 +56,7 @@ export const ToolProductPage: React.FC<{ data: ToolPageData }> = ({ data }) => {
         <div className="max-w-4xl mx-auto mt-10 md:mt-16 grid grid-cols-3 gap-3 md:gap-6 relative z-10">
           {data.summaryCards.map((s, i) => (
             <Reveal key={s.label} delay={i * 100}>
-              <div className="bg-[#0d1830]/80 border border-[#2563eb]/30 rounded-2xl p-3 md:p-6 text-center hover:border-[#d4af37] transition-all h-full">
+              <div className="tech-frame bg-[#0d1830]/80 border border-[#2563eb]/30 rounded-2xl p-3 md:p-6 text-center hover:border-[#d4af37] transition-all h-full">
                 <p className="text-gray-500 text-[10px] md:text-sm font-bold mb-1">{s.label}</p>
                 <p className="text-lg md:text-3xl font-black text-[#d4af37] serif-font">{s.value}</p>
                 <p className="text-gray-400 text-[10px] md:text-sm font-bold mt-1">{s.detail}</p>
@@ -178,7 +178,7 @@ export const ToolProductPage: React.FC<{ data: ToolPageData }> = ({ data }) => {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8">
             {data.features.map((f, i) => (
               <Reveal key={f.title} delay={i * 80}>
-                <div className="bg-[#0d1830] border border-[#2563eb]/25 rounded-[1.25rem] p-5 md:p-8 hover:border-[#d4af37] hover:-translate-y-1 transition-all h-full">
+                <div className="tech-frame bg-[#0d1830] border border-[#2563eb]/25 rounded-[1.25rem] p-5 md:p-8 hover:border-[#d4af37] hover:-translate-y-1 transition-all h-full">
                   <div className="w-12 h-12 rounded-xl bg-[#2563eb]/15 border border-[#2563eb]/40 flex items-center justify-center mb-4">
                     <i className={`${f.icon} text-blue-300 text-lg`}></i>
                   </div>

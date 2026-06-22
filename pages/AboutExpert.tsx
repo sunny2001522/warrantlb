@@ -133,7 +133,7 @@ const AboutExpert: React.FC = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
             {ENTRY_CARDS.map((c, i) => (
               <Reveal key={c.title} delay={i * 80}>
-                <div className="flex flex-col h-full bg-[#0d1830] border border-[#2563eb]/25 rounded-[1.25rem] p-5 md:p-7 hover:border-[#d4af37] hover:-translate-y-1 transition-all group">
+                <div className="tech-frame flex flex-col h-full bg-[#0d1830] border border-[#2563eb]/25 rounded-[1.25rem] p-5 md:p-7 hover:border-[#d4af37] hover:-translate-y-1 transition-all group">
                   <div className="w-11 h-11 rounded-xl bg-[#2563eb]/15 border border-[#2563eb]/40 flex items-center justify-center mb-4">
                     <i className={`${c.icon} text-blue-300`}></i>
                   </div>
@@ -252,7 +252,7 @@ const AboutExpert: React.FC = () => {
               <Reveal key={tool.title} delay={i * 100}>
                 <a
                   href={tool.href}
-                  className={`relative flex flex-col bg-gradient-to-br ${tool.theme} border border-[#2563eb]/25 rounded-[1.5rem] p-6 md:p-8 hover:border-[#d4af37] hover:-translate-y-1 hover:shadow-[0_12px_50px_rgba(212,175,55,0.12)] transition-all group h-full overflow-hidden`}
+                  className={`tech-frame relative flex flex-col bg-gradient-to-br ${tool.theme} border border-[#2563eb]/25 rounded-[1.5rem] p-6 md:p-8 hover:border-[#d4af37] hover:-translate-y-1 hover:shadow-[0_12px_50px_rgba(212,175,55,0.12)] transition-all group h-full overflow-hidden`}
                 >
                   {/* 角落光暈 */}
                   <div className="absolute -top-10 -right-10 w-32 h-32 bg-[#d4af37]/10 blur-[50px] rounded-full pointer-events-none group-hover:bg-[#d4af37]/20 transition-all"></div>

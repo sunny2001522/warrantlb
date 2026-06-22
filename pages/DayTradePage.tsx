@@ -52,11 +52,13 @@ const DayTradePage: React.FC = () => {
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[80vw] h-[40vh] bg-[#27e0ff]/10 blur-[120px] rounded-full pointer-events-none"></div>
         <div className="max-w-3xl mx-auto text-center relative z-10">
           <Reveal>
-            <img
-              src={daytradeIcon}
-              alt="當沖飆股神手"
-              className="w-20 h-20 md:w-28 md:h-28 mx-auto rounded-3xl border border-white/20 shadow-[0_8px_40px_rgba(0,0,0,0.5)] mb-5 md:mb-7"
-            />
+            <div className="tech-frame tech-frame-cyan tech-frame-on tech-pulse w-20 h-20 md:w-28 md:h-28 mx-auto rounded-3xl mb-5 md:mb-7">
+              <img
+                src={daytradeIcon}
+                alt="當沖飆股神手"
+                className="w-full h-full rounded-3xl border border-white/20"
+              />
+            </div>
             <p className="text-[#27e0ff] text-xs md:text-base font-black tracking-[0.3em] mb-3">
               DAY TRADE MASTER
             </p>
@@ -82,12 +84,9 @@ const DayTradePage: React.FC = () => {
         <div className="max-w-[480px] mx-auto flex flex-col gap-6 md:gap-8">
           {SECTIONS.map((s, i) => (
             <Reveal key={i}>
-              <img
-                src={s.img}
-                alt={s.alt}
-                loading="lazy"
-                className="w-full h-auto rounded-2xl shadow-[0_12px_50px_rgba(0,0,0,0.5)] border border-[#27e0ff]/15"
-              />
+              <div className="tech-frame tech-frame-cyan tech-scan rounded-2xl overflow-hidden border border-[#27e0ff]/20 shadow-[0_12px_50px_rgba(0,0,0,0.5)]">
+                <img src={s.img} alt={s.alt} loading="lazy" className="w-full h-auto block" />
+              </div>
             </Reveal>
           ))}
         </div>

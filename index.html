@@ -205,6 +205,73 @@
       .yt-row::-webkit-scrollbar-thumb { background: rgba(212, 175, 55, 0.35); border-radius: 3px; }
       .yt-row::-webkit-scrollbar-track { background: transparent; }
 
+      /* ===== 科技感動態邊框 ===== */
+      /* 流動漸層邊框 (青+金 來回掃描) */
+      .tech-frame { position: relative; isolation: isolate; }
+      .tech-frame::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: inherit;
+        padding: 1.5px;
+        background: linear-gradient(115deg,
+          transparent 20%, rgba(39,224,255,0.9) 40%,
+          rgba(212,175,55,0.9) 55%, transparent 75%);
+        background-size: 250% 250%;
+        -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+        -webkit-mask-composite: xor;
+        mask-composite: exclude;
+        opacity: 0;
+        transition: opacity .35s ease;
+        animation: techSweep 4.5s linear infinite;
+        pointer-events: none;
+        z-index: 2;
+      }
+      .tech-frame:hover::before { opacity: 1; }
+      /* 永久顯示版 (重點元素) */
+      .tech-frame-on::before { opacity: .85; }
+      .tech-frame-cyan::before {
+        background: linear-gradient(115deg,
+          transparent 20%, rgba(39,224,255,0.95) 45%,
+          rgba(120,245,255,0.9) 55%, transparent 78%);
+        background-size: 250% 250%;
+      }
+      @keyframes techSweep {
+        0% { background-position: 0% 50%; }
+        100% { background-position: 250% 50%; }
+      }
+
+      /* 掃描光條 (覆蓋在圖片/卡片上,由上往下) */
+      .tech-scan { position: relative; overflow: hidden; }
+      .tech-scan::after {
+        content: "";
+        position: absolute;
+        left: 0; right: 0; top: -40%;
+        height: 40%;
+        background: linear-gradient(180deg, transparent, rgba(39,224,255,0.18), transparent);
+        transform: translateY(0);
+        animation: techScan 5s ease-in-out infinite;
+        pointer-events: none;
+        z-index: 3;
+      }
+      @keyframes techScan {
+        0% { transform: translateY(0); opacity: 0; }
+        15% { opacity: 1; }
+        60% { transform: translateY(360%); opacity: 1; }
+        100% { transform: translateY(360%); opacity: 0; }
+      }
+
+      /* 脈衝光暈 (科技節點) */
+      .tech-pulse { animation: techPulse 3.2s ease-in-out infinite; }
+      @keyframes techPulse {
+        0%, 100% { box-shadow: 0 0 0 0 rgba(39,224,255,0.0); }
+        50% { box-shadow: 0 0 26px 1px rgba(39,224,255,0.25); }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .tech-frame::before, .tech-scan::after, .tech-pulse { animation: none; }
+      }
+
       .text-gold-gradient {
         background: linear-gradient(to bottom, #fef9c3, #d4af37, #854d0e);
         -webkit-background-clip: text;
