@@ -1,24 +1,21 @@
-import React from "react";
+import React, { useId } from "react";
 
 /**
  * 財經/科技感背景圖層 — 貼合當沖官方內頁圖的設計語言:
- * 發光網格 + K 線剪影 + 走勢折線 + 角框 + 光點節點。
- * 純 SVG/CSS,絕對定位疊在 section 底,pointer-events-none。
- * 所有圖形以 index 計算(無 Math.random),SSR 預渲染與 client 一致。
+ * 發光網格 + K 線剪影 + 走勢折線 + 沿線跑動的亮藍數據點 + 角框。
+ * 純 SVG/CSS,確定性繪製(無亂數),SSR 預渲染與 client 一致。
  */
 
 type Variant = "hero" | "band";
 
 interface Props {
   variant?: Variant;
-  /** 主色 (科技線條) */
-  accent?: string;
-  /** 點綴色 (品牌金) */
-  gold?: string;
+  accent?: string; // 科技線條主色
+  gold?: string; // 點綴色
   className?: string;
 }
 
-// 確定性 K 線資料
+// 確定性 K 線
 const CANDLES = Array.from({ length: 56 }, (_, i) => {
   const wick = 24 + Math.abs(Math.sin(i * 1.27) * 70) + (i % 4) * 8;
   const body = 10 + Math.abs(Math.cos(i * 0.9) * 34);
@@ -26,12 +23,17 @@ const CANDLES = Array.from({ length: 56 }, (_, i) => {
   return { wick, body, up };
 });
 
-// 確定性走勢折線
-const TICK_POINTS = Array.from({ length: 40 }, (_, i) => {
+// 確定性走勢折線座標
+const TICK_PTS = Array.from({ length: 40 }, (_, i) => {
   const x = (i / 39) * 1200;
   const y = 300 + Math.sin(i * 0.55) * 70 + Math.cos(i * 0.21) * 40 + (i % 6) * 4 - 60;
-  return `${x.toFixed(0)},${y.toFixed(0)}`;
-}).join(" ");
+  return [Math.round(x), Math.round(y)] as const;
+});
+const TICK_POLY = TICK_PTS.map((p) => p.join(",")).join(" ");
+const TICK_PATH = "M" + TICK_PTS.map((p) => p.join(",")).join(" L");
+
+// 跑動數據點的起跑延遲
+const DOT_DELAYS = ["0s", "1.4s", "2.8s", "4.2s", "5.6s", "7s"];
 
 const Brackets: React.FC<{ color: string }> = ({ color }) => (
   <>
@@ -56,7 +58,12 @@ export const FinancialBg: React.FC<Props> = ({
   gold = "#d4af37",
   className = "",
 }) => {
+  const uid = useId().replace(/:/g, "");
+  const glowId = `fbglow-${uid}`;
+  const strokeId = `fbstroke-${uid}`;
   const isHero = variant === "hero";
+  const dots = isHero ? 6 : 3;
+  const dataDot = "#3b9eff"; // 亮藍數據點
 
   return (
     <div
@@ -96,28 +103,68 @@ export const FinancialBg: React.FC<Props> = ({
         })}
       </svg>
 
-      {/* 走勢折線 + 光點 */}
+      {/* 走勢折線 + 沿線跑動的亮藍數據點 */}
+      <svg
+        className="absolute inset-0 w-full h-full"
+        viewBox="0 0 1200 600"
+        preserveAspectRatio="none"
+        fill="none"
+        style={{ opacity: isHero ? 0.85 : 0.4 }}
+      >
+        <defs>
+          <linearGradient id={strokeId} x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0" stopColor={accent} stopOpacity="0" />
+            <stop offset="0.5" stopColor={gold} stopOpacity="0.55" />
+            <stop offset="1" stopColor={accent} stopOpacity="0" />
+          </linearGradient>
+          <filter id={glowId} x="-200%" y="-200%" width="500%" height="500%">
+            <feGaussianBlur stdDeviation="4" result="b" />
+            <feMerge>
+              <feMergeNode in="b" />
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
+          </filter>
+        </defs>
+
+        <polyline points={TICK_POLY} stroke={`url(#${strokeId})`} strokeWidth="2" />
+
+        {/* 沿走勢線跑動的亮藍數據點 */}
+        {Array.from({ length: dots }).map((_, i) => (
+          <circle key={i} r={isHero ? 4 : 3} fill={dataDot} filter={`url(#${glowId})`}>
+            <animateMotion
+              dur="9s"
+              begin={DOT_DELAYS[i % DOT_DELAYS.length]}
+              repeatCount="indefinite"
+              path={TICK_PATH}
+              calcMode="linear"
+            />
+            <animate
+              attributeName="opacity"
+              values="0;1;1;0"
+              keyTimes="0;0.08;0.92;1"
+              dur="9s"
+              begin={DOT_DELAYS[i % DOT_DELAYS.length]}
+              repeatCount="indefinite"
+            />
+          </circle>
+        ))}
+      </svg>
+
+      {/* 浮升微粒 (亮藍, 僅 hero) */}
       {isHero && (
-        <svg
-          className="absolute inset-0 w-full h-full"
-          viewBox="0 0 1200 600"
-          preserveAspectRatio="none"
-          fill="none"
-          style={{ opacity: 0.5 }}
-        >
-          <defs>
-            <linearGradient id="fbStroke" x1="0" y1="0" x2="1" y2="0">
-              <stop offset="0" stopColor={accent} stopOpacity="0" />
-              <stop offset="0.5" stopColor={gold} stopOpacity="0.6" />
-              <stop offset="1" stopColor={accent} stopOpacity="0" />
-            </linearGradient>
-          </defs>
-          <polyline points={TICK_POINTS} stroke="url(#fbStroke)" strokeWidth="2" />
-          {[180, 480, 760, 1020].map((x, i) => {
-            const y = 300 + Math.sin((x / 30) * 0.55) * 40 - 40;
-            return <circle key={i} cx={x} cy={y} r="3.5" fill={gold} opacity="0.7" />;
-          })}
-        </svg>
+        <div className="absolute inset-0">
+          {[12, 28, 44, 60, 73, 88].map((left, i) => (
+            <span
+              key={i}
+              className="fb-rise"
+              style={{
+                left: `${left}%`,
+                animationDelay: `${(i * 0.9).toFixed(1)}s`,
+                background: dataDot,
+              }}
+            ></span>
+          ))}
+        </div>
       )}
 
       {/* 角框 (僅 hero) */}

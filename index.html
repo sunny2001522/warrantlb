@@ -268,8 +268,27 @@
         50% { box-shadow: 0 0 26px 1px rgba(39,224,255,0.25); }
       }
 
+      /* 浮升亮藍數據微粒 */
+      .fb-rise {
+        position: absolute;
+        bottom: -8px;
+        width: 4px;
+        height: 4px;
+        border-radius: 9999px;
+        opacity: 0;
+        box-shadow: 0 0 8px 1px rgba(59,158,255,0.7);
+        animation: fbRise 7s linear infinite;
+      }
+      @keyframes fbRise {
+        0% { transform: translateY(0) scale(0.6); opacity: 0; }
+        12% { opacity: 1; }
+        80% { opacity: 0.9; }
+        100% { transform: translateY(-78vh) scale(1); opacity: 0; }
+      }
+
       @media (prefers-reduced-motion: reduce) {
-        .tech-frame::before, .tech-scan::after, .tech-pulse { animation: none; }
+        .tech-frame::before, .tech-scan::after, .tech-pulse, .fb-rise { animation: none; }
+        .fb-rise { display: none; }
       }
 
       .text-gold-gradient {
