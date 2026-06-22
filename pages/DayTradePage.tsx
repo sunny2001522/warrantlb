@@ -2,6 +2,7 @@ import React from "react";
 import { Reveal } from "../components/Reveal";
 import { FinancialBg } from "../components/FinancialBg";
 import { SignalChart } from "../components/SignalChart";
+import { StockListMock, ChartMock } from "../components/PhoneMock";
 import { SiteHeader, SiteFooter, usePageMeta } from "../components/SiteChrome";
 import { TOOL_CARDS } from "../siteContent";
 import daytradeIcon from "../assets/tools/daytrade-icon.jpg";
@@ -114,58 +115,73 @@ const DayTradePage: React.FC = () => {
         </div>
       </section>
 
-      {/* 獨創訊號 */}
+      {/* 獨創訊號 (照圖:手機畫面 + 右側訊號說明連線) */}
       <section className="py-12 md:py-20 px-4 md:px-6 bg-[#060d1a] border-t border-white/5">
         <div className="max-w-6xl mx-auto">
-          <Reveal className="text-center mb-8 md:mb-12">
+          <Reveal className="text-center mb-8 md:mb-14">
             <p className="text-[#27e0ff] text-xs md:text-sm font-black tracking-[0.3em] mb-2">SIGNALS</p>
-            <h2 className="text-2xl md:text-5xl font-black mb-3 text-white">小哥獨創訊號,抓出股價轉折點</h2>
-            <p className="text-gray-400 text-sm md:text-lg">連次、連量燈號,把主力攻擊節奏化成看得懂的訊號</p>
+            <h2 className="text-2xl md:text-5xl font-black text-white">
+              小哥獨創訊號 <span className="text-[#27e0ff]">・</span> 抓出股價轉折點
+            </h2>
           </Reveal>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
-            {SIGNALS.map((s, i) => (
-              <Reveal key={s.title} delay={i * 100}>
-                <div className="tech-frame tech-frame-cyan bg-[#08152e] border border-[#27e0ff]/20 rounded-[1.25rem] p-5 md:p-7 hover:-translate-y-1 transition-all h-full">
-                  <div className="w-12 h-12 rounded-xl bg-[#27e0ff]/15 border border-[#27e0ff]/40 flex items-center justify-center mb-4">
-                    <i className={`${s.icon} text-[#27e0ff] text-lg`}></i>
+          <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
+            <Reveal>
+              <div className="tech-frame tech-frame-cyan tech-scan rounded-[2.4rem] w-fit mx-auto">
+                <StockListMock />
+              </div>
+            </Reveal>
+            <div className="flex flex-col gap-3 md:gap-4">
+              {SIGNALS.map((s, i) => (
+                <Reveal key={s.title} delay={i * 120}>
+                  <div className="relative flex items-start gap-4 bg-[#08152e] border border-[#27e0ff]/20 rounded-2xl p-4 md:p-5 pl-5 md:pl-6">
+                    <span className="absolute left-0 top-4 bottom-4 w-1 rounded-full bg-[#27e0ff]"></span>
+                    <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-[#27e0ff]/15 border border-[#27e0ff]/40 flex items-center justify-center flex-shrink-0">
+                      <i className={`${s.icon} text-[#27e0ff]`}></i>
+                    </div>
+                    <div>
+                      <h3 className="text-white text-base md:text-lg font-black mb-1">{s.title}</h3>
+                      <p className="text-gray-400 text-sm md:text-base leading-relaxed">{s.desc}</p>
+                    </div>
                   </div>
-                  <h3 className="text-white text-lg md:text-xl font-black mb-2">{s.title}</h3>
-                  <p className="text-gray-400 text-sm md:text-base leading-relaxed">{s.desc}</p>
-                </div>
-              </Reveal>
-            ))}
+                </Reveal>
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
-      {/* 偏多 / 偏空訊號 */}
+      {/* 偏多 / 偏空訊號 (照圖:手機走勢圖 + 右側偏多偏空 + 請注意) */}
       <section className="py-12 md:py-20 px-4 md:px-6 bg-gradient-to-b from-[#060d1a] to-[#08152e] border-t border-white/5">
-        <div className="max-w-5xl mx-auto">
-          <Reveal className="text-center mb-8 md:mb-12">
-            <h2 className="text-2xl md:text-5xl font-black mb-3 text-white">竭盡點:看燈號抓多空轉折</h2>
-          </Reveal>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-6">
-            {BIAS.map((b, i) => {
-              const long = b.tone === "long";
-              const c = long ? "#27c281" : "#f84444";
-              return (
-                <Reveal key={b.title} delay={i * 100}>
-                  <div
-                    className="rounded-[1.25rem] p-6 md:p-8 border h-full"
-                    style={{ borderColor: `${c}55`, background: `linear-gradient(160deg, ${c}1f, #08152e 70%)` }}
-                  >
-                    <div className="flex items-center gap-3 mb-3">
-                      <span className="w-3.5 h-3.5 rounded-full tech-pulse" style={{ background: c }}></span>
-                      <h3 className="text-xl md:text-2xl font-black text-white">{b.title}</h3>
-                      <span className="ml-auto text-xs md:text-sm font-black px-3 py-1 rounded-full" style={{ color: c, border: `1px solid ${c}66` }}>
-                        {b.light}
-                      </span>
+        <div className="max-w-6xl mx-auto">
+          <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-center mb-6">
+            <Reveal>
+              <div className="tech-frame tech-frame-cyan tech-scan rounded-[2.4rem] w-fit mx-auto">
+                <ChartMock />
+              </div>
+            </Reveal>
+            <div className="flex flex-col gap-4">
+              {BIAS.map((b, i) => {
+                const long = b.tone === "long";
+                const c = long ? "#27c281" : "#f84444";
+                return (
+                  <Reveal key={b.title} delay={i * 120}>
+                    <div
+                      className="rounded-2xl p-5 md:p-6 border"
+                      style={{ borderColor: `${c}55`, background: `linear-gradient(160deg, ${c}1f, #08152e 70%)` }}
+                    >
+                      <div className="flex items-center gap-3 mb-2">
+                        <span className="w-3.5 h-3.5 rounded-full tech-pulse" style={{ background: c }}></span>
+                        <h3 className="text-lg md:text-2xl font-black text-white">{b.title}</h3>
+                        <span className="ml-auto text-xs md:text-sm font-black px-3 py-1 rounded-full" style={{ color: c, border: `1px solid ${c}66` }}>
+                          {b.light}
+                        </span>
+                      </div>
+                      <p className="text-gray-300 text-sm md:text-base leading-relaxed">{b.desc}</p>
                     </div>
-                    <p className="text-gray-300 text-sm md:text-base leading-relaxed">{b.desc}</p>
-                  </div>
-                </Reveal>
-              );
-            })}
+                  </Reveal>
+                );
+              })}
+            </div>
           </div>
           <Reveal>
             <div className="flex items-start gap-3 bg-[#27e0ff]/5 border border-[#27e0ff]/25 rounded-2xl px-5 md:px-7 py-4">
@@ -178,22 +194,28 @@ const DayTradePage: React.FC = () => {
         </div>
       </section>
 
-      {/* APP 可以幫助你 */}
+      {/* APP 可以幫助你 (照圖:直式分列) */}
       <section className="py-12 md:py-20 px-4 md:px-6 bg-[#08152e] border-t border-white/5">
-        <div className="max-w-6xl mx-auto">
+        <div className="max-w-3xl mx-auto">
           <Reveal className="text-center mb-8 md:mb-12">
             <p className="text-[#27e0ff] text-xs md:text-sm font-black tracking-[0.3em] mb-2">FEATURES</p>
-            <h2 className="text-2xl md:text-5xl font-black mb-3 text-white">當沖飆股神手 APP 可以幫助你</h2>
+            <h2 className="text-2xl md:text-4xl font-black text-white">
+              《當沖飆股神手 APP》可以幫助你
+            </h2>
           </Reveal>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+          <div className="flex flex-col gap-3 md:gap-4">
             {HELP.map((h, i) => (
               <Reveal key={h.title} delay={i * 80}>
-                <div className="tech-frame tech-frame-cyan bg-[#0a1a30] border border-[#27e0ff]/20 rounded-[1.25rem] p-5 md:p-6 hover:-translate-y-1 transition-all h-full text-center">
-                  <div className="w-14 h-14 mx-auto rounded-2xl bg-[#27e0ff]/15 border border-[#27e0ff]/40 flex items-center justify-center mb-4">
-                    <i className={`${h.icon} text-[#27e0ff] text-xl`}></i>
+                <div className="tech-frame tech-frame-cyan flex items-center gap-4 md:gap-5 bg-[#0a1a30] border border-[#27e0ff]/20 rounded-2xl p-4 md:p-5">
+                  <div className="w-12 h-12 md:w-14 md:h-14 rounded-2xl bg-[#27e0ff]/15 border border-[#27e0ff]/40 flex items-center justify-center flex-shrink-0">
+                    <i className={`${h.icon} text-[#27e0ff] text-lg md:text-xl`}></i>
                   </div>
-                  <h3 className="text-white text-base md:text-lg font-black mb-2">{h.title}</h3>
-                  <p className="text-gray-400 text-xs md:text-sm leading-relaxed">{h.desc}</p>
+                  <div className="min-w-0">
+                    <h3 className="inline-block text-[#27e0ff] text-base md:text-lg font-black border-b-2 border-[#27e0ff]/40 mb-1">
+                      {h.title}
+                    </h3>
+                    <p className="text-gray-300 text-sm md:text-base leading-relaxed">{h.desc}</p>
+                  </div>
                 </div>
               </Reveal>
             ))}
