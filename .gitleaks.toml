@@ -28,6 +28,11 @@ paths = [
   # 全域豁免：須對內建 generic-api-key rule 生效（scoped [rules.allowlist] 無效）
   '''(^|/)firebase\.ts$''',
 ]
+regexes = [
+  '''AIza[0-9A-Za-z\-_]{35}''',
+]
+# Google client-side API key allowlist（marker）
+
 
 # ─────────────────────────────────────────────────────────────────────
 # Rule 1: URL-style DB connection string with embedded credentials
