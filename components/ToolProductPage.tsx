@@ -20,49 +20,73 @@ export const ToolProductPage: React.FC<{ data: ToolPageData }> = ({ data }) => {
       <SiteHeader active="/software" />
 
       {/* Hero */}
-      <section className={`relative pt-24 md:pt-40 pb-12 md:pb-20 px-4 md:px-6 overflow-hidden bg-gradient-to-b ${data.heroTheme}`}>
+      <section className={`relative pt-24 md:pt-36 pb-12 md:pb-20 px-4 md:px-6 overflow-hidden bg-gradient-to-b ${data.heroTheme}`}>
         <FinancialBg variant="hero" accent="#2563eb" gold="#d4af37" />
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[80vw] h-[40vh] bg-[#2563eb]/10 blur-[120px] rounded-full pointer-events-none"></div>
-        <div className="max-w-5xl mx-auto text-center relative z-10">
-          <Reveal>
-            <img
-              src={data.iconImg}
-              alt={data.title}
-              className="w-20 h-20 md:w-28 md:h-28 mx-auto rounded-3xl border border-white/20 shadow-[0_8px_40px_rgba(0,0,0,0.5)] mb-5 md:mb-8"
-            />
-            <p className="text-[#d4af37] text-xs md:text-base font-black tracking-[0.3em] mb-3">
-              {data.eyebrow}
-            </p>
-            <h1 className="text-3xl md:text-6xl font-black serif-font italic text-gold-gradient leading-tight mb-3 md:mb-4">
-              {data.title}
-            </h1>
-            <p className="text-blue-300 text-base md:text-2xl font-bold mb-5 md:mb-8">{data.subtitle}</p>
-            <p className="text-gray-300 text-[15px] md:text-lg leading-relaxed serif-font max-w-3xl mx-auto mb-8">
-              {data.description}
-            </p>
-            <a
-              href={data.purchaseHref}
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex items-center gap-3 px-8 md:px-14 py-3 md:py-5 rounded-full bg-[#d4af37] text-black text-base md:text-xl font-black tracking-widest hover:scale-105 active:scale-95 transition-all shadow-[0_0_40px_rgba(212,175,55,0.3)]"
-            >
-              立即免費試用
-              <i className="fas fa-arrow-right"></i>
-            </a>
-          </Reveal>
-        </div>
+        <div className="max-w-6xl mx-auto grid md:grid-cols-[1.1fr_0.9fr] items-center gap-10 md:gap-14 relative z-10">
+          {/* 左:文案 */}
+          <div className="text-center md:text-left">
+            <Reveal>
+              <div className="flex items-center justify-center md:justify-start gap-4 mb-5">
+                <div className="relative">
+                  <div className="absolute -inset-1.5 rounded-[1.4rem] ring-conic opacity-80" style={{ WebkitMaskImage: "radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 2px))", maskImage: "radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 2px))" }}></div>
+                  <img
+                    src={data.iconImg}
+                    alt={data.title}
+                    className="relative w-16 h-16 md:w-20 md:h-20 rounded-2xl border border-white/25 shadow-[0_8px_40px_rgba(0,0,0,0.5)]"
+                  />
+                </div>
+                <p className="text-[#d4af37] text-xs md:text-sm font-black tracking-[0.3em]">
+                  {data.eyebrow}
+                </p>
+              </div>
+              <h1 className="text-4xl md:text-6xl font-black serif-font italic text-gold-gradient leading-tight mb-3 drop-shadow-[0_6px_30px_rgba(212,175,55,0.3)]">
+                {data.title}
+              </h1>
+              <p className="text-blue-200/90 text-base md:text-2xl font-bold mb-5">{data.subtitle}</p>
+              <p className="text-gray-300 text-[15px] md:text-lg leading-relaxed serif-font mb-7 max-w-xl mx-auto md:mx-0">
+                {data.description}
+              </p>
+              <a
+                href={data.purchaseHref}
+                target="_blank"
+                rel="noreferrer"
+                className="gold-shimmer-btn inline-flex items-center gap-3 px-9 md:px-14 py-3.5 md:py-5 rounded-full text-base md:text-xl font-black tracking-widest hover:scale-105 active:scale-95 transition-transform"
+              >
+                立即免費試用
+                <i className="fas fa-arrow-right"></i>
+              </a>
+            </Reveal>
 
-        {/* 數據統計卡 */}
-        <div className="max-w-4xl mx-auto mt-10 md:mt-16 grid grid-cols-3 gap-3 md:gap-6 relative z-10">
-          {data.summaryCards.map((s, i) => (
-            <Reveal key={s.label} delay={i * 100}>
-              <div className="tech-frame bg-[#0d1830]/80 border border-[#2563eb]/30 rounded-2xl p-3 md:p-6 text-center hover:border-[#d4af37] transition-all h-full">
-                <p className="text-gray-500 text-[10px] md:text-sm font-bold mb-1">{s.label}</p>
-                <p className="text-lg md:text-3xl font-black text-[#d4af37] serif-font">{s.value}</p>
-                <p className="text-gray-400 text-[10px] md:text-sm font-bold mt-1">{s.detail}</p>
+            {/* 數據統計 chips */}
+            <Reveal delay={200}>
+              <div className="mt-8 md:mt-10 grid grid-cols-3 gap-2.5 md:gap-3 max-w-xl mx-auto md:mx-0">
+                {data.summaryCards.map((s) => (
+                  <div key={s.label} className="backdrop-blur-md bg-white/[0.04] border border-white/10 rounded-xl px-2.5 py-3 text-center hover:border-[#d4af37]/60 transition-colors">
+                    <p className="text-gray-500 text-[9px] md:text-xs font-bold mb-0.5">{s.label}</p>
+                    <p className="text-sm md:text-xl font-black text-gold-gradient serif-font leading-tight">{s.value}</p>
+                    <p className="text-gray-400 text-[9px] md:text-xs font-bold mt-0.5">{s.detail}</p>
+                  </div>
+                ))}
               </div>
             </Reveal>
-          ))}
+          </div>
+
+          {/* 右:發光產品畫面 */}
+          {data.screenshots.length > 0 && (
+            <Reveal delay={150} className="justify-self-center">
+              <div className="relative w-52 md:w-72">
+                <div className="absolute -inset-6 bg-[#2563eb]/20 blur-[60px] rounded-full pointer-events-none"></div>
+                <div className="card-lux tech-scan relative rounded-[2rem] overflow-hidden shadow-[0_24px_80px_rgba(0,0,0,0.6)]">
+                  <img src={data.screenshots[0]} alt={`${data.title} 畫面`} className="w-full h-auto block" />
+                </div>
+                {/* 浮動平台徽章 */}
+                <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 px-4 py-1.5 rounded-full gold-shimmer-btn text-[11px] md:text-xs font-black tracking-widest whitespace-nowrap">
+                  PC + APP 雙平台
+                </div>
+              </div>
+            </Reveal>
+          )}
         </div>
       </section>
 
@@ -178,7 +202,7 @@ export const ToolProductPage: React.FC<{ data: ToolPageData }> = ({ data }) => {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8">
             {data.features.map((f, i) => (
               <Reveal key={f.title} delay={i * 80}>
-                <div className="tech-frame bg-[#0d1830] border border-[#2563eb]/25 rounded-[1.25rem] p-5 md:p-8 hover:border-[#d4af37] hover:-translate-y-1 transition-all h-full">
+                <div className="card-lux card-lux-hover rounded-[1.25rem] p-5 md:p-8 hover:-translate-y-1 transition-all h-full">
                   <div className="w-12 h-12 rounded-xl bg-[#2563eb]/15 border border-[#2563eb]/40 flex items-center justify-center mb-4">
                     <i className={`${f.icon} text-blue-300 text-lg`}></i>
                   </div>
@@ -203,7 +227,7 @@ export const ToolProductPage: React.FC<{ data: ToolPageData }> = ({ data }) => {
               href={data.purchaseHref}
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center gap-2 px-8 py-3 md:py-4 rounded-full bg-[#d4af37] text-black text-sm md:text-base font-black tracking-widest hover:scale-105 active:scale-95 transition-all shadow-[0_0_40px_rgba(212,175,55,0.3)]"
+              className="gold-shimmer-btn inline-flex items-center gap-2 px-8 py-3 md:py-4 rounded-full text-sm md:text-base font-black tracking-widest hover:scale-105 active:scale-95 transition-transform"
             >
               <i className="fas fa-gift"></i>
               前往理財寶免費試用

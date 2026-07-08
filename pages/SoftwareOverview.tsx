@@ -60,9 +60,9 @@ const ProductVisual: React.FC<{ p: ProductItem }> = ({ p }) => {
 
 /** 統一色產品卡 — 仿恩如 LP:產品畫面 + 平台標籤 + 立即體驗/了解詳情 */
 export const ProductCard: React.FC<{ p: ProductItem }> = ({ p }) => (
-  <div className="tech-frame group relative flex flex-col bg-[#0d1830] border border-[#2563eb]/25 rounded-[1.5rem] p-5 md:p-6 hover:border-[#d4af37] hover:-translate-y-1 hover:shadow-[0_12px_50px_rgba(212,175,55,0.12)] transition-all h-full overflow-hidden">
+  <div className="card-lux card-lux-hover group relative flex flex-col rounded-[1.5rem] p-5 md:p-6 hover:-translate-y-1.5 hover:shadow-[0_20px_60px_rgba(212,175,55,0.18)] transition-all h-full overflow-hidden">
     {/* 角落光暈 */}
-    <div className="absolute -top-10 -right-10 w-32 h-32 bg-[#d4af37]/10 blur-[50px] rounded-full pointer-events-none group-hover:bg-[#d4af37]/20 transition-all"></div>
+    <div className="absolute -top-10 -right-10 w-32 h-32 bg-[#d4af37]/10 blur-[50px] rounded-full pointer-events-none group-hover:bg-[#d4af37]/25 transition-all"></div>
 
     {/* 產品畫面 */}
     <ProductVisual p={p} />
@@ -106,7 +106,7 @@ export const ProductCard: React.FC<{ p: ProductItem }> = ({ p }) => (
         href={p.experienceHref}
         target="_blank"
         rel="noreferrer"
-        className="flex-1 inline-flex items-center justify-center gap-2 py-2.5 md:py-3 rounded-xl bg-[#d4af37] text-black text-xs md:text-sm font-black tracking-widest hover:brightness-110 active:scale-95 transition-all"
+        className="gold-shimmer-btn flex-1 inline-flex items-center justify-center gap-2 py-2.5 md:py-3 rounded-xl text-xs md:text-sm font-black tracking-widest active:scale-95 transition-transform"
       >
         立即體驗
         <i className="fas fa-external-link-alt text-[9px]"></i>

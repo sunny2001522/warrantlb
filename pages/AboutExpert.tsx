@@ -59,65 +59,109 @@ const AboutExpert: React.FC = () => {
     <div className="min-h-screen bg-[#0a1228] text-white selection:bg-[#d4af37] selection:text-black">
       <SiteHeader active="/" />
 
-      {/* Hero */}
-      <section className="relative pt-24 md:pt-40 pb-12 md:pb-20 px-4 md:px-6 overflow-hidden bg-gradient-to-b from-[#0d1d42] via-[#0a1530] to-[#0a1228]">
+      {/* Hero — 電影感排版 */}
+      <section className="relative pt-24 md:pt-36 pb-0 overflow-hidden bg-gradient-to-b from-[#0d1d42] via-[#0a1530] to-[#0a1228]">
         <FinancialBg variant="hero" accent="#2563eb" gold="#d4af37" />
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[80vw] h-[50vh] bg-[#2563eb]/15 blur-[120px] rounded-full pointer-events-none"></div>
-        <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-8 md:gap-16 relative z-10">
-          <Reveal className="flex-shrink-0">
-            <div className="relative w-48 h-48 md:w-72 md:h-72">
-              <div className="absolute inset-0 rounded-full border border-[#d4af37]/40"></div>
-              <div className="absolute inset-2 rounded-full border border-[#2563eb]/30"></div>
-              <div className="absolute inset-3 md:inset-4 rounded-full overflow-hidden border-2 border-[#d4af37]/50 shadow-[0_0_60px_rgba(37,99,235,0.35)]">
-                <img src={lecturerImg} alt={EXPERT_NAME} className="w-full h-full object-cover" />
-              </div>
-            </div>
-          </Reveal>
-          <div className="text-center md:text-left">
+        <div className="absolute -bottom-24 right-[8%] w-[30vw] h-[30vw] bg-[#d4af37]/8 blur-[130px] rounded-full pointer-events-none"></div>
+
+        <div className="max-w-6xl mx-auto px-4 md:px-6 grid md:grid-cols-[1.15fr_0.85fr] items-center gap-10 md:gap-14 relative z-10 pb-14 md:pb-20">
+          {/* 左:文案 */}
+          <div className="text-center md:text-left order-2 md:order-1">
             <Reveal>
-              <p className="text-[#d4af37] text-sm md:text-base font-black tracking-[0.3em] mb-3">
+              <p className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-[#d4af37]/40 bg-[#d4af37]/5 text-[#d4af37] text-xs md:text-sm font-black tracking-[0.25em] mb-5">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#d4af37] tech-pulse"></span>
                 {EXPERT_TAGLINE}
               </p>
-              <h1 className="text-4xl md:text-7xl font-black serif-font italic text-gold-gradient leading-tight mb-6">
-                {EXPERT_NAME}
+              <h1 className="text-5xl md:text-8xl font-black serif-font leading-none mb-4">
+                <span className="text-gold-gradient italic drop-shadow-[0_6px_30px_rgba(212,175,55,0.35)]">
+                  {EXPERT_NAME}
+                </span>
               </h1>
+              <p className="text-blue-200/90 text-base md:text-2xl font-bold serif-font tracking-wide mb-6">
+                10 萬滾出千萬的<span className="text-[#d4af37]">籌碼實戰家</span>
+              </p>
             </Reveal>
             <Reveal delay={150}>
-              <p className="text-gray-300 text-[15px] md:text-lg leading-relaxed serif-font max-w-2xl">
+              <p className="text-gray-300 text-[15px] md:text-lg leading-relaxed serif-font max-w-xl mx-auto md:mx-0">
                 {EXPERT_INTRO}
               </p>
             </Reveal>
             <Reveal delay={250}>
-              <div className="flex flex-wrap justify-center md:justify-start gap-3 mt-6 md:mt-8">
+              <div className="flex flex-wrap justify-center md:justify-start gap-3 mt-7 md:mt-9">
                 <a
                   href="/course"
-                  className="inline-flex items-center gap-2 px-7 md:px-10 py-3 md:py-4 rounded-full bg-[#d4af37] text-black text-sm md:text-lg font-black tracking-widest hover:scale-105 active:scale-95 transition-all shadow-[0_0_40px_rgba(212,175,55,0.3)]"
+                  className="gold-shimmer-btn inline-flex items-center gap-2 px-8 md:px-11 py-3.5 md:py-4 rounded-full text-sm md:text-lg font-black tracking-widest hover:scale-105 active:scale-95 transition-transform"
                 >
                   免費處置體驗課
                   <i className="fas fa-arrow-right text-xs"></i>
                 </a>
                 <a
                   href="/software"
-                  className="inline-flex items-center gap-2 px-7 md:px-10 py-3 md:py-4 rounded-full border border-blue-400/60 text-blue-300 text-sm md:text-lg font-black tracking-widest hover:bg-blue-500/20 transition-all"
+                  className="inline-flex items-center gap-2 px-8 md:px-11 py-3.5 md:py-4 rounded-full border border-[#27e0ff]/50 bg-[#27e0ff]/5 text-[#7fe9ff] text-sm md:text-lg font-black tracking-widest hover:bg-[#27e0ff]/15 hover:border-[#27e0ff] transition-all"
                 >
                   實戰工具箱
                 </a>
               </div>
             </Reveal>
-          </div>
-        </div>
 
-        {/* 數據統計卡 */}
-        <div className="max-w-5xl mx-auto mt-12 md:mt-20 grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6 relative z-10">
-          {EXPERT_STATS.map((s, i) => (
-            <Reveal key={s.label} delay={i * 100}>
-              <div className="bg-[#0d1830]/80 border border-[#2563eb]/30 rounded-2xl p-4 md:p-6 text-center hover:border-[#d4af37] hover:-translate-y-1 transition-all h-full">
-                <i className={`${s.icon} text-[#d4af37] text-lg md:text-2xl mb-2 md:mb-3`}></i>
-                <p className="text-xl md:text-3xl font-black text-white serif-font">{s.value}</p>
-                <p className="text-gray-500 text-[11px] md:text-sm font-bold mt-1">{s.label}</p>
+            {/* 玻璃數據條 */}
+            <Reveal delay={350}>
+              <div className="mt-8 md:mt-10 grid grid-cols-2 sm:grid-cols-4 gap-2.5 md:gap-3 max-w-xl mx-auto md:mx-0">
+                {EXPERT_STATS.map((s) => (
+                  <div
+                    key={s.label}
+                    className="backdrop-blur-md bg-white/[0.04] border border-white/10 rounded-xl px-3 py-3 text-center hover:border-[#d4af37]/60 transition-colors"
+                  >
+                    <p className="text-base md:text-xl font-black text-gold-gradient serif-font leading-tight">
+                      {s.value}
+                    </p>
+                    <p className="text-gray-500 text-[10px] md:text-xs font-bold mt-0.5">{s.label}</p>
+                  </div>
+                ))}
               </div>
             </Reveal>
-          ))}
+          </div>
+
+          {/* 右:講師照 + 旋轉光環 */}
+          <Reveal className="order-1 md:order-2 justify-self-center" delay={100}>
+            <div className="relative w-60 h-60 md:w-[22rem] md:h-[22rem]">
+              {/* 旋轉金環 */}
+              <div className="absolute -inset-3 rounded-full ring-conic opacity-90" style={{ WebkitMaskImage: "radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 2px))", maskImage: "radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 2px))" }}></div>
+              {/* 反向藍環 */}
+              <div className="absolute -inset-7 rounded-full ring-conic-rev opacity-70" style={{ WebkitMaskImage: "radial-gradient(farthest-side, transparent calc(100% - 2px), #000 calc(100% - 1px))", maskImage: "radial-gradient(farthest-side, transparent calc(100% - 2px), #000 calc(100% - 1px))" }}></div>
+              {/* 靜態細環 */}
+              <div className="absolute inset-1 rounded-full border border-[#d4af37]/30"></div>
+              {/* 照片 */}
+              <div className="absolute inset-3 md:inset-4 rounded-full overflow-hidden border-2 border-[#d4af37]/60 shadow-[0_0_80px_rgba(212,175,55,0.3),0_0_140px_rgba(37,99,235,0.25)]">
+                <img src={lecturerImg} alt={EXPERT_NAME} className="w-full h-full object-cover" />
+              </div>
+              {/* 四向光點 */}
+              {["top-0 left-1/2 -translate-x-1/2", "bottom-0 left-1/2 -translate-x-1/2", "left-0 top-1/2 -translate-y-1/2", "right-0 top-1/2 -translate-y-1/2"].map((pos) => (
+                <span key={pos} className={`absolute ${pos} w-2 h-2 rounded-full bg-[#d4af37] shadow-[0_0_10px_rgba(212,175,55,0.9)]`}></span>
+              ))}
+              {/* 浮動徽章 */}
+              <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 px-4 py-1.5 rounded-full gold-shimmer-btn text-[11px] md:text-sm font-black tracking-widest whitespace-nowrap">
+                一個月處置策略獲利 1 億
+              </div>
+            </div>
+          </Reveal>
+        </div>
+
+        {/* 成就跑馬燈帶 */}
+        <div className="relative z-10 border-t border-b border-[#d4af37]/20 bg-[#0a1228]/80 backdrop-blur-sm py-3 md:py-4 overflow-hidden">
+          <div className="marquee-x gap-0">
+            {[0, 1].map((dup) => (
+              <div key={dup} className="flex items-center flex-shrink-0">
+                {EXPERT_AWARDS.map((a) => (
+                  <span key={`${dup}-${a}`} className="inline-flex items-center gap-2.5 px-6 md:px-9 text-gray-300 text-xs md:text-sm font-bold whitespace-nowrap">
+                    <i className="fas fa-trophy text-[#d4af37] text-[11px]"></i>
+                    {a}
+                  </span>
+                ))}
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -134,7 +178,7 @@ const AboutExpert: React.FC = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
             {ENTRY_CARDS.map((c, i) => (
               <Reveal key={c.title} delay={i * 80}>
-                <div className="tech-frame flex flex-col h-full bg-[#0d1830] border border-[#2563eb]/25 rounded-[1.25rem] p-5 md:p-7 hover:border-[#d4af37] hover:-translate-y-1 transition-all group">
+                <div className="card-lux card-lux-hover flex flex-col h-full rounded-[1.25rem] p-5 md:p-7 hover:-translate-y-1 transition-all group">
                   <div className="w-11 h-11 rounded-xl bg-[#2563eb]/15 border border-[#2563eb]/40 flex items-center justify-center mb-4">
                     <i className={`${c.icon} text-blue-300`}></i>
                   </div>
@@ -580,7 +624,7 @@ const AboutExpert: React.FC = () => {
             <div className="mt-10 md:mt-16">
               <a
                 href="/course"
-                className="inline-flex items-center gap-3 px-10 md:px-16 py-4 md:py-6 rounded-full bg-[#d4af37] text-black text-base md:text-2xl font-black tracking-widest hover:scale-105 active:scale-95 transition-all shadow-[0_0_50px_rgba(212,175,55,0.35)]"
+                className="gold-shimmer-btn inline-flex items-center gap-3 px-10 md:px-16 py-4 md:py-6 rounded-full text-base md:text-2xl font-black tracking-widest hover:scale-105 active:scale-95 transition-transform"
               >
                 免費報名處置策略體驗課
                 <i className="fas fa-arrow-right"></i>

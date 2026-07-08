@@ -268,6 +268,81 @@
         50% { box-shadow: 0 0 26px 1px rgba(39,224,255,0.25); }
       }
 
+      /* ===== 奢華金×科技 視覺系統 ===== */
+      /* 流光金按鈕 (對齊處置神器 CTA 質感) */
+      .gold-shimmer-btn {
+        position: relative;
+        background: linear-gradient(135deg, #f5d76e 0%, #d4af37 45%, #a8842a 100%);
+        color: #0b0b0b;
+        overflow: hidden;
+        box-shadow: 0 6px 30px rgba(212,175,55,0.35), inset 0 1px 0 rgba(255,255,255,0.5);
+      }
+      .gold-shimmer-btn::after {
+        content: "";
+        position: absolute;
+        top: 0; left: -160%;
+        width: 55%; height: 100%;
+        background: linear-gradient(115deg, transparent, rgba(255,255,255,0.65), transparent);
+        transform: skewX(-20deg);
+        animation: goldShine 3s ease-in-out infinite;
+        pointer-events: none;
+      }
+      @keyframes goldShine { 0% { left: -160%; } 55% { left: 160%; } 100% { left: 160%; } }
+
+      /* 漸層描邊卡 (金→藍→青 邊框, 深色內裡) */
+      .card-lux {
+        border: 1.5px solid transparent;
+        background:
+          linear-gradient(165deg, #0e1a34 0%, #0b1426 60%, #0d182e 100%) padding-box,
+          linear-gradient(160deg, rgba(212,175,55,0.65), rgba(37,99,235,0.3) 38%, rgba(212,175,55,0.12) 62%, rgba(39,224,255,0.45)) border-box;
+      }
+      .card-lux-hover:hover {
+        background:
+          linear-gradient(165deg, #101f3e 0%, #0c1830 60%, #0f1c36 100%) padding-box,
+          linear-gradient(160deg, rgba(212,175,55,0.95), rgba(39,224,255,0.5) 45%, rgba(212,175,55,0.75)) border-box;
+      }
+
+      /* 旋轉金色光環 (講師照/圖示用) */
+      .ring-conic {
+        background: conic-gradient(from 0deg, transparent 0%, rgba(212,175,55,0.9) 12%, transparent 30%, transparent 55%, rgba(39,224,255,0.55) 66%, transparent 80%);
+        animation: spinSlow 7s linear infinite;
+      }
+      .ring-conic-rev {
+        background: conic-gradient(from 180deg, transparent 0%, rgba(37,99,235,0.6) 15%, transparent 35%);
+        animation: spinSlowRev 11s linear infinite;
+      }
+      @keyframes spinSlow { to { transform: rotate(360deg); } }
+      @keyframes spinSlowRev { to { transform: rotate(-360deg); } }
+
+      /* 橫向無限跑馬燈 (成就帶) */
+      .marquee-x { display: flex; width: max-content; animation: marqueeX 30s linear infinite; }
+      .marquee-x:hover { animation-play-state: paused; }
+      @keyframes marqueeX { to { transform: translateX(-50%); } }
+
+      /* 區塊分隔光線 */
+      .glow-divider {
+        height: 1px;
+        background: linear-gradient(90deg, transparent, rgba(212,175,55,0.55), rgba(39,224,255,0.35), transparent);
+      }
+
+      /* 大標底部光暈 */
+      .head-glow {
+        position: relative;
+      }
+      .head-glow::after {
+        content: "";
+        position: absolute;
+        left: 50%; bottom: -14px;
+        transform: translateX(-50%);
+        width: 120px; height: 22px;
+        background: radial-gradient(ellipse, rgba(212,175,55,0.5), transparent 70%);
+        pointer-events: none;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .gold-shimmer-btn::after, .ring-conic, .ring-conic-rev, .marquee-x { animation: none; }
+      }
+
       /* 浮升亮藍數據微粒 */
       .fb-rise {
         position: absolute;
