@@ -2,15 +2,47 @@ import React from "react";
 import { Reveal } from "../components/Reveal";
 import { FinancialBg } from "../components/FinancialBg";
 import { SiteHeader, SiteFooter, usePageMeta } from "../components/SiteChrome";
-import { TOOL_CARDS } from "../siteContent";
+import { ALL_PRODUCTS, type Platform } from "../siteContent";
 
-/** 軟體工具總覽 — 仿 enru /software 軟體總覽頁 */
+/** 平台標籤樣式 */
+const PLATFORM_STYLE: Record<Platform, { label: string; icon: string; cls: string }> = {
+  PC: {
+    label: "PC 電腦版",
+    icon: "fas fa-desktop",
+    cls: "bg-[#d4af37]/15 border-[#d4af37]/60 text-[#d4af37]",
+  },
+  APP: {
+    label: "APP 手機版",
+    icon: "fas fa-mobile-screen-button",
+    cls: "bg-[#27e0ff]/12 border-[#27e0ff]/60 text-[#27e0ff]",
+  },
+  WEB: {
+    label: "WEB 網頁版",
+    icon: "fas fa-globe",
+    cls: "bg-[#3b9eff]/12 border-[#3b9eff]/60 text-[#3b9eff]",
+  },
+};
+
+const PlatformBadge: React.FC<{ p: Platform }> = ({ p }) => {
+  const s = PLATFORM_STYLE[p];
+  return (
+    <span
+      className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border text-[10px] md:text-xs font-black tracking-widest ${s.cls}`}
+    >
+      <i className={`${s.icon} text-[9px] md:text-[10px]`}></i>
+      {s.label}
+    </span>
+  );
+};
+
+/** 軟體工具總覽 — 小哥全產品線 (PC + APP 同頁,標平台標籤) */
 const SoftwareOverview: React.FC = () => {
   usePageMeta({
-    title: "軟體工具總覽|處置神器・籌碼K線・盤中監控 - 權證小哥官網",
+    title: "軟體工具總覽|小哥全產品線 PC・APP - 權證小哥官網",
     description:
-      "權證小哥的實戰工具箱:處置神器(處置股預測 99% 準確度)、籌碼K線(主力分點追蹤)、全方位盤中監控 APP、從分點探索權證標的。把主力手法拆解成可重複執行的 SOP。",
-    keywords: "處置神器,籌碼K線,盤中監控,權證標的,主力籌碼,分點,權證小哥,理財寶",
+      "權證小哥全產品線:處置神器、全方位盤中監控、當沖飆股神手、全方位獨門監控電腦版、當沖神器電腦版、挑選權證/股期小幫手、可轉債主力分析、除權息獲利神器。PC 與 APP 完整工具箱。",
+    keywords:
+      "權證小哥,處置神器,全方位監控,當沖飆股神手,當沖神器,挑選權證小幫手,挑選股期小幫手,可轉債,除權息獲利神器,理財寶",
     url: "https://warrantlb8888.cmoney.tw/software",
   });
 
@@ -25,91 +57,86 @@ const SoftwareOverview: React.FC = () => {
         <div className="max-w-5xl mx-auto text-center relative z-10">
           <Reveal>
             <p className="text-[#d4af37] text-sm md:text-base font-black tracking-[0.3em] mb-3">
-              WARRANT BRO TOOLBOX
+              ALL PRODUCTS
             </p>
             <h1 className="text-3xl md:text-6xl font-black serif-font italic text-gold-gradient leading-tight mb-6">
-              小哥的實戰工具箱
+              小哥全產品線
             </h1>
-            <p className="text-gray-300 text-[15px] md:text-lg leading-relaxed serif-font max-w-3xl mx-auto">
-              小哥持續獲利的關鍵,在於每天研究籌碼。
-              這些工具把複雜的主力手法,拆解成軟體上客觀的數據與可重複執行的 SOP——
-              讓你看懂籌碼流向,換你監控主力下單。
+            <p className="text-gray-300 text-[15px] md:text-lg leading-relaxed serif-font max-w-3xl mx-auto mb-6">
+              從處置股、當沖、權證、股期、可轉債到除權息——
+              小哥把每個戰場的主力手法,拆解成 PC 與 APP 上可重複執行的工具。
             </p>
+            {/* 平台圖例 */}
+            <div className="flex flex-wrap items-center justify-center gap-2 md:gap-3">
+              <PlatformBadge p="PC" />
+              <PlatformBadge p="APP" />
+              <PlatformBadge p="WEB" />
+            </div>
           </Reveal>
         </div>
       </section>
 
-      {/* 工具卡片 */}
-      <section className="pb-16 md:pb-28 px-4 md:px-6">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-8">
-          {TOOL_CARDS.map((tool, i) => (
-            <Reveal key={tool.title} delay={i * 100}>
-              <div
-                className={`relative bg-gradient-to-br ${tool.theme} border border-[#2563eb]/25 rounded-[1.5rem] md:rounded-[2rem] p-6 md:p-10 flex flex-col h-full overflow-hidden hover:border-[#d4af37] hover:-translate-y-1 hover:shadow-[0_8px_50px_rgba(212,175,55,0.12)] transition-all group`}
+      {/* 全產品 grid */}
+      <section className="relative overflow-hidden pb-16 md:pb-24 px-4 md:px-6 pt-4 md:pt-8">
+        <FinancialBg variant="band" accent="#2563eb" gold="#d4af37" />
+        <div className="max-w-7xl mx-auto relative z-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+          {ALL_PRODUCTS.map((p, i) => (
+            <Reveal key={p.title} delay={(i % 3) * 90}>
+              <a
+                href={p.href}
+                {...(p.external ? { target: "_blank", rel: "noreferrer" } : {})}
+                className={`tech-frame group relative flex flex-col bg-gradient-to-br ${p.theme} border border-[#2563eb]/25 rounded-[1.5rem] p-5 md:p-7 hover:border-[#d4af37] hover:-translate-y-1 hover:shadow-[0_12px_50px_rgba(212,175,55,0.12)] transition-all h-full overflow-hidden`}
               >
-                {tool.badge && (
-                  <span className="absolute top-4 right-4 md:top-6 md:right-6 px-3 py-1 rounded-full bg-[#d4af37] text-black text-[10px] md:text-xs font-black tracking-widest">
-                    {tool.badge}
-                  </span>
-                )}
+                {/* 角落光暈 */}
+                <div className="absolute -top-10 -right-10 w-32 h-32 bg-[#d4af37]/10 blur-[50px] rounded-full pointer-events-none group-hover:bg-[#d4af37]/20 transition-all"></div>
 
-                <div className="flex items-center gap-4 mb-4 md:mb-6">
-                  <img
-                    src={tool.iconImg}
-                    alt={tool.title}
-                    className="w-14 h-14 md:w-16 md:h-16 rounded-2xl border border-white/15 shadow-lg flex-shrink-0"
-                  />
-                  <div>
-                    <h2 className="text-xl md:text-2xl font-black text-white serif-font group-hover:text-[#d4af37] transition-colors">
-                      {tool.title}
-                    </h2>
-                    <p className="text-[#d4af37] text-xs md:text-sm font-bold tracking-widest mt-1">
-                      {tool.subtitle}
-                    </p>
-                  </div>
+                {/* 平台標籤列 */}
+                <div className="flex flex-wrap items-center gap-1.5 md:gap-2 mb-4">
+                  {p.platforms.map((pf) => (
+                    <PlatformBadge key={pf} p={pf} />
+                  ))}
+                  {p.gift && (
+                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#d4af37] text-black text-[10px] md:text-xs font-black tracking-wide">
+                      <i className="fas fa-gift text-[9px]"></i>
+                      {p.gift}
+                    </span>
+                  )}
                 </div>
 
-                {tool.screenshot && (
-                  <div className="relative mb-5 md:mb-6 rounded-xl overflow-hidden border border-white/10 bg-black/30">
+                {/* 圖示 + 標題 */}
+                <div className="flex items-center gap-3 md:gap-4 mb-3">
+                  {p.iconImg ? (
                     <img
-                      src={tool.screenshot}
-                      alt={`${tool.title} APP 畫面`}
-                      loading="lazy"
-                      className="w-full h-44 md:h-52 object-cover object-top group-hover:scale-[1.03] transition-transform duration-500"
+                      src={p.iconImg}
+                      alt={p.title}
+                      className="w-14 h-14 md:w-16 md:h-16 rounded-2xl border border-white/20 shadow-[0_8px_30px_rgba(0,0,0,0.5)] group-hover:scale-105 transition-transform flex-shrink-0"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent pointer-events-none"></div>
-                  </div>
-                )}
+                  ) : (
+                    <div className="w-14 h-14 md:w-16 md:h-16 rounded-2xl bg-[#d4af37]/10 border border-[#d4af37]/40 flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform">
+                      <i className={`${p.icon} text-[#d4af37] text-xl md:text-2xl`}></i>
+                    </div>
+                  )}
+                  <h2 className="text-lg md:text-xl font-black text-white serif-font leading-snug group-hover:text-[#d4af37] transition-colors">
+                    {p.title}
+                  </h2>
+                </div>
 
-                <p className="text-gray-300 text-sm md:text-base leading-relaxed mb-5 md:mb-8">
-                  {tool.description}
+                <p className="text-gray-400 text-sm md:text-base leading-relaxed mb-5">{p.tagline}</p>
+
+                <p className="mt-auto inline-flex items-center gap-2 text-[#d4af37] text-sm font-black">
+                  {p.external ? "前往理財寶" : "了解更多"}
+                  <i
+                    className={`fas ${p.external ? "fa-external-link-alt" : "fa-arrow-right"} text-[10px] group-hover:translate-x-1 transition-transform`}
+                  ></i>
                 </p>
-
-                <ul className="space-y-2 mb-6 md:mb-10">
-                  {tool.features.map((f) => (
-                    <li key={f} className="flex items-start gap-2.5 text-gray-300 text-sm md:text-base font-bold">
-                      <i className="fas fa-check text-[#d4af37] mt-1 text-xs flex-shrink-0"></i>
-                      {f}
-                    </li>
-                  ))}
-                </ul>
-
-                <a
-                  href={tool.href}
-                  {...(tool.external ? { target: "_blank", rel: "noreferrer" } : {})}
-                  className="mt-auto inline-flex items-center justify-center gap-2 w-full py-3 md:py-4 rounded-xl border border-[#d4af37] text-[#d4af37] text-sm md:text-base font-black tracking-widest hover:bg-[#d4af37] hover:text-black transition-all"
-                >
-                  {tool.cta}
-                  <i className={`fas ${tool.external ? "fa-external-link-alt" : "fa-arrow-right"} text-xs`}></i>
-                </a>
-              </div>
+              </a>
             </Reveal>
           ))}
         </div>
 
         {/* 體驗課導流 */}
-        <Reveal className="max-w-4xl mx-auto mt-12 md:mt-20">
-          <div className="bg-[#0d1830] border border-[#d4af37]/40 rounded-[1.5rem] md:rounded-[2rem] p-6 md:p-12 text-center">
+        <Reveal className="max-w-4xl mx-auto mt-12 md:mt-20 relative z-10">
+          <div className="tech-frame bg-[#0d1830] border border-[#d4af37]/40 rounded-[1.5rem] md:rounded-[2rem] p-6 md:p-12 text-center">
             <h3 className="text-xl md:text-4xl font-black serif-font italic text-gold-gradient mb-3 md:mb-4">
               不知道從哪套工具開始?
             </h3>

@@ -373,6 +373,117 @@ export const TOOL_CARDS: ToolCardData[] = [
   },
 ];
 
+/* ─────────────── 小哥全產品線 (PC + APP 合併一頁, 標平台標籤) ─────────────── */
+
+import exdivIcon from "./assets/tools/exdiv-icon.jpg";
+
+export type Platform = "PC" | "APP" | "WEB";
+
+export interface ProductItem {
+  title: string;
+  tagline: string;
+  platforms: Platform[];
+  /** 附贈說明 (如 送手機版 / 買Web送APP) */
+  gift?: string;
+  href: string;
+  external: boolean;
+  /** APP 官方圖示 (無則用 icon tile) */
+  iconImg?: string;
+  icon: string; // FA icon (PC 產品 tile 用)
+  theme: string; // 卡片漸層
+}
+
+export const ALL_PRODUCTS: ProductItem[] = [
+  {
+    title: "處置神器(進階版)",
+    tagline: "精準預測處置股,即時監控注意股與處置股,提前掌握交易限制。",
+    platforms: ["WEB", "APP"],
+    gift: "買 Web 送 APP",
+    href: "/about/DispositionGod",
+    external: false,
+    iconImg: dispoIcon,
+    icon: "fas fa-gavel",
+    theme: "from-[#1a3a6a] via-[#10182a] to-[#0a1228]",
+  },
+  {
+    title: "全方位盤中監控 APP",
+    tagline: "獨家主力流水牆,一眼看出主力盤中多空方向;加權、台指期推播。",
+    platforms: ["APP"],
+    href: "/software/omni-monitor",
+    external: false,
+    iconImg: omniIcon,
+    icon: "fas fa-desktop",
+    theme: "from-[#2d5a3d] via-[#0e1f15] to-[#0a1228]",
+  },
+  {
+    title: "當沖飆股神手 APP",
+    tagline: "連次、連量獨家燈號,盤中低買高賣,避免追高殺低。",
+    platforms: ["APP"],
+    href: "/software/day-trade",
+    external: false,
+    iconImg: daytradeIcon,
+    icon: "fas fa-bolt",
+    theme: "from-[#7a2e1e] via-[#241008] to-[#0a1228]",
+  },
+  {
+    title: "全方位獨門監控電腦版",
+    tagline: "資訊速度直接影響帳上獲利!盤中權證主力動作全數即時跳出,換你監控主力下單。",
+    platforms: ["PC", "APP"],
+    gift: "送手機版",
+    href: "https://www.cmoney.tw/app/itemcontent.aspx?id=2507",
+    external: true,
+    icon: "fas fa-tower-observation",
+    theme: "from-[#14532d] via-[#0c2818] to-[#0a1228]",
+  },
+  {
+    title: "當沖神器電腦版",
+    tagline: "協助判斷股價高低點的當沖軟體,搭配小哥當沖教學,避開追高殺低的窘境。",
+    platforms: ["PC", "APP"],
+    gift: "送手機版",
+    href: "https://www.cmoney.tw/app/itemcontent.aspx?id=3070",
+    external: true,
+    icon: "fas fa-gauge-high",
+    theme: "from-[#7a2e1e] via-[#2a1008] to-[#0a1228]",
+  },
+  {
+    title: "挑選權證小幫手",
+    tagline: "不知道該如何挑權證?讓權證小哥幫您挑!",
+    platforms: ["PC"],
+    href: "https://www.cmoney.tw/app/itemcontent.aspx?id=1958",
+    external: true,
+    icon: "fas fa-hand-pointer",
+    theme: "from-[#7a5c1e] via-[#241c0a] to-[#0a1228]",
+  },
+  {
+    title: "挑選股期小幫手",
+    tagline: "不知道該如何挑選股期標的?讓最強散戶【權證小哥】幫您挑!",
+    platforms: ["PC"],
+    href: "https://www.cmoney.tw/app/itemcontent.aspx?id=2250",
+    external: true,
+    icon: "fas fa-magnifying-glass-chart",
+    theme: "from-[#1e3a5f] via-[#0e1c2e] to-[#0a1228]",
+  },
+  {
+    title: "可轉債主力分析及套利系統",
+    tagline: "徹底分析可轉債主力手法,4 大招式洞悉可轉債與股票間的操作及套利模式。",
+    platforms: ["PC"],
+    href: "https://www.cmoney.tw/app/itemcontent.aspx?id=2328",
+    external: true,
+    icon: "fas fa-scale-unbalanced-flip",
+    theme: "from-[#5a3d7a] via-[#170e1f] to-[#0a1228]",
+  },
+  {
+    title: "除權息獲利神器",
+    tagline: "飆漲前搶先卡位,爽領股利又賺價差!",
+    platforms: ["APP"],
+    href: "https://www.cmoney.tw/app/itemcontent.aspx?id=4527",
+    external: true,
+    iconImg: exdivIcon,
+    icon: "fas fa-sack-dollar",
+    theme: "from-[#8a6d1e] via-[#2a2008] to-[#0a1228]",
+  },
+];
+
 /* ─────────────── 工具獨立頁資料 (仿 enru ProductPageData) ─────────────── */
 
 /** 產品教學影片 (來源: 權證小哥 YouTube 官方頻道,均經 oembed 驗證) */
