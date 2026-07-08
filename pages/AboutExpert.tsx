@@ -19,11 +19,12 @@ import {
   TRUST_BADGES,
   FAQ_ITEMS,
   SOCIAL_LINKS,
-  TOOL_CARDS,
+  ALL_PRODUCTS,
   FEATURED_VIDEOS,
   YOUTUBE_SHOWS,
   YOUTUBE_CHANNEL_URL,
 } from "../siteContent";
+import { ProductCard } from "./SoftwareOverview";
 
 /** 首頁 — 關於權證小哥 (仿 enru 首頁:講師 hub + 影音 + 工具導流) */
 const AboutExpert: React.FC = () => {
@@ -238,10 +239,10 @@ const AboutExpert: React.FC = () => {
         </div>
       </section>
 
-      {/* 權證小哥 3 大產品 (手刻自官方「3大產品」圖) */}
+      {/* 權證小哥 3 大產品 — 統一卡片 (產品畫面 + 平台標籤 + 立即體驗/了解詳情) */}
       <section className="relative overflow-hidden py-12 md:py-24 px-4 md:px-6 bg-gradient-to-b from-[#091022] to-[#0a1228] border-t border-white/5">
         <FinancialBg variant="band" accent="#2563eb" gold="#d4af37" />
-        <div className="max-w-5xl mx-auto relative z-10">
+        <div className="max-w-6xl mx-auto relative z-10">
           <Reveal className="text-center mb-8 md:mb-14">
             <p className="text-[#d4af37] text-xs md:text-sm font-black tracking-[0.3em] mb-2">PRODUCTS</p>
             <h2 className="text-3xl md:text-6xl font-black serif-font italic text-gold-gradient mb-3">
@@ -250,45 +251,10 @@ const AboutExpert: React.FC = () => {
             <p className="text-gray-400 text-sm md:text-lg">把主力手法拆解成可重複執行的 SOP</p>
           </Reveal>
 
-          <div className="flex flex-col gap-4 md:gap-5">
-            {TOOL_CARDS.slice(0, 3).map((tool, i) => (
-              <Reveal key={tool.title} delay={i * 100}>
-                <a
-                  href={tool.href}
-                  className={`tech-frame group relative flex items-center gap-4 md:gap-7 bg-gradient-to-r ${tool.theme} border border-[#2563eb]/25 rounded-[1.25rem] md:rounded-[1.5rem] p-4 md:p-6 hover:border-[#d4af37] hover:-translate-y-0.5 transition-all overflow-hidden`}
-                >
-                  {/* 序號 */}
-                  <span className="hidden sm:block text-4xl md:text-6xl font-black serif-font text-white/10 group-hover:text-[#d4af37]/30 transition-colors leading-none w-12 md:w-20 text-center flex-shrink-0">
-                    {`0${i + 1}`}
-                  </span>
-
-                  {/* APP 圖示 */}
-                  <div className="relative flex-shrink-0">
-                    <img
-                      src={tool.iconImg}
-                      alt={tool.title}
-                      className="w-16 h-16 md:w-24 md:h-24 rounded-2xl border border-white/20 shadow-[0_8px_30px_rgba(0,0,0,0.5)] group-hover:scale-105 transition-transform"
-                    />
-                  </div>
-
-                  {/* 文案 */}
-                  <div className="flex-1 min-w-0">
-                    {tool.category && (
-                      <span className="inline-block text-[#d4af37] text-[10px] md:text-xs font-black tracking-widest mb-1">
-                        {tool.category}
-                      </span>
-                    )}
-                    <h3 className="text-white text-lg md:text-2xl font-black serif-font group-hover:text-[#d4af37] transition-colors leading-tight">
-                      {tool.title}
-                    </h3>
-                    <p className="text-gray-400 text-xs md:text-base leading-snug mt-1">{tool.tagline}</p>
-                  </div>
-
-                  {/* 箭頭 */}
-                  <span className="flex-shrink-0 w-9 h-9 md:w-11 md:h-11 rounded-full border border-[#d4af37]/50 text-[#d4af37] flex items-center justify-center group-hover:bg-[#d4af37] group-hover:text-black transition-all">
-                    <i className="fas fa-arrow-right text-xs md:text-sm"></i>
-                  </span>
-                </a>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+            {ALL_PRODUCTS.slice(0, 3).map((p, i) => (
+              <Reveal key={p.title} delay={i * 100}>
+                <ProductCard p={p} />
               </Reveal>
             ))}
           </div>

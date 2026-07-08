@@ -84,3 +84,86 @@ export const ChartMock: React.FC = () => (
     </div>
   </PhoneMock>
 );
+
+/* ── 桌面視窗外框 (PC 軟體示意) ── */
+const DesktopFrame: React.FC<{ title: string; children: React.ReactNode }> = ({ title, children }) => (
+  <div className="w-full rounded-xl overflow-hidden border border-[#2563eb]/30 bg-[#091422] shadow-[0_16px_50px_rgba(0,0,0,0.5)]">
+    <div className="flex items-center gap-2 px-3 py-2 bg-[#0c1a2e] border-b border-white/5">
+      <span className="w-2.5 h-2.5 rounded-full bg-[#f84444]"></span>
+      <span className="w-2.5 h-2.5 rounded-full bg-[#ffd84d]"></span>
+      <span className="w-2.5 h-2.5 rounded-full bg-[#27c281]"></span>
+      <span className="ml-2 text-[10px] text-gray-400 font-black tracking-wider">{title}</span>
+    </div>
+    {children}
+  </div>
+);
+
+/* ── 挑選權證小幫手 PC 畫面 (示意) ── */
+const WARRANT_ROWS = [
+  { code: "058839", name: "台積電淞", spread: "0.8%", iv: "38%", lev: "6.2x", hot: true },
+  { code: "071234", name: "鴻海凰", spread: "1.1%", iv: "42%", lev: "5.8x", hot: false },
+  { code: "049921", name: "聯發科捷", spread: "0.6%", iv: "35%", lev: "7.1x", hot: true },
+  { code: "066118", name: "廣達威", spread: "1.4%", iv: "45%", lev: "4.9x", hot: false },
+  { code: "052277", name: "緯創豹", spread: "0.9%", iv: "40%", lev: "6.5x", hot: false },
+];
+
+export const WarrantPickerMock: React.FC = () => (
+  <DesktopFrame title="挑選權證小幫手">
+    <div className="p-2">
+      <div className="grid grid-cols-[1.3fr_1fr_0.8fr_0.8fr_0.8fr] gap-1 px-2 py-1.5 text-[9px] text-gray-500 font-bold border-b border-white/5">
+        <span>權證</span><span>標的</span><span className="text-right">價差比</span><span className="text-right">隱波</span><span className="text-right">槓桿</span>
+      </div>
+      {WARRANT_ROWS.map((r) => (
+        <div key={r.code} className="grid grid-cols-[1.3fr_1fr_0.8fr_0.8fr_0.8fr] gap-1 px-2 py-1.5 items-center border-b border-white/5">
+          <span className="text-white text-[10px] font-black flex items-center gap-1.5">
+            {r.hot && <span className="w-1.5 h-1.5 rounded-full bg-[#ffd84d] shadow-[0_0_5px_#ffd84d]"></span>}
+            {r.code}
+          </span>
+          <span className="text-gray-300 text-[10px] font-bold">{r.name}</span>
+          <span className="text-right text-[10px] font-black text-[#27e0ff] tabular-nums">{r.spread}</span>
+          <span className="text-right text-[10px] font-bold text-gray-300 tabular-nums">{r.iv}</span>
+          <span className="text-right text-[10px] font-black text-[#d4af37] tabular-nums">{r.lev}</span>
+        </div>
+      ))}
+      <div className="flex items-center gap-2 px-2 pt-2 pb-1">
+        <span className="px-2 py-0.5 rounded bg-[#d4af37]/15 border border-[#d4af37]/50 text-[#d4af37] text-[8px] font-black">低價差</span>
+        <span className="px-2 py-0.5 rounded bg-[#27e0ff]/10 border border-[#27e0ff]/50 text-[#27e0ff] text-[8px] font-black">低隱波</span>
+        <span className="px-2 py-0.5 rounded bg-white/5 border border-white/15 text-gray-300 text-[8px] font-black">高槓桿</span>
+      </div>
+    </div>
+  </DesktopFrame>
+);
+
+/* ── 可轉債主力分析 PC 畫面 (示意) ── */
+const CB_ROWS = [
+  { code: "36624", name: "示例三", price: "108.5", premium: "+2.1%", vol: "1,240" },
+  { code: "49433", name: "示例二", price: "132.0", premium: "-0.8%", vol: "856" },
+  { code: "62443", name: "示例四", price: "101.2", premium: "+0.4%", vol: "2,105" },
+  { code: "15982", name: "示例五", price: "115.8", premium: "+3.6%", vol: "634" },
+];
+
+export const CbArbMock: React.FC = () => (
+  <DesktopFrame title="可轉債主力分析及套利系統">
+    <div className="p-2">
+      <div className="grid grid-cols-[1fr_1fr_0.9fr_1fr_0.9fr] gap-1 px-2 py-1.5 text-[9px] text-gray-500 font-bold border-b border-white/5">
+        <span>代號</span><span>可轉債</span><span className="text-right">價格</span><span className="text-right">溢價率</span><span className="text-right">主力量</span>
+      </div>
+      {CB_ROWS.map((r) => {
+        const neg = r.premium.startsWith("-");
+        return (
+          <div key={r.code} className="grid grid-cols-[1fr_1fr_0.9fr_1fr_0.9fr] gap-1 px-2 py-1.5 items-center border-b border-white/5">
+            <span className="text-white text-[10px] font-black">{r.code}</span>
+            <span className="text-gray-300 text-[10px] font-bold">{r.name}</span>
+            <span className="text-right text-[10px] font-bold text-gray-200 tabular-nums">{r.price}</span>
+            <span className="text-right text-[10px] font-black tabular-nums" style={{ color: neg ? "#27c281" : "#f84444" }}>{r.premium}</span>
+            <span className="text-right text-[10px] font-bold text-[#27e0ff] tabular-nums">{r.vol}</span>
+          </div>
+        );
+      })}
+      <div className="flex items-center justify-between px-2 pt-2 pb-1">
+        <span className="text-[9px] text-gray-500 font-bold">4 大招式・主力手法拆解</span>
+        <span className="px-2 py-0.5 rounded bg-[#27c281]/15 border border-[#27c281]/50 text-[#27c281] text-[8px] font-black">套利訊號</span>
+      </div>
+    </div>
+  </DesktopFrame>
+);
