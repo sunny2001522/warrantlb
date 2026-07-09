@@ -22,6 +22,7 @@ import {
   LECTURER_GALLERY,
   CASHFLOW_DOMAIN,
   sanitizeRegistrationEvents,
+  fetchLiveExperienceCourses,
   type RegistrationInfo,
 } from "./constants";
 import {
@@ -45,27 +46,37 @@ const App: React.FC = () => {
   const [events, setEvents] = useState<RegistrationInfo[]>([]);
 
   useEffect(() => {
-    (async () => {
+    const loadFromFirestore = async () => {
       try {
         const snapshot = await getDocs(collection(db, "registrationEvents"));
         if (!snapshot.empty) {
           const allEvents = sanitizeRegistrationEvents(
             snapshot.docs.map((d) => ({ id: Number(d.id), ...d.data() } as RegistrationInfo)),
           );
-
           const now = new Date();
-          const active: RegistrationInfo[] = [];
-
-          for (const event of allEvents) {
-            const startTime = new Date(event.targetDate);
-            if (Number.isNaN(startTime.getTime()) || now < startTime) {
-              active.push(event);
-            }
-          }
-          setEvents(active);
+          setEvents(
+            allEvents.filter((e) => {
+              const t = new Date(e.targetDate);
+              return Number.isNaN(t.getTime()) || now < t;
+            }),
+          );
         }
       } catch {
-        // Firestore 失敗，不 fallback，保持空陣列
+        // Firestore 失敗，保持空陣列
+      }
+    };
+
+    (async () => {
+      // 即時打 experience-course API (含隱藏欄位: 報名人數/剩餘名額/額滿);失敗才回退 Firestore
+      try {
+        const live = await fetchLiveExperienceCourses();
+        if (live.length > 0) {
+          setEvents(live);
+          return;
+        }
+        await loadFromFirestore();
+      } catch {
+        await loadFromFirestore();
       }
     })();
   }, []);
@@ -598,10 +609,37 @@ const App: React.FC = () => {
                 key={event.id}
                 className="scroll-reveal w-full lg:w-[calc((100%-1.5rem)/2)] xl:w-[calc((100%-5rem)/3)] max-w-[32rem] bg-[#0b0f1a] border border-[#d4af37]/30 rounded-[1.5rem] md:rounded-[2.5rem] overflow-hidden flex flex-col shadow-2xl transition-all hover:border-[#d4af37] hover:-translate-y-1 group h-full"
               >
+                {/* 課程圖 (即時 API imageUrl) */}
+                {event.imageUrl && (
+                  <div className="relative aspect-[16/9] overflow-hidden bg-black">
+                    <img
+                      src={event.imageUrl}
+                      alt={event.title}
+                      loading="lazy"
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#0b0f1a] via-transparent to-transparent pointer-events-none"></div>
+                    {event.isFull && (
+                      <span className="absolute top-3 right-3 px-3 py-1 rounded-full bg-red-600 text-white text-xs font-black tracking-widest shadow-lg">
+                        已額滿
+                      </span>
+                    )}
+                  </div>
+                )}
                 <div className="p-4 md:p-10 flex-1 flex flex-col items-center text-center">
                   <h3 className="text-[20px] md:text-3xl font-black text-white serif-font mb-3 md:mb-6 leading-tight min-h-0 md:min-h-[4rem] group-hover:text-[#d4af37] transition-colors">
                     {event.title}
                   </h3>
+                  {/* 報名人數 / 剩餘名額 (即時 API) */}
+                  {event.displayLabel && typeof event.displayCount === "number" && (
+                    <div className="mb-3 md:mb-4 inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#27e0ff]/10 border border-[#27e0ff]/40">
+                      <i className="fas fa-user-group text-[#27e0ff] text-[11px]"></i>
+                      <span className="text-[#9fd8ff] text-xs md:text-sm font-black tracking-wide">
+                        {event.displayLabel} {event.displayCount.toLocaleString()}
+                        {event.displayLabel.includes("名額") ? " 位" : " 人"}
+                      </span>
+                    </div>
+                  )}
                   <div className="w-full bg-[#d4af37]/5 border border-[#d4af37]/30 p-3 md:p-5 mb-2 md:mb-4 rounded-2xl text-center">
                     <div className="flex flex-col gap-0.5 md:gap-1">
                       <span className="text-[#d4af37] text-[10px] md:text-[10px] font-black tracking-widest uppercase opacity-70">
@@ -630,20 +668,28 @@ const App: React.FC = () => {
                     <div className="text-center">
                       <div className="flex items-baseline justify-center gap-1 md:gap-2">
                         <span className="text-[11px] md:text-xs font-normal text-gray-400">
-                          限時
+                          {event.discountPrice === 0 ? "限時" : "優惠價"}
                         </span>
                         <span className="text-2xl md:text-4xl font-black text-white">
-                          NT${event.discountPrice}
+                          {event.discountPrice === 0
+                            ? "免費"
+                            : `NT$${event.discountPrice.toLocaleString()}`}
                         </span>
                       </div>
                     </div>
                   </div>
                   <button
                     onClick={() => handleRegistrationClick(event)}
-                    disabled={!event.url && !event.productType && !event.functionId}
+                    disabled={event.isFull || (!event.url && !event.productType && !event.functionId)}
                     className="w-full blue-shimmer-btn py-3 md:py-6 rounded-[1rem] md:rounded-[1.2rem] text-center text-base md:text-xl font-black text-white shadow-xl hover:scale-[1.01] active:scale-95 transition-all cursor-pointer disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:scale-100"
                   >
-                    {!event.url && !event.productType && !event.functionId ? "報名資訊待補" : "立即免費預約"}
+                    {event.isFull
+                      ? "已額滿"
+                      : !event.url && !event.productType && !event.functionId
+                        ? "報名資訊待補"
+                        : event.discountPrice === 0
+                          ? "立即免費預約"
+                          : "立即報名"}
                   </button>
                 </div>
               </div>
