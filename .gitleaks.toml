@@ -1,0 +1,73 @@
+# cm-deploy managed: gitleaks 自訂規則 + allowlist SSOT
+#
+# 由 init-deploy-scaffold 自動建立 / 維護；下游 repo 不要手動編輯本檔
+# （cm-deploy 升級會對齊 template）。
+# 詳見：
+#   cm-deploy/nodes/init-deploy-scaffold/ref/gitleaks-flow.md §「Ruleset 覆蓋與 gap」
+#   cm-deploy/nodes/init-deploy-scaffold/ref/secret-upload.md §「.gitleaks.toml allowlist」
+#
+# pre-commit hook entry（upstream gitleaks v8.30）沒帶 --config，
+# gitleaks 預設會讀 repo root 的 .gitleaks.toml → 自動生效，
+# 不需動 .pre-commit-config.yaml。
+
+# 保留預設 ruleset（不加這段會「取代」預設 ruleset → 反而比沒寫 config 更弱）
+[extend]
+useDefault = true
+
+# ─────────────────────────────────────────────────────────────────────
+# Allowlist：避免 generic-api-key 誤判 fingerprint 的 sha256 hex
+# 結構由 secret-upload.md「檔案結構慣例」拍板：
+#   Deployment/Secret/<SERVICE>/<env>/.fingerprint 內容形如
+#   `__payload__ sha256:<64-hex>`，整 path 排除即可。
+# ─────────────────────────────────────────────────────────────────────
+[allowlist]
+paths = [
+  '''Deployment/Secret/.+\.fingerprint$''',
+  '''\.gitleaks-baseline\.json$''',
+  # Firebase web SDK config（apiKey 等為公開識別碼，靠 Security Rules 保護，非真 secret）
+  # 全域豁免：須對內建 generic-api-key rule 生效（scoped [rules.allowlist] 無效）
+  '''(^|/)firebase\.ts$''',
+]
+regexes = [
+  '''AIza[0-9A-Za-z\-_]{35}''',
+]
+# Google client-side API key allowlist（marker）
+
+
+# ─────────────────────────────────────────────────────────────────────
+# Rule 1: URL-style DB connection string with embedded credentials
+# 補預設 ruleset 漏抓（generic-api-key 對 URI 結構 + 低熵密碼會漏）。
+#
+# 命中：scheme://user:password@host  形式
+# 涵蓋：postgres / postgresql / mysql / mongodb / mongodb+srv
+#       / redis / rediss / amqp / amqps
+# 不命中：scheme://localhost / scheme://host（沒有 user:pass@ 段）
+# 註：username 部分用 * 允許 0 個字元，以支援 redis://:password@host 格式
+# ─────────────────────────────────────────────────────────────────────
+[[rules]]
+id = "db-connection-string-with-password"
+description = "Database connection string with embedded credentials"
+regex = '''(?i)\b(postgres(?:ql)?|mysql|mongodb(?:\+srv)?|rediss?|amqps?)://[^\s:/@"']*:[^\s/@"']+@[^\s"']+'''
+tags = ["db", "connection-string", "custom"]
+
+# ─────────────────────────────────────────────────────────────────────
+# Rule 2: JDBC URL with password in query string
+# 命中：jdbc:xxx://...?...password=...
+# ─────────────────────────────────────────────────────────────────────
+[[rules]]
+id = "jdbc-connection-string-with-password"
+description = "JDBC URL with password in query string"
+regex = '''(?i)jdbc:[a-z0-9]+:[^\s"']*?[?&]password=[^\s&"']+'''
+tags = ["db", "jdbc", "connection-string", "custom"]
+
+# ─────────────────────────────────────────────────────────────────────
+# Project-specific allowlist
+# ─────────────────────────────────────────────────────────────────────
+
+# Firebase client-side API key (public by design, not a secret)
+[[rules]]
+id = "gcp-api-key"
+description = "GCP API key"
+regex = '''(?i)\b(AIza[0-9A-Za-z\\-_]{35})(?:['|\"|\n|\r|\s|\x60|;]|$)'''
+[rules.allowlist]
+paths = ['''src/FrontendApp/src/services/firebase\.ts$''']

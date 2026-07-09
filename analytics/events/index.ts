@@ -17,4 +17,9 @@ export {
   trackLiveLoginAttempt,
   trackLiveLoginBlocked,
   trackLiveLoginResult,
+  trackOpenDispositionGod,
+} from "./conversionEvents";
+export type {
+  DispositionGodPlatform,
+  OpenDispositionGodParams,
 } from "./conversionEvents";

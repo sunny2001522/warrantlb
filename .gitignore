@@ -24,3 +24,6 @@ dist-ssr
 *.sw?
 .env
 *.pem
+
+# cm-deploy 本機快取 (per-machine ephemeral, 不入庫)
+.deploy/

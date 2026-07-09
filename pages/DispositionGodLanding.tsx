@@ -1,5 +1,7 @@
 import React, { useEffect, useState, useCallback } from "react";
 import cmLogo from "../assets/同學會 (1).png";
+import { SiteHeader } from "../components/SiteChrome";
+import { DISPOSITION_TUTORIALS } from "../siteContent";
 import shop1 from "../assets/商店頁-1.png";
 import shop2 from "../assets/商店頁-2.png";
 import shop3 from "../assets/商店頁-3.png";
@@ -24,7 +26,6 @@ const DispositionGodLanding: React.FC = () => {
   const [dailySlide, setDailySlide] = useAutoSlide(3, 4500);
   const [statsSlide, setStatsSlide] = useAutoSlide(3, 4500);
   const [billSlide, setBillSlide] = useAutoSlide(4, 3500);
-  const [navSolid, setNavSolid] = useState(false);
   const [countdown, setCountdown] = useState({ h: 0, m: 0, s: 0 });
 
   useEffect(() => {
@@ -42,17 +43,6 @@ const DispositionGodLanding: React.FC = () => {
     tick();
     const timer = setInterval(tick, 1000);
     return () => clearInterval(timer);
-  }, []);
-
-  useEffect(() => {
-    const heroEl = document.getElementById("hero-section");
-    if (!heroEl) return;
-    const obs = new IntersectionObserver(
-      ([entry]) => setNavSolid(!entry.isIntersecting),
-      { threshold: 0 }
-    );
-    obs.observe(heroEl);
-    return () => obs.disconnect();
   }, []);
 
   useEffect(() => {
@@ -93,42 +83,20 @@ const DispositionGodLanding: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-[#080c14] text-white selection:bg-[#d4af37] selection:text-black">
-      {/* Navigation */}
-      <nav className={`fixed top-0 left-0 right-0 z-50 px-4 md:px-6 py-2 md:py-4 flex justify-between items-center transition-all duration-300 ${navSolid ? "bg-[#080c14]/90 backdrop-blur-md border-b border-[#d4af37]/20" : "bg-transparent"}`}>
-        <a href="/" className="flex items-center gap-2 md:gap-3">
-          <img src={cmLogo} alt="CMoney Logo" className="h-6 md:h-10" />
-          <div className="flex flex-col">
-            <span className="text-xs md:text-base font-black tracking-widest text-white leading-tight">
-              權證小哥
-            </span>
-            <span className="text-[8px] md:text-xs text-[#d4af37] font-bold tracking-[0.2em]">
-              CMoney
-            </span>
-          </div>
-        </a>
-
-        {/* Top-level page tabs */}
-        <div className="flex items-center gap-0.5 md:gap-1">
+      {/* Navigation — 全站共用 header */}
+      <SiteHeader
+        active="/about/DispositionGod"
+        rightSlot={
           <a
-            href="/"
-            className="px-2 md:px-4 py-1 md:py-1.5 text-[10px] md:text-sm font-bold tracking-wider md:tracking-widest text-gray-400 hover:text-white border-b-2 border-transparent hover:border-white/30 transition-all"
+            href={TARGET_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="blue-shimmer-btn inline-block px-4 md:px-6 py-1.5 md:py-2 text-[10px] md:text-sm font-black rounded-full text-white shadow-2xl transition-all transform active:scale-95 overflow-hidden cursor-pointer whitespace-nowrap"
           >
-            處置體驗課
+            立即升級
           </a>
-          <span className="px-2 md:px-4 py-1 md:py-1.5 text-[10px] md:text-sm font-black tracking-wider md:tracking-widest text-[#d4af37] border-b-2 border-[#d4af37]">
-            處置神器
-          </span>
-        </div>
-
-        <a
-          href={TARGET_URL}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="blue-shimmer-btn inline-block px-4 md:px-6 py-1.5 md:py-2 text-[10px] md:text-sm font-black rounded-full text-white shadow-2xl transition-all transform active:scale-95 overflow-hidden cursor-pointer"
-        >
-          立即升級
-        </a>
-      </nav>
+        }
+      />
 
       {/* ========== HERO ========== */}
       <section id="hero-section" className="relative overflow-hidden">
@@ -941,6 +909,52 @@ const DispositionGodLanding: React.FC = () => {
           <p className="text-gray-500 text-xs md:text-sm font-bold tracking-widest mt-8 md:mt-10">
             首購限時優惠 ・ 立即升級
           </p>
+        </div>
+      </section>
+
+      {/* 教學影片 */}
+      <section className="py-12 md:py-20 px-4 md:px-6 bg-gradient-to-b from-[#080c14] to-[#0a1528] border-t border-[#d4af37]/10">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-8 md:mb-12 scroll-reveal">
+            <p className="text-[#d4af37] text-xs md:text-sm font-black tracking-[0.3em] mb-2">
+              TUTORIALS
+            </p>
+            <h2 className="text-2xl md:text-5xl font-black serif-font italic text-gold-gradient mb-3">
+              小哥教你抓處置股買點
+            </h2>
+            <p className="text-gray-400 text-sm md:text-lg">官方教學影片,看懂處置股怎麼變成獲利機會</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
+            {DISPOSITION_TUTORIALS.map((t) => (
+              <a
+                key={t.videoId}
+                href={`https://www.youtube.com/watch?v=${t.videoId}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="scroll-reveal block bg-[#0b1220] border border-[#d4af37]/25 rounded-[1.25rem] overflow-hidden hover:border-[#d4af37] hover:-translate-y-1 transition-all group"
+              >
+                <div className="relative aspect-video bg-black overflow-hidden">
+                  <img
+                    src={`https://img.youtube.com/vi/${t.videoId}/hqdefault.jpg`}
+                    alt={t.title}
+                    loading="lazy"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                  <div className="absolute inset-0 bg-black/25 group-hover:bg-black/5 transition-colors flex items-center justify-center">
+                    <div className="w-14 h-14 rounded-full bg-red-600/90 flex items-center justify-center group-hover:scale-110 transition-transform">
+                      <i className="fas fa-play text-white text-lg ml-0.5"></i>
+                    </div>
+                  </div>
+                </div>
+                <div className="p-4 md:p-6">
+                  <h3 className="text-white text-base md:text-lg font-black serif-font leading-snug mb-2 group-hover:text-[#d4af37] transition-colors">
+                    {t.title}
+                  </h3>
+                  <p className="text-gray-500 text-sm leading-relaxed">{t.desc}</p>
+                </div>
+              </a>
+            ))}
+          </div>
         </div>
       </section>
 

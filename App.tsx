@@ -4,10 +4,11 @@ import { StackingCard } from "./components/StackingCard";
 import { db } from "./firebase";
 import { collection, getDocs } from "firebase/firestore";
 import LiveStreamSection from "./components/LiveStreamSection";
+import { SiteHeader } from "./components/SiteChrome";
 
 import { MarqueeCarousel } from "./components/MarqueeCarousel";
 import heroMobile from "./assets/限時動態（1080x1920）.jpg";
-import heroTablet from "./assets/1200X900(沒有日期&CTA).png";
+import heroTablet from "./assets/1200X900-tablet.webp";
 import heroDesktop from "./assets/內廣A (1200x500)_0402.jpg";
 import lecturerImg from "./assets/man look.png";
 import cmLogo from "./assets/同學會 (1).png";
@@ -21,12 +22,12 @@ import {
   LECTURER_GALLERY,
   CASHFLOW_DOMAIN,
   sanitizeRegistrationEvents,
+  fetchLiveExperienceCourses,
   type RegistrationInfo,
 } from "./constants";
 import {
   useScrollTracking,
   useSectionVisibility,
-  trackNavClick,
   trackRegistrationStart,
 } from "./analytics";
 
@@ -45,27 +46,37 @@ const App: React.FC = () => {
   const [events, setEvents] = useState<RegistrationInfo[]>([]);
 
   useEffect(() => {
-    (async () => {
+    const loadFromFirestore = async () => {
       try {
         const snapshot = await getDocs(collection(db, "registrationEvents"));
         if (!snapshot.empty) {
           const allEvents = sanitizeRegistrationEvents(
             snapshot.docs.map((d) => ({ id: Number(d.id), ...d.data() } as RegistrationInfo)),
           );
-
           const now = new Date();
-          const active: RegistrationInfo[] = [];
-
-          for (const event of allEvents) {
-            const startTime = new Date(event.targetDate);
-            if (Number.isNaN(startTime.getTime()) || now < startTime) {
-              active.push(event);
-            }
-          }
-          setEvents(active);
+          setEvents(
+            allEvents.filter((e) => {
+              const t = new Date(e.targetDate);
+              return Number.isNaN(t.getTime()) || now < t;
+            }),
+          );
         }
       } catch {
-        // Firestore 失敗，不 fallback，保持空陣列
+        // Firestore 失敗，保持空陣列
+      }
+    };
+
+    (async () => {
+      // 即時打 experience-course API (含隱藏欄位: 報名人數/剩餘名額/額滿);失敗才回退 Firestore
+      try {
+        const live = await fetchLiveExperienceCourses();
+        if (live.length > 0) {
+          setEvents(live);
+          return;
+        }
+        await loadFromFirestore();
+      } catch {
+        await loadFromFirestore();
       }
     })();
   }, []);
@@ -149,54 +160,20 @@ const App: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-[#080c14] text-white selection:bg-[#d4af37] selection:text-black">
-      {/* Navigation */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-[#080c14]/90 backdrop-blur-md border-b border-[#d4af37]/20 px-4 md:px-6 py-2 md:py-4 flex justify-between items-center">
-        <div className="flex items-center gap-2 md:gap-3">
-          <img src={cmLogo} alt="CMoney Logo" className="h-6 md:h-10" />
-
-          <div className="flex flex-col">
-            <span className="text-xs md:text-base font-black tracking-widest text-white leading-tight">
-              權證小哥
-            </span>
-            <span className="text-[8px] md:text-xs text-[#d4af37] font-bold tracking-[0.2em]">
-              CMoney
-            </span>
-          </div>
-        </div>
-
-        {/* Desktop Anchor Menu */}
-        <div className="hidden lg:flex items-center gap-8 mr-8">
-          <a
-            href="/"
-            className="text-[#d4af37] text-sm font-bold tracking-widest transition-colors"
-          >
-            處置體驗課
-          </a>
-          <a
-            href="/about/DispositionGod"
-            className="text-gray-400 hover:text-[#d4af37] text-sm font-bold tracking-widest transition-colors"
-          >
-            處置神器
-          </a>
-        </div>
-
-        <div className="flex items-center gap-2 md:gap-3">
-          <a
-            href="http://cmy.tw/008I6c"
-            target="_blank"
-            className="px-4 md:px-6 py-1.5 md:py-2 text-[10px] md:text-sm font-black tracking-widest border border-[#d4af37] text-[#d4af37] rounded-full hover:bg-[#d4af37] hover:text-black transition-all"
-          >
-            聯繫客服
-          </a>
+      {/* Navigation — 全站共用 header */}
+      <SiteHeader
+        active="/course"
+        alwaysSolid
+        rightSlot={
           <CTAButton
             onClick={() => scrollToSection(registrationRef)}
-            className="!px-4 md:!px-6 !py-1.5 md:!py-2 !text-[10px] md:!text-sm"
+            className="!px-3 md:!px-6 !py-1.5 md:!py-2 !text-[10px] md:!text-sm"
             trackingLocation="nav"
           >
             報名體驗課
           </CTAButton>
-        </div>
-      </nav>
+        }
+      />
 
       {/* Live Stream Section */}
       <LiveStreamSection onStatusChange={setHasLiveStream} />
@@ -500,7 +477,7 @@ const App: React.FC = () => {
                   </ul>
 
                   <div className="mt-auto pt-2 md:pt-4 flex items-center gap-3 text-blue-400 transition-all duration-300 group-hover:gap-5">
-                    <span className="text-[20px] md:text-xs font-black tracking-widest uppercase">
+                    <span className="text-[11px] md:text-xs font-black tracking-widest uppercase">
                       查看詳情
                     </span>
                     <i className="fas fa-arrow-right text-[8px] md:text-[10px] animate-pulse"></i>
@@ -632,29 +609,56 @@ const App: React.FC = () => {
                 key={event.id}
                 className="scroll-reveal w-full lg:w-[calc((100%-1.5rem)/2)] xl:w-[calc((100%-5rem)/3)] max-w-[32rem] bg-[#0b0f1a] border border-[#d4af37]/30 rounded-[1.5rem] md:rounded-[2.5rem] overflow-hidden flex flex-col shadow-2xl transition-all hover:border-[#d4af37] hover:-translate-y-1 group h-full"
               >
+                {/* 課程圖 (即時 API imageUrl) */}
+                {event.imageUrl && (
+                  <div className="relative aspect-[16/9] overflow-hidden bg-black">
+                    <img
+                      src={event.imageUrl}
+                      alt={event.title}
+                      loading="lazy"
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#0b0f1a] via-transparent to-transparent pointer-events-none"></div>
+                    {event.isFull && (
+                      <span className="absolute top-3 right-3 px-3 py-1 rounded-full bg-red-600 text-white text-xs font-black tracking-widest shadow-lg">
+                        已額滿
+                      </span>
+                    )}
+                  </div>
+                )}
                 <div className="p-4 md:p-10 flex-1 flex flex-col items-center text-center">
                   <h3 className="text-[20px] md:text-3xl font-black text-white serif-font mb-3 md:mb-6 leading-tight min-h-0 md:min-h-[4rem] group-hover:text-[#d4af37] transition-colors">
                     {event.title}
                   </h3>
+                  {/* 報名人數 / 剩餘名額 (即時 API) */}
+                  {event.displayLabel && typeof event.displayCount === "number" && (
+                    <div className="mb-3 md:mb-4 inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#27e0ff]/10 border border-[#27e0ff]/40">
+                      <i className="fas fa-user-group text-[#27e0ff] text-[11px]"></i>
+                      <span className="text-[#9fd8ff] text-xs md:text-sm font-black tracking-wide">
+                        {event.displayLabel} {event.displayCount.toLocaleString()}
+                        {event.displayLabel.includes("名額") ? " 位" : " 人"}
+                      </span>
+                    </div>
+                  )}
                   <div className="w-full bg-[#d4af37]/5 border border-[#d4af37]/30 p-3 md:p-5 mb-2 md:mb-4 rounded-2xl text-center">
                     <div className="flex flex-col gap-0.5 md:gap-1">
-                      <span className="text-[#d4af37] text-[20px] md:text-[10px] font-black tracking-widest uppercase opacity-70">
+                      <span className="text-[#d4af37] text-[10px] md:text-[10px] font-black tracking-widest uppercase opacity-70">
                         上課日期與時間
                       </span>
-                      <span className="text-[20px] md:text-3xl font-black text-white serif-font leading-none py-0.5 md:py-1">
+                      <span className="text-2xl md:text-3xl font-black text-white serif-font leading-none py-0.5 md:py-1">
                         {event.dateStr}
                       </span>
-                      <span className="text-[20px] md:text-2xl font-bold text-gray-400">
+                      <span className="text-lg md:text-2xl font-bold text-gray-400">
                         {event.timeStr}
                       </span>
                     </div>
                   </div>
-                  <div className="flex w-full items-center justify-center gap-6 mt-auto mb-3 md:mb-6 py-3 md:py-4 px-4 md:px-6 bg-white/5 rounded-xl md:rounded-2xl border border-white/10 text-center">
+                  <div className="flex w-full items-center justify-center gap-4 md:gap-6 mt-auto mb-3 md:mb-6 py-3 md:py-4 px-3 md:px-6 bg-white/5 rounded-xl md:rounded-2xl border border-white/10 text-center">
                     <div className="flex flex-col items-center">
-                      <span className="text-[20px] md:text-xs text-gray-500 font-bold line-through">
+                      <span className="text-[11px] md:text-xs text-gray-500 font-bold line-through">
                         原價 NT${event.originalPrice.toLocaleString()}
                       </span>
-                      <span className="text-[#d4af37] text-[20px] md:text-xs font-black italic">
+                      <span className="text-[#d4af37] text-[11px] md:text-xs font-black italic">
                         省 NT$
                         {(
                           event.originalPrice - event.discountPrice
@@ -663,21 +667,29 @@ const App: React.FC = () => {
                     </div>
                     <div className="text-center">
                       <div className="flex items-baseline justify-center gap-1 md:gap-2">
-                        <span className="text-[20px] md:text-xs font-normal text-gray-400">
-                          限時
+                        <span className="text-[11px] md:text-xs font-normal text-gray-400">
+                          {event.discountPrice === 0 ? "限時" : "優惠價"}
                         </span>
-                        <span className="text-xl md:text-4xl font-black text-white">
-                          NT${event.discountPrice}
+                        <span className="text-2xl md:text-4xl font-black text-white">
+                          {event.discountPrice === 0
+                            ? "免費"
+                            : `NT$${event.discountPrice.toLocaleString()}`}
                         </span>
                       </div>
                     </div>
                   </div>
                   <button
                     onClick={() => handleRegistrationClick(event)}
-                    disabled={!event.url && !event.productType && !event.functionId}
-                    className="w-full blue-shimmer-btn py-4 md:py-6 rounded-[1rem] md:rounded-[1.2rem] text-center text-[20px] md:text-xl font-black text-white shadow-xl hover:scale-[1.01] active:scale-95 transition-all cursor-pointer disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:scale-100"
+                    disabled={event.isFull || (!event.url && !event.productType && !event.functionId)}
+                    className="w-full blue-shimmer-btn py-3 md:py-6 rounded-[1rem] md:rounded-[1.2rem] text-center text-base md:text-xl font-black text-white shadow-xl hover:scale-[1.01] active:scale-95 transition-all cursor-pointer disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:scale-100"
                   >
-                    {!event.url && !event.productType && !event.functionId ? "報名資訊待補" : "立即免費預約"}
+                    {event.isFull
+                      ? "已額滿"
+                      : !event.url && !event.productType && !event.functionId
+                        ? "報名資訊待補"
+                        : event.discountPrice === 0
+                          ? "立即免費預約"
+                          : "立即報名"}
                   </button>
                 </div>
               </div>
@@ -763,8 +775,11 @@ const App: React.FC = () => {
               </h4>
               <div className="grid grid-cols-2 gap-x-4 gap-y-2">
                 {[
-                  { label: "處置體驗課", href: "/" },
+                  { label: "關於小哥", href: "/" },
+                  { label: "處置體驗課", href: "/course" },
                   { label: "處置神器", href: "/about/DispositionGod" },
+                  { label: "軟體工具", href: "/software" },
+                  { label: "影音專區", href: "/media" },
                 ].map((item, idx) => (
                   <a
                     key={idx}
@@ -775,6 +790,14 @@ const App: React.FC = () => {
                     {item.label}
                   </a>
                 ))}
+                {/* SEO internal link: 處置神器 page (含完整 anchor text) */}
+                <a
+                  href="/about/DispositionGod"
+                  className="col-span-2 mt-2 pt-2 border-t border-white/5 text-[#d4af37] hover:text-[#fef9c3] text-xs font-bold transition-colors flex items-center gap-2"
+                >
+                  <i className="fas fa-external-link-alt text-[8px]"></i>
+                  處置神器｜處置股預測・處置公告查詢 →
+                </a>
               </div>
             </div>
 
@@ -827,7 +850,7 @@ const App: React.FC = () => {
       {/* Fixed bottom-right CTA */}
       <button
         onClick={() => scrollToSection(registrationRef)}
-        className="fixed bottom-6 right-6 z-50 bg-[#1d4ed8] hover:bg-[#1e40af] px-4 py-3 md:px-6 md:py-4 text-[20px] md:text-base font-black text-white rounded-full shadow-[0_4px_24px_rgba(37,99,235,0.6)] active:scale-95 transition-all cursor-pointer"
+        className="fixed bottom-4 right-4 md:bottom-6 md:right-6 z-50 bg-[#1d4ed8] hover:bg-[#1e40af] px-4 py-2.5 md:px-6 md:py-4 text-sm md:text-base font-black text-white rounded-full shadow-[0_4px_24px_rgba(37,99,235,0.6)] active:scale-95 transition-all cursor-pointer"
       >
         免費報名
       </button>

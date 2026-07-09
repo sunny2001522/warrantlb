@@ -1,10 +1,10 @@
 import { launch } from 'puppeteer';
 import { createServer } from 'http';
-import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'fs';
+import { readFileSync, writeFileSync, existsSync, mkdirSync, statSync } from 'fs';
 import { resolve, join, extname, dirname } from 'path';
 
 const DIST = resolve('dist');
-const ROUTES = ['/', '/about/DispositionGod'];
+const ROUTES = ['/', '/course', '/about/DispositionGod', '/software', '/software/omni-monitor', '/software/day-trade', '/media'];
 const PORT = 45678;
 
 // Simple static file server for dist/
@@ -12,6 +12,8 @@ const mimeTypes = { '.html': 'text/html', '.js': 'application/javascript', '.css
 
 const server = createServer((req, res) => {
   let filePath = join(DIST, req.url === '/' ? 'index.html' : req.url);
+  // Directory (e.g. /about after /about/DispositionGod was written) → its index.html
+  if (existsSync(filePath) && statSync(filePath).isDirectory()) filePath = join(filePath, 'index.html');
   if (!existsSync(filePath)) filePath = join(DIST, 'index.html'); // SPA fallback
   const ext = extname(filePath);
   res.writeHead(200, { 'Content-Type': mimeTypes[ext] || 'application/octet-stream' });

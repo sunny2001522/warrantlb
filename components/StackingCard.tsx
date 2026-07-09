@@ -29,14 +29,14 @@ export const StackingCard: React.FC<StackingCardProps> = ({ feature, index, tota
           <div className="flex-1 relative">
             {variant === 'chapter' && feature.duration && (
               <div className="absolute -top-1 md:-top-2 right-0 flex items-center gap-1 md:gap-1.5 opacity-70">
-                <span className="text-white text-[20px] md:text-sm font-bold serif-font">
+                <span className="text-white text-[11px] md:text-sm font-bold serif-font">
                   {feature.duration}
                 </span>
                 <i className="fas fa-star text-[#d4af37] text-[6px] md:text-[8px]"></i>
               </div>
             )}
 
-            <span className="text-gray-500 text-[20px] md:text-xs uppercase tracking-[0.3em] md:tracking-[0.4em] font-black block mb-0.5 md:mb-1 opacity-50">
+            <span className="text-gray-500 text-[10px] md:text-xs uppercase tracking-[0.25em] md:tracking-[0.4em] font-black block mb-0.5 md:mb-1 opacity-50">
               {variant === 'skill' ? 'Skill' : 'Chapter'}
             </span>
 

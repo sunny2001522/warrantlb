@@ -5,14 +5,14 @@ import gold1 from "./assets/藍金_01.png";
 import gold2 from "./assets/藍金_02.png";
 import gold3 from "./assets/藍金_03.png";
 import gold4 from "./assets/藍金_04.png";
-import gallery1 from "./assets/LINE_NOTE_260309_1.jpg";
-import gallery2 from "./assets/LINE_NOTE_260309_2.jpg";
-import gallery3 from "./assets/LINE_NOTE_260309_3.jpg";
-import gallery4 from "./assets/LINE_NOTE_260309_4.jpg";
-import gallery5 from "./assets/LINE_NOTE_260309_5.jpg";
-import gallery6 from "./assets/LINE_NOTE_260309_6.jpg";
-import gallery7 from "./assets/LINE_NOTE_260309_7.jpg";
-import gallery8 from "./assets/LINE_NOTE_260309_8.jpg";
+import gallery1 from "./assets/LINE_NOTE_260309_1.webp";
+import gallery2 from "./assets/LINE_NOTE_260309_2.webp";
+import gallery3 from "./assets/LINE_NOTE_260309_3.webp";
+import gallery4 from "./assets/LINE_NOTE_260309_4.webp";
+import gallery5 from "./assets/LINE_NOTE_260309_5.webp";
+import gallery6 from "./assets/LINE_NOTE_260309_6.webp";
+import gallery7 from "./assets/LINE_NOTE_260309_7.webp";
+import gallery8 from "./assets/LINE_NOTE_260309_8.webp";
 
 export const CTA_LINK = "https://www.cmoney.tw/cashflow/Index.aspx?platform=1";
 
@@ -51,6 +51,91 @@ export interface RegistrationInfo {
   url: string;
   productType: number;
   functionId: number;
+  /** 以下為即時 API 額外欄位 (Firestore 不持久化) */
+  imageUrl?: string;
+  displayLabel?: string; // 報名人數 / 剩餘名額
+  displayCount?: number;
+  isFull?: boolean;
+  sizeLimit?: number;
+}
+
+/* ── 即時講座 API (experience-course) ── */
+
+const EXPERIENCE_COURSE_MEMBER_ID = "13997";
+
+interface RawExperienceCourse {
+  id: number;
+  name: string;
+  showDateTime: string;
+  price: number;
+  originalPrice: number;
+  imageUrl?: string;
+  isHidden?: boolean;
+  sizeLimit?: number;
+  displayCount?: number;
+  displayType?: number;
+  displayLabel?: string;
+  isFull?: boolean;
+}
+
+function parseCourseShowDateTime(showDateTime: string) {
+  const m = showDateTime.match(
+    /^(\d{4})年(\d{2})月(\d{2})日\([^)]+\)\s+(\d{2}):(\d{2})-(\d{2}):(\d{2})$/,
+  );
+  if (!m) return { dateStr: showDateTime, timeStr: "", targetDate: "" };
+  const [, y, mo, d, sh, sm, eh, em] = m;
+  return {
+    dateStr: `${Number(mo)}/${Number(d)}`,
+    timeStr: `${sh}:${sm} - ${eh}:${em}`,
+    targetDate: `${y}-${mo}-${d}T${sh}:${sm}:00`,
+  };
+}
+
+/** 把 API item 轉成 RegistrationInfo (含隱藏欄位);過濾 isHidden、只留未過期、依日期排序 */
+export function mapLiveExperienceCourses(
+  raw: { experienceCourses?: RawExperienceCourse }[],
+): RegistrationInfo[] {
+  const now = new Date();
+  return raw
+    .map((item) => item.experienceCourses)
+    .filter((c): c is RawExperienceCourse => Boolean(c) && !c!.isHidden)
+    .map((c) => {
+      const parsed = parseCourseShowDateTime(c.showDateTime);
+      return {
+        id: c.id,
+        title: c.name,
+        dateStr: parsed.dateStr,
+        timeStr: parsed.timeStr,
+        targetDate: parsed.targetDate,
+        originalPrice: Number(c.originalPrice ?? 0),
+        discountPrice: Number(c.price ?? 0),
+        url: `https://www.cmoney.tw/classes/classdetail/${c.id}`,
+        productType: 777004,
+        functionId: c.id,
+        imageUrl: c.imageUrl,
+        displayLabel: c.displayLabel,
+        displayCount: typeof c.displayCount === "number" ? c.displayCount : undefined,
+        isFull: Boolean(c.isFull),
+        sizeLimit: c.sizeLimit,
+      } as RegistrationInfo;
+    })
+    .filter((e) => {
+      const t = new Date(e.targetDate);
+      return Number.isNaN(t.getTime()) || now < t;
+    })
+    .filter((e) => !isBlockedRegistrationEvent(e))
+    .sort((a, b) => (a.targetDate || "").localeCompare(b.targetDate || "") || a.id - b.id);
+}
+
+/** 即時抓取講座 API (透過同源 proxy /api/experience-course) */
+export async function fetchLiveExperienceCourses(): Promise<RegistrationInfo[]> {
+  const res = await fetch(
+    `/api/experience-course?authorMemberId=${EXPERIENCE_COURSE_MEMBER_ID}`,
+    { cache: "no-store" },
+  );
+  if (!res.ok) throw new Error(`experience-course API ${res.status}`);
+  const data = (await res.json()) as { experienceCourses?: RawExperienceCourse }[];
+  return mapLiveExperienceCourses(data);
 }
 
 export function isFreeRegistrationEvent(event: RegistrationInfo): boolean {

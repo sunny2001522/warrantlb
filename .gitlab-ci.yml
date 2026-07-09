@@ -1,0 +1,280 @@
+# ==========================================================================
+# GitLab CI Template — Single Repo（含 Secret 自動化）
+# 參考：https://docs.google.com/presentation/d/1xSwfTS8z4WGuZAByVsbrVMAOUMx8QOc1H1Jiycbn1R0
+#
+# 最小可運作流程：prepare → build → deploy → secret
+# 需要額外 QA（unit-test / dockerfile-lint / sonarqube）時自行加 job 至 qa stage
+#
+# 使用前請調整：
+#   - SERVICE_NAME：不可含 .、_ 或其他符號，僅英數，會自動轉小寫
+#   - EXPOSE：container 開放的 port（只支援一個，且僅第一次上版生效）
+#   - DOCKERFILE：若非根目錄的 Dockerfile 請改路徑
+#
+# Secret 自動化前置條件（**.gitlab-ci.yml 無法解決**）：
+#   - 本 src repo：inbound Job Token allowlist 需含 `secretmanager/cmoney-secret-$HARBOR_PROJECT`
+#     **這是 project，不是 group**；用 GitLab API `POST /projects/{id}/job_token_scope/allowlist`
+#     配 `target_project_id` 數字 ID。cm-deploy 自動處理：新建 repo → c-create.md C7.5；
+#     既有 repo → 不做預先偵測，由 b-deploy.md B7-5 在 secret-manager leaf 出現 403 時 reactive 修補
+#   - secretmanager/cmoney-secret-$HARBOR_PROJECT project：找 SRE 申請（一個 top-group 一份）
+#   - 該 secret project：Allow Git Push & Maintainer 設定（SRE 一次性）
+#   - ArgoCD：開啟 ExternalSecretOperator（SRE 一次性）
+# ==========================================================================
+
+include:
+  # manifest-trigger component 用 GitLab 原生 `trigger:` keyword，父 pipeline 能追蹤下游狀態；
+  # job 拆 :prepare + :trigger 兩階段。inputs.trigger-path / stage 已內建預設值，無需明寫。
+  - component: $CI_SERVER_FQDN/sre-team/cicd/components/manifest-trigger/image@1.4.0
+  - component: $CI_SERVER_FQDN/sre-team/cicd/components/manifest-trigger/httproute@1.4.0
+  - component: $CI_SERVER_FQDN/sre-team/cicd/components/manifest-trigger/secret@1.4.0
+  - component: $CI_SERVER_FQDN/sre-team/cicd/components/secret-manager/secret-upload@0.5.0
+  - component: $CI_SERVER_FQDN/sre-team/cicd/components/docker-flow/buildkit@1.2.1
+
+workflow:
+  rules:
+    - if: $CI_COMMIT_TAG
+      when: always
+    - when: never
+
+stages:
+  - prepare
+  - qa
+  - build
+  - deploy
+  - secret
+
+default:
+  tags:
+    - '250.69-docker'
+
+variables:
+  # SERVICE_NAME 用 GitLab predefined `${CI_PROJECT_NAME}` indirection：
+  # GitLab predefined 在 `rules:exists:` / `rules.variables` / `trigger.variables` 跨 pipeline
+  # 都會正確展開（user-defined `variables:` 區塊變數有 scope 限制，predefined 沒有；
+  # 實機 2026-05-22 驗證）。假設 `cm-deploy.json services[0].name == ${CI_PROJECT_NAME}
+  # == GitLab project name` 永遠成立（single 慣例）；PM 在 GitLab 改 project name 而沒同步
+  # cm-deploy.json → drift，A2-1 P3 check skip + 提醒手動驗證。
+  SERVICE_NAME: mrwarrant-lp  # 覆寫：避開跟 enru landingpage 撞名（project path 是 landingpage）
+  IMAGE_REPO: ${HARBOR_PROJECT}/${SERVICE_NAME}
+  IMAGE_TAG: ${CI_COMMIT_TAG}
+  IMAGE_NAME: ${IMAGE_REPO}  # legacy 用於 deploy
+  SECRET_NAME: ${SERVICE_NAME}  # GSM secret = ${ENVIRONMENT}__${SECRET_NAME}（一 service 一 secret）
+  DOCKERFILE: Dockerfile
+  EXPOSE: 8080
+  GIT_DEPTH: 1
+
+# Tag 格式 → 環境 / LOCATION / Secret 路徑對應
+.default-rules:
+  development:
+    - if: $CI_COMMIT_TAG =~ /^\d+\.\d+\.\d+-Development\.\d+$/
+      variables:
+        ENVIRONMENT: development
+        LOCATION: tm-099200
+        IMAGE_TAG: ${CI_COMMIT_TAG}
+        JWE_FILE_PATH: Deployment/Secret/${CI_PROJECT_NAME}/Development/secret.jwe.json
+        SECRET_SCOPE: ${ENVIRONMENT}
+  staging:
+    - if: $CI_COMMIT_TAG =~ /^\d+\.\d+\.\d+-Staging\.\d+$/
+      variables:
+        ENVIRONMENT: staging
+        LOCATION: tm-199185
+        IMAGE_TAG: ${CI_COMMIT_TAG}
+        JWE_FILE_PATH: Deployment/Secret/${CI_PROJECT_NAME}/Staging/secret.jwe.json
+        SECRET_SCOPE: ${ENVIRONMENT}
+  production:
+    - if: $CI_COMMIT_TAG =~ /^\d+\.\d+\.\d+-Production\.\d+$/
+      variables:
+        ENVIRONMENT: production
+        LOCATION: clc-130184
+        IMAGE_TAG: ${CI_COMMIT_TAG}
+        JWE_FILE_PATH: Deployment/Secret/${CI_PROJECT_NAME}/Production/secret.jwe.json
+        SECRET_SCOPE: ${ENVIRONMENT}
+
+# Secret 專用 rules：同 .default-rules 但加 exists: 守護——JWE 檔不在就跳過整個 secret stage
+# （沒 secret 需求的 service 不會撞到 .secret-upload__create:prepare 的 hard-fail；
+#   有需求的 service 由 cm-deploy O-4 Step 4 產 JWE 後才會被觸發）
+.secret-rules:
+  development:
+    - if: $CI_COMMIT_TAG =~ /^\d+\.\d+\.\d+-Development\.\d+$/
+      exists:
+        - Deployment/Secret/${CI_PROJECT_NAME}/Development/secret.jwe.json
+      variables:
+        ENVIRONMENT: development
+        LOCATION: tm-099200
+        IMAGE_TAG: ${CI_COMMIT_TAG}
+        JWE_FILE_PATH: Deployment/Secret/${CI_PROJECT_NAME}/Development/secret.jwe.json
+        SECRET_SCOPE: ${ENVIRONMENT}
+  staging:
+    - if: $CI_COMMIT_TAG =~ /^\d+\.\d+\.\d+-Staging\.\d+$/
+      exists:
+        - Deployment/Secret/${CI_PROJECT_NAME}/Staging/secret.jwe.json
+      variables:
+        ENVIRONMENT: staging
+        LOCATION: tm-199185
+        IMAGE_TAG: ${CI_COMMIT_TAG}
+        JWE_FILE_PATH: Deployment/Secret/${CI_PROJECT_NAME}/Staging/secret.jwe.json
+        SECRET_SCOPE: ${ENVIRONMENT}
+  production:
+    - if: $CI_COMMIT_TAG =~ /^\d+\.\d+\.\d+-Production\.\d+$/
+      exists:
+        - Deployment/Secret/${CI_PROJECT_NAME}/Production/secret.jwe.json
+      variables:
+        ENVIRONMENT: production
+        LOCATION: clc-130184
+        IMAGE_TAG: ${CI_COMMIT_TAG}
+        JWE_FILE_PATH: Deployment/Secret/${CI_PROJECT_NAME}/Production/secret.jwe.json
+        SECRET_SCOPE: ${ENVIRONMENT}
+
+prepare:
+  stage: prepare
+  image: alpine:latest
+  script:
+    - echo "Preparing the environment"
+    - echo "ENVIRONMENT=$ENVIRONMENT" >> .env
+    - echo "LOCATION=$LOCATION" >> .env
+    - echo "IMAGE_TAG=$IMAGE_TAG" >> .env
+    # SERVICE_IS_PRIVATE：per-env 對外 / 不對外 toggle（v1.4 lazy schema）。
+    #   hostname 兩種模式一律是 <16hex>.cmoney.dev（SRE Component 自動算），
+    #   差別**只在 SRE 端的 ACL / 入口暴露**，不在 hostname 本身。
+    # 取值來源：`.default-rules.{env}.variables.SERVICE_IS_PRIVATE`，由 cm-deploy
+    # release-tag node 在**第一次 release 該 env** 時 lazy 寫入（PM 答「對外」才寫
+    # `SERVICE_IS_PRIVATE: "false"`；不寫 = unset = private，CMoney CI 預設行為）。
+    # init-deploy-scaffold 一開始不會在 `.default-rules` 寫此 variable。
+    # 不要在這裡加 SERVICE_HOSTNAME / SERVICE_PATH / SERVICE_PATH_STRIP——
+    # 這 3 個欄位有 16-char / 字元 / zone 多重隱形限制，
+    # 如真的需要自訂，請先看 cm-deploy `init-deploy-scaffold` skill.md「自訂路由」段。
+    - if [ -n "$SERVICE_IS_PRIVATE" ]; then echo "SERVICE_IS_PRIVATE=$SERVICE_IS_PRIVATE" >> .env; fi
+    - cat .env
+  artifacts:
+    expire_in: '30m'
+    reports:
+      dotenv: .env
+  rules:
+    - !reference [.default-rules, development]
+    - !reference [.default-rules, staging]
+    - !reference [.default-rules, production]
+
+# ── QA: SonarQube 掃描 ─────────────────────────────────────────
+# CMoney 公司 sample（allow_failure: false → QA 失敗會擋住後續 build / deploy / secret）
+# 各 repo 視需要自行加 unit-test job + needs（吃 coverage artifacts），cm-deploy
+# 不預設帶 needs 以免 GitLab CI lint 在沒 unit-test 的專案上炸
+sonarqube:
+  stage: qa
+  image:
+    name: sonarsource/sonar-scanner-cli:10
+    entrypoint: ['']
+  variables:
+    SONAR_USER_HOME: '${CI_PROJECT_DIR}/.sonar'
+    GIT_DEPTH: '0'  # sonar 需要全 branch 歷史
+  cache:
+    key: '${CI_JOB_NAME}'
+    paths:
+      - .sonar/cache
+  script:
+    - sonar-scanner
+  allow_failure: false
+
+image:build:
+  stage: build
+  extends: .docker-flow-buildkit
+  variables:
+    BUILD_OPTS: filename=${DOCKERFILE}
+  timeout: 30 minutes
+
+# ── Deploy 觸發 ────────────────────────────────────────────────
+# :prepare 組 trigger payload；:trigger 用 GitLab 原生 `trigger:` keyword 打下游 manifest pipeline。
+deploy:image:prepare:
+  extends: .manifest-trigger__image:prepare
+  variables:
+    GIT_STRATEGY: none
+  needs:
+    - job: prepare
+      artifacts: true
+    - job: image:build
+      optional: true
+      artifacts: false
+
+deploy:image:trigger:
+  extends: .manifest-trigger__image:trigger
+  needs:
+    - job: deploy:image:prepare
+      artifacts: true
+
+deploy:httproute:prepare:
+  extends: .manifest-trigger__httproute:prepare
+  variables:
+    GIT_STRATEGY: none
+  needs:
+    - job: prepare
+      artifacts: true
+
+deploy:httproute:trigger:
+  extends: .manifest-trigger__httproute:trigger
+  needs:
+    - job: deploy:httproute:prepare
+      artifacts: true
+    - job: deploy:image:trigger
+      optional: true
+      artifacts: false
+
+# ── Secret 自動化 ─────────────────────────────────────────────
+# 流程：secret:create:prepare（建 GSM secret resource Terraform plan/apply）
+#       → secret:upload:prepare（驗 JWE 結構 + 算 SHA256）→ secret:upload:trigger（POST 觸發 secretmanager pipeline 寫 GSM Version）
+#       → deploy:secret:prepare → deploy:secret:trigger（trigger manifest repo 套 ExternalSecret 設定）
+# 對應的 JWE 由 cm-deploy O-4 Step 4 加密產生在 $JWE_FILE_PATH
+# 每個 job 都掛 .secret-rules ref：沒 JWE 檔的 service 整段 silent skip，不撞 hard-fail
+secret:create:prepare:
+  extends: .secret-upload__create:prepare
+  rules:
+    - !reference [.secret-rules, development]
+    - !reference [.secret-rules, staging]
+    - !reference [.secret-rules, production]
+
+secret:upload:prepare:
+  extends: .secret-upload__upload:prepare
+  needs:
+    - job: prepare
+      artifacts: true
+    - job: secret:create:prepare
+      artifacts: true
+  rules:
+    - !reference [.secret-rules, development]
+    - !reference [.secret-rules, staging]
+    - !reference [.secret-rules, production]
+
+secret:upload:trigger:
+  extends: .secret-upload__upload:trigger
+  needs:
+    - job: secret:upload:prepare
+      artifacts: true
+  rules:
+    - !reference [.secret-rules, development]
+    - !reference [.secret-rules, staging]
+    - !reference [.secret-rules, production]
+
+deploy:secret:prepare:
+  extends: .manifest-trigger__secret:prepare
+  variables:
+    GIT_STRATEGY: none
+  needs:
+    - job: prepare
+      artifacts: true
+  rules:
+    - !reference [.secret-rules, development]
+    - !reference [.secret-rules, staging]
+    - !reference [.secret-rules, production]
+
+deploy:secret:trigger:
+  extends: .manifest-trigger__secret:trigger
+  needs:
+    - job: deploy:secret:prepare
+      artifacts: true
+    - job: secret:upload:trigger
+      optional: true
+      artifacts: false
+    - job: deploy:image:trigger
+      optional: true
+      artifacts: false
+  rules:
+    - !reference [.secret-rules, development]
+    - !reference [.secret-rules, staging]
+    - !reference [.secret-rules, production]

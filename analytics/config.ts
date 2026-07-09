@@ -18,6 +18,16 @@ export const GA_CONFIG = {
     appVip: "app_vip_section",
     registration: "registration_section",
     faq: "faq_section",
+    // DispositionGodLanding 頁區塊
+    dgHero: "dg_hero_section",
+    dgWebVsMobile: "dg_web_vs_mobile_section",
+    dgDailyReport: "dg_daily_report_section",
+    dgMonitor: "dg_monitor_section",
+    dgStats: "dg_stats_section",
+    dgHelpYou: "dg_help_you_section",
+    dgMembership: "dg_membership_section",
+    dgRealBills: "dg_real_bills_section",
+    dgDownload: "dg_download_section",
   },
 
   // 事件類別

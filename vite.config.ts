@@ -1,16 +1,23 @@
+import fs from 'fs';
 import path from 'path';
 import { defineConfig, loadEnv } from 'vite';
 import react from '@vitejs/plugin-react';
-import basicSsl from '@vitejs/plugin-basic-ssl';
 
 export default defineConfig(({ mode }) => {
     const env = loadEnv(mode, '.', '');
+
+    const certPath = path.resolve(__dirname, '.certs/localhost.pem');
+    const keyPath = path.resolve(__dirname, '.certs/localhost-key.pem');
+    // 憑證存在才啟用 https;空物件 {} 會讓 vite 啟用「無憑證 TLS」導致握手失敗
+    const httpsConfig = fs.existsSync(certPath) && fs.existsSync(keyPath)
+      ? { cert: fs.readFileSync(certPath), key: fs.readFileSync(keyPath) }
+      : undefined;
 
     return {
       server: {
         port: 3003,
         host: '0.0.0.0',
-        https: {},
+        https: httpsConfig,
         proxy: {
           '/api/experience-course': {
             target: 'https://columnist-landingpage.cmoney.tw',
@@ -18,7 +25,7 @@ export default defineConfig(({ mode }) => {
           },
         },
       },
-      plugins: [react(), basicSsl()],
+      plugins: [react()],
       define: {
         'process.env.API_KEY': JSON.stringify(env.GEMINI_API_KEY),
         'process.env.GEMINI_API_KEY': JSON.stringify(env.GEMINI_API_KEY)
@@ -29,6 +36,7 @@ export default defineConfig(({ mode }) => {
         }
       },
       build: {
+        // 強制 ASCII 檔名 (避免 CJK 檔名在 Cloud Run container import 時失敗)
         rollupOptions: {
           output: {
             assetFileNames: 'assets/[hash][extname]',
